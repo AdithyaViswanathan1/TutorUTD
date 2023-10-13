@@ -37,9 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    #Duo 2FA
-    'duo_universal_auth',
 ]
 
 MIDDLEWARE = [
@@ -50,23 +47,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    #Duo 2FA
-    'duo_universal_auth.middleware.DuoUniversalAuthMiddleware',
 ]
 
 ROOT_URLCONF = 'online_tutoring.urls'
-
-DUO_UNIVERSAL_AUTH = {
-    'MAIN': {
-        'DUO_HOST': 'api-df87e57f.duosecurity.com',
-        'CLIENT_ID': 'DI9DOO5ABHDD0YASV6ER',
-        'CLIENT_SECRET': 'qmDI7KVtsfxiR597HVKS2tk2IxXVUIFlfyJMvTnH',
-        'AUTH_BACKENDS': ['django.contrib.auth.backends.ModelBackend'],
-        'FAIL_ACTION': 'CLOSED'
-        }
-    
-}
 
 TEMPLATES = [
     {
@@ -91,18 +74,9 @@ WSGI_APPLICATION = 'online_tutoring.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    #Delete later(?); default configuration
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        
-        #Configuration for mySQL connection (dummy values placed)
-        #'ENGINE': 'django.db.backends.mysql',
-        #'NAME': 'mydb',
-        #'USER': 'root',
-        #'PASSWORD': 'admin',
-        #'HOST': 'localhost'
-        #'PORT': '3306',
     }
 }
 
