@@ -1,0 +1,30 @@
+.page-container
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    //flex-direction: column;
+}
+
+.logo-container
+{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    background-color: var(--utdGreen);
+}
+
+.logo
+{
+    width: 350px;
+    height: 350px;
+}
+
+.logo-text
+{
+    color: white;
+    font-size: 40px;
+    font-weight: 300;
+}
