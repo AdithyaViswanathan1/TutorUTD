@@ -1,0 +1,50 @@
+.page-container
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.button-container 
+{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-direction: row;
+}
+
+.options-container 
+{
+    display: flex;
+    width: 400px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.login-button
+{
+    background-color: var(--utdGreen);
+    border-radius: 1px;
+    color: black;
+    cursor: pointer;
+    height: 150px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.link
+{
+    color: var(--linkBlue);
+    cursor: pointer;
+    align-self: center;
+    font-size: 25px;
+}
+
+fa-icon
+{
+    color: white;
+    font-size: 80px;
+    margin-inline: 15px;
+}
