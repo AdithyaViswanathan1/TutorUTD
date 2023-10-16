@@ -8,6 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SignUpComponent {
   isStudent: boolean = true;
+  missingFields: boolean = false;
+  badPassword: boolean = false;
+  noMatch: boolean = false;
+
 
   fName: string = '';
   lName: string = '';
@@ -23,5 +27,41 @@ export class SignUpComponent {
 
   signUp() {
     console.log('sign up');
+
+    //check for missing fields
+    if(this.fName == '' || this.lName == '' || this.email == '' || this.password == '' || this.cPassword == '') {
+      this.missingFields = true;
+      return;
+    }
+    else {
+      this.missingFields = false;
+    }
+
+    //check for bad password
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(this.password)) {
+      this.badPassword = true;
+      return;
+    }
+    else {
+      this.badPassword = false;
+    }
+
+    // check if passwords match
+    if (this.password !== this.cPassword) {
+      this.noMatch = true;
+      return;
+    }
+    else {
+      this.noMatch = false;
+    }
+
+    // submit form
+    console.log('submit form');
+
+    if(this.isStudent)
+    {
+      
+    }
   }
 }
