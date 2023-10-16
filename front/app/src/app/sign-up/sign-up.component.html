@@ -1,1 +1,40 @@
-<p>sign-up works!</p>
+<app-navbar [loggedIn]="false"></app-navbar>
+<div class="page-container row">
+    <div class="logo-container col">
+        <img src="assets/images/utdLogo.png" alt="logo" class="logo mt-5">
+        <div class="logo-text">Online Tutor App</div>
+    </div>
+    <div class="sign-up-container col mt-3">
+        <div *ngIf="isStudent" class="header-text bold mt-4">Student Sign Up</div>
+        <div *ngIf="!isStudent" class="header-text bold">Tutor Sign Up</div>
+        <form (ngSubmit)="signUp()" class="sign-up-form mt-3">
+            <div class="form-element">
+                <div>First Name</div>
+                <input type="text" class="input-field form-control my-3" [(ngModel)]="fName" name="firstName" required>
+            </div>
+            <div class="form-element">
+                <div>Last Name</div>
+                <input type="text" class="input-field form-control my-3" [(ngModel)]="lName" name="lastName" required>
+            </div>
+            <div class="form-element">
+                <div>Email</div>
+                <input type="email" class="input-field form-control my-3" [(ngModel)]="email" name="email" required>
+            </div>
+            <div class="form-element">
+                <div>Password</div>
+                <input type="password" class="input-field form-control my-3" [(ngModel)]="password" name="password" required>
+            </div>
+            <div class="form-element">
+                <div>Confirm Password</div>
+                <input type="password" class="input-field form-control my-3" [(ngModel)]="cPassword" name="confirmPassword" required>
+            </div>
+            <div class="warnings">
+                <div *ngIf="missingFields">* All Fields must be filled out!</div>
+                <div *ngIf="noMatch">* Passwords do not match!</div>
+                <div *ngIf="badPassword">* Password must be at least 8 characters and contain at least 1 capital letter and 1 number!</div>
+                <div *ngIf="emailExists">* Email already in use!</div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block my-3">Sign Up</button>
+        </form>
+    </div>
+</div>
