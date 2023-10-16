@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -19,7 +19,9 @@ export class SignUpComponent {
   password: string = '';
   cPassword: string = '';
 
-  constructor(private route : ActivatedRoute) {
+  constructor(
+    private route : ActivatedRoute,
+    private router : Router) {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
@@ -61,7 +63,11 @@ export class SignUpComponent {
 
     if(this.isStudent)
     {
-      
+      this.router.navigate(['/appointments', 'student']);
+    }
+    else
+    {
+      this.router.navigate(['/profile']);
     }
   }
 }
