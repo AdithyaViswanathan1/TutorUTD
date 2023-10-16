@@ -11,6 +11,7 @@ export class SignUpComponent {
   missingFields: boolean = false;
   badPassword: boolean = false;
   noMatch: boolean = false;
+  emailExists: boolean = false;
 
 
   fName: string = '';
