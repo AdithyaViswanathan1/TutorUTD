@@ -1,1 +1,25 @@
-<p>landing-page works!</p>
+<app-navbar [loggedIn]="false"></app-navbar>
+<div class="page-container">
+    <div class="d-flex align-items-center flex-column mt-5">
+        <div class="header-text bold">Welcome to Online Tutor App!</div>
+        <div class="subheader-text semibold">Please sign in or log on to continue.</div>
+    </div>
+    
+    <div class="button-container mt-5">
+        <div class="options-container">
+            <div class = "login-button" (click)="toLoginPage(true)">
+                <fa-icon [icon]="faRightToBracket" style="color: #ffffff;"></fa-icon>
+                <div class="header-text bold" style="color: #ffffff;">Student Login</div>
+            </div>
+            <div class="link mt-2" (click)="toSignUpPage(true)">Student Sign-up</div>
+        </div>
+        <div class="options-container">
+            <div class = "login-button" (click)="toLoginPage(false)">
+                <fa-icon [icon]="faRightToBracket" style="color: #ffffff;"></fa-icon> 
+                <div class="header-text bold" style="color: #ffffff;">Tutor Login</div>
+            </div>
+            <div class="link mt-2" (click)="toSignUpPage(false)">Tutor Sign-up</div>
+        </div>
+    </div>
+</div>
+
