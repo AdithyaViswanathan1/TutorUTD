@@ -1,10 +1,23 @@
-<div class="navbar navbar-text">
+<div class="navbar navbar-text" *ngIf="user === 0">
     <nav>
         <label class="logo">Online Tutor App</label>
-        <ul>
-            <li><a href="#">Search</a></li>
-            <li><a href="#">Appointments</a></li>
-            <li><a href="#">Profile</a></li>
-        </ul>
+    </nav>
+</div>
+<div class="navbar navbar-text" *ngIf="user === 1">
+    <nav>
+        <label class="logo">Online Tutor App</label>
+            <ul>
+                <li><a href="#">Search</a></li>
+                <li><a href="#">Appointments</a></li>
+            </ul>
+    </nav>
+</div>
+<div class="navbar navbar-text" *ngIf="user === 2">
+    <nav>
+        <label class="logo">Online Tutor App</label>
+            <ul>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Appointments</a></li>
+            </ul>
     </nav>
 </div>

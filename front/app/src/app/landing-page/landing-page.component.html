@@ -1,4 +1,4 @@
-<app-navbar [loggedIn]="false"></app-navbar>
+<app-navbar [user]="0"></app-navbar>
 <div class="page-container">
     <div class="d-flex align-items-center flex-column mt-5">
         <div class="header-text bold">Welcome to Online Tutor App!</div>
@@ -18,7 +18,7 @@
                 <fa-icon [icon]="faRightToBracket" style="color: #ffffff;"></fa-icon> 
                 <div class="header-text bold" style="color: #ffffff;">Tutor Login</div>
             </div>
-            <div class="link mt-2" (click)="toSignUpPage(true)">Tutor Sign-up</div>
+            <div class="link mt-2" (click)="toSignUpPage(false)">Tutor Sign-up</div>
         </div>
     </div>
 </div>

@@ -104,8 +104,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
