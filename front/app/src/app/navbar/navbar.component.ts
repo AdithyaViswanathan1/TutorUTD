@@ -7,10 +7,9 @@ import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
 })
 export class NavbarComponent implements OnChanges{
     constructor() {
-        this.loggedIn = false;
     }
 
-    @Input() loggedIn: boolean
+    @Input() user: number = 0; //0 = not logged in, 1 = student, 2 = teacher
     
     ngOnChanges(changes: SimpleChanges): void {
         throw new Error("Method not implemented.");

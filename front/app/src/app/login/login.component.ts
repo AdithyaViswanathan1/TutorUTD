@@ -8,6 +8,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LoginComponent {
   isStudent: boolean = true;
+  emailNotFound: boolean = false;
+  wrongPassword: boolean = false;
+
+  email: string = '';
+  password: string = '';
 
   constructor(private route : ActivatedRoute) {
     this.route.params.subscribe(params => {
@@ -15,5 +20,8 @@ export class LoginComponent {
     });
   }
 
+  login(){
+    console.log("login");
+  }
 
 }
