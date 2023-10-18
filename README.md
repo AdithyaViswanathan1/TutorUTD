@@ -17,3 +17,4 @@ may need "ng update typescript@4.9.3" if you get an error about cannot read prop
 Run "npm i" to install/update the project's npm packages
 
 To run project locally go to the run and debug tab on the visual studio code sidebar then click run locally at the top of the panel. Once the task runs it should pop up a browser window with the application, if not check the vsCode console for a link to the localhost page. Alternatively run the command "ng serve" 
+...
