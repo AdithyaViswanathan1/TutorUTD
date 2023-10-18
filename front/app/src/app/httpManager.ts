@@ -7,7 +7,7 @@ import { SignUpRequest } from './models/SignUpRequest';
 @Injectable({
     providedIn: 'root'
 })
-export class Manager {
+export class httpManager {
     backendUrl : string = 'https://example.com/api';
 
     constructor(private http: HttpClient) {}

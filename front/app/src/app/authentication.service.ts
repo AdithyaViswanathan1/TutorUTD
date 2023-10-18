@@ -1,25 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Manager } from './manager';
+import { httpManager } from './httpManager';
 import { SignUpRequest } from './models/SignUpRequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  manager: httpManager;
+  
+  constructor(httpManager: httpManager) { 
+    this.manager = httpManager;
+  }
 
-  constructor(manager: Manager) { }
-
-  studentSignUp(username: string, password: string): boolean 
+  studentSignUp(user: SignUpRequest): boolean 
   {
-    user: SignUpRequest = {
-      email: username,
-      password: password,
-      firstName: '',
-      lastName: '',
-      isStudent: true
-    }
-    
-    return false;
+    this.manager.signUp(user);   
+    return true;
+  }
+
+  tutorSignUp(user: SignUpRequest): boolean
+  {
+    this.manager.signUp(user);
+    return true;
   }
 
 }

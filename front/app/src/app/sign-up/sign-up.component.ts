@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
+import { SignUpRequest } from '../models/SignUpRequest';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +24,8 @@ export class SignUpComponent {
 
   constructor(
     private route : ActivatedRoute,
-    private router : Router) {
+    private router : Router,
+    private authenticationService: AuthenticationService) {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
@@ -59,8 +62,30 @@ export class SignUpComponent {
       this.noMatch = false;
     }
 
-    // submit form
-    console.log('submit form');
+
+    //call login service for user
+    if(this.isStudent)
+    {
+      let user : SignUpRequest = {
+        email: this.email,
+        password: this.password,
+        firstName: this.fName,
+        lastName: this.lName,
+        isStudent: true
+      }
+
+      this.authenticationService.studentSignUp(user);
+    }
+    else
+    {
+      let user : SignUpRequest = {
+        email: this.email,
+        password: this.password,
+        firstName: this.fName,
+        lastName: this.lName,
+        isStudent: false
+      }
+    }
 
     if(this.isStudent)
     {
