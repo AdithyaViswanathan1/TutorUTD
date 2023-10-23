@@ -11,7 +11,8 @@ export class TimeTableComponent implements OnInit {
 
   daysInWeek: Date[] = [];
   appointmentTimes: string[] = [];
-  selectedAppointments: any = {};
+
+  selectedTimes: string[] = [];
 
   constructor() {
 
@@ -31,10 +32,24 @@ export class TimeTableComponent implements OnInit {
   }
 
   initTimes() {
-    for (let hour = 8; hour < 17; hour++) {
+    for (let hour = 8; hour < 20; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
-        const time = `${hour}:${minute === 0 ? '00' : minute}`;
-        this.appointmentTimes.push(time);
+        if(hour < 12) 
+        {
+          const time = `${hour}:${minute === 0 ? '00' : minute} AM`;
+          this.appointmentTimes.push(time);
+        }
+        else if(hour > 12)
+        {
+          const time = `${hour - 12}:${minute === 0 ? '00' : minute} PM`;
+          this.appointmentTimes.push(time);
+        }
+        else
+        {
+          const time = `${hour}:${minute === 0 ? '00' : minute} PM`;
+          this.appointmentTimes.push(time);
+        }
+        
       }
     }
   }
@@ -56,22 +71,17 @@ export class TimeTableComponent implements OnInit {
   }
 
   toggleSelection(day: Date, time: string) {
-    const dateTime = `${day.toISOString().split('T')[0]}T${time}:00.000Z`;
-    if (this.selectedAppointments[dateTime]) {
-      delete this.selectedAppointments[dateTime];
+    const dateTime = `${day.toISOString().split('T')[0]}T${time}`;
+    if (this.selectedTimes.includes(dateTime)) {
+      this.selectedTimes = this.selectedTimes.filter(time => time !== dateTime);
     } else {
-      this.selectedAppointments[dateTime] = true;
+      this.selectedTimes.push(dateTime);
     }
   }
 
   isSelected(day: Date, time: string) {
-    const dateTime = `${day.toISOString().split('T')[0]}T${time}:00.000Z`;
-    return !!this.selectedAppointments[dateTime];
-  }
-
-  submitAppointments() {
-    // Implement logic to submit selected appointments to your server or process the data as needed
-    console.log(this.selectedAppointments);
+    const dateTime = `${day.toISOString().split('T')[0]}T${time}`;
+    return this.selectedTimes.includes(dateTime);
   }
   
 }

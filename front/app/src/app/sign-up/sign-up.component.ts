@@ -71,4 +71,16 @@ export class SignUpComponent {
       this.router.navigate(['/profile']);
     }
   }
+
+  devCheatNav()
+  {
+    if(this.isStudent)
+    {
+      this.router.navigate(['/appointments', 'student']);
+    }
+    else
+    {
+      this.router.navigate(['/profile']);
+    }
+  }
 }
