@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { SearchComponent } from './search/search.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { ProfileComponent } from './profile/profile.component';
+import { TimeTableComponent } from './time-table/time-table.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     SearchComponent,
     AppointmentsComponent,
-    ProfileComponent
+    ProfileComponent,
+    TimeTableComponent
   ],
   imports: [
     BrowserModule,
