@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Appointment } from '../models/Appointment';
 
 @Component({
   selector: 'app-time-table',
@@ -8,18 +10,22 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TimeTableComponent implements OnInit {
 
   @Input() tableType: number = 0; //0 = view only, 1 = tutor editing, 2 = appointment booking
+  @Input() selectedTimes: string[] = [];
+  @Input() appointments: Appointment[] = [];
 
-  daysInWeek: Date[] = [];
   appointmentTimes: string[] = [];
+  daysInWeek: Date[] = [];
 
-  selectedTimes: string[] = [];
+  selectedAppointments: string[] = [];
 
   constructor() {
 
   }
+
   ngOnInit(): void {
     this.initWeek();
     this.initTimes();
+    this.initGrid();
   }
 
   initWeek() {
@@ -54,6 +60,13 @@ export class TimeTableComponent implements OnInit {
     }
   }
 
+  initGrid() {
+    for(let i = 0; i < this.appointmentTimes.length; i++)
+    {
+
+    }
+  }
+
   previousWeek() {
     this.daysInWeek = this.daysInWeek.map(day => {
       const newDay = new Date(day);
@@ -71,17 +84,56 @@ export class TimeTableComponent implements OnInit {
   }
 
   toggleSelection(day: Date, time: string) {
-    const dateTime = `${day.toISOString().split('T')[0]}T${time}`;
-    if (this.selectedTimes.includes(dateTime)) {
-      this.selectedTimes = this.selectedTimes.filter(time => time !== dateTime);
-    } else {
-      this.selectedTimes.push(dateTime);
+    if(this.tableType === 0) //if view only
+    {
+      return; 
     }
+    else if(this.tableType === 1) //if tutor editing schedule
+    {
+      const dateTime = `${day.toDateString()}.${time}`;
+      if (this.selectedTimes.includes(dateTime)) 
+      {
+        this.selectedTimes = this.selectedTimes.filter(time => time !== dateTime); //remove the time from the array
+      } 
+      else 
+      {
+        this.selectedTimes.push(dateTime);
+      }
+    }
+    else if(this.tableType === 2) //if student booking an appointment
+    {
+      const dateTime = `${day.toDateString()}.${time}`;
+      if(this.selectedTimes.includes(dateTime)) //if time is in tutor schedule
+      {
+        if (this.selectedAppointments.includes(dateTime)) 
+        {
+          this.selectedAppointments = this.selectedAppointments.filter(time => time !== dateTime); //remove the time from the array
+        } 
+        else 
+        {
+          this.selectedAppointments.push(dateTime);
+        }
+      }  
+    }   
   }
 
-  isSelected(day: Date, time: string) {
-    const dateTime = `${day.toISOString().split('T')[0]}T${time}`;
+  isSelected(day: Date, time: string) { //if time is in tutor schedule
+    const dateTime = `${day.toDateString()}.${time}`;
     return this.selectedTimes.includes(dateTime);
   }
+
+  hasAppointment(day: Date, time: string) { //if slot has an existing appointment
+    const dateTime = `${day.toDateString()}.${time}`;
+    return this.appointments.some(appointment => appointment.time === dateTime);
+  }
+
+  isStudentSelected(day: Date, time: string) { //if current student has selected this appointment to book
+    const dateTime = `${day.toDateString()}.${time}`;
+    return this.selectedAppointments.includes(dateTime);
+  }
   
+  isInPast(day: Date) { //if time is in the past
+    const today = new Date();
+    return day < today;
+  }
 }

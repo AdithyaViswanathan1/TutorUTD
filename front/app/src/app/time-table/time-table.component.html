@@ -19,7 +19,14 @@
             <tr *ngFor="let time of appointmentTimes">
                 <th class="time-block">{{ time }}</th>
                 <td *ngFor="let day of daysInWeek" style="height: 16px; padding: 0">
-                    <div class="time-slot" [class.selected]="isSelected(day, time)" (click)="toggleSelection(day, time)"></div>
+                    <div class="time-slot" 
+                        [class.selected]="isSelected(day, time)" 
+                        [class.booked-tutor]="hasAppointment(day, time) && tableType == 1"
+                        [class.booked-student]="hasAppointment(day, time) && (tableType == 2 || tableType == 0)"
+                        [class.student-selected]="isStudentSelected(day, time) && tableType == 2"
+                        [class.disabled]="tableType == 0 || isInPast(day)"
+                        (click)="toggleSelection(day, time)">
+                    </div>
                 </td>
             </tr>
         </tbody>
