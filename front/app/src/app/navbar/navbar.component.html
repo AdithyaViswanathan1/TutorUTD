@@ -1,23 +1,22 @@
-<div class="navbar navbar-text" *ngIf="user === 0">
-    <nav>
-        <label class="logo">Online Tutor App</label>
-    </nav>
-</div>
-<div class="navbar navbar-text" *ngIf="user === 1">
-    <nav>
-        <label class="logo">Online Tutor App</label>
-            <ul>
-                <li><a href="#">Search</a></li>
-                <li><a href="#">Appointments</a></li>
-            </ul>
-    </nav>
-</div>
-<div class="navbar navbar-text" *ngIf="user === 2">
-    <nav>
-        <label class="logo">Online Tutor App</label>
-            <ul>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Appointments</a></li>
-            </ul>
-    </nav>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-container-navbar">
+            <img src="assets/images/navbarlogo.png" alt="navbar logo">
+            <label class="logo">Online Tutor App</label>
+        </div>
+        <ul *ngIf="user === 1">
+            <li><a href="#">Search</a></li>
+            <li><a href="#">Appointments</a></li>
+        </ul>
+        <ul *ngIf="user === 2">
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Appointments</a></li>
+        </ul>
+    </div>
+</body>
+</html>
