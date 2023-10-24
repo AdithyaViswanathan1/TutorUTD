@@ -1,0 +1,73 @@
+.page-container
+{
+    display: flex;
+    justify-content: center;
+    width: 95%;
+    flex-direction: column;
+}
+
+table
+{
+    border-collapse: collapse;
+    background-color: var(--defaultGrey);
+    border: 1px solid black;
+}
+
+th, td
+{
+    border: 1px solid black;
+    background-color: var(--utdOrange);
+}
+
+td
+{
+    background-color: rgb(191, 191, 191);
+}
+
+.date
+{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.time-block
+{
+    font-size: 11px;
+    text-align: center;
+}
+
+
+.time-slot {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    font-size: 1px;
+    color: rgb(191, 191, 191);
+  }
+
+.selected
+{
+    background-color: green;
+}
+
+.booked-tutor
+{
+    background-color: red;
+}
+
+.booked-student
+{
+    background-color: red;
+    pointer-events: none;
+}
+
+.disabled
+{
+    pointer-events: none;
+}
+
+.student-selected
+{
+    background-color: gold;
+}

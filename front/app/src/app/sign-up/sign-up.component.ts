@@ -68,7 +68,19 @@ export class SignUpComponent {
     }
     else
     {
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/profile/0']); //TODO: grab created id
+    }
+  }
+
+  devCheatNav()
+  {
+    if(this.isStudent)
+    {
+      this.router.navigate(['/appointments', 'student']);
+    }
+    else
+    {
+      this.router.navigate(['/profile/0']);
     }
   }
 }

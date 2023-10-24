@@ -12,7 +12,6 @@ export class NavbarComponent implements OnChanges{
     @Input() user: number = 0; //0 = not logged in, 1 = student, 2 = teacher
     
     ngOnChanges(changes: SimpleChanges): void {
-        throw new Error("Method not implemented.");
     }
     
 }

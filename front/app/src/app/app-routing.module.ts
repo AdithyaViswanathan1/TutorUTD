@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'login/:userType', component: LoginComponent},
   {path: 'signup/:userType', component: SignUpComponent},
-  {path: 'profile', component: ProfileComponent},
+  {path: 'profile/:tutorId', component: ProfileComponent},
   {path: 'appointments/:userType', component: AppointmentsComponent},
   {path: 'search', component: SearchComponent},
   {path: 'search/:tutorName', component: SearchComponent},
