@@ -44,6 +44,7 @@ SECRET_KEY = get_secret('SECRET_KEY')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME': get_secret("DB_NAME"),
         'USER': get_secret('DB_USER'),
         'PASSWORD': get_secret('DB_PW'),
         'HOST': get_secret('DB_HOST'),
