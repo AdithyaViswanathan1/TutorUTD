@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { SignUpRequest } from '../models/SignUpRequest';
+import { StudentSignupRequest } from '../models/StudentSignupRequest';
+import { TutorSignupRequest } from '../models/TutorSignupRequest';
 
 @Component({
   selector: 'app-sign-up',
@@ -62,38 +64,32 @@ export class SignUpComponent {
       this.noMatch = false;
     }
 
-
-    //call login service for user
+    //call auth service for user
     if(this.isStudent)
     {
-      let user : SignUpRequest = {
+      let request : StudentSignupRequest = {
         email: this.email,
         password: this.password,
         firstName: this.fName,
         lastName: this.lName,
-        isStudent: true
-      }
+      };
 
-      this.authenticationService.studentSignUp(user);
+      this.authenticationService.studentSignup(request).subscribe(id => {
+        this.router.navigate(['/appointments', 'student', id]);
+      });
     }
     else
     {
-      let user : SignUpRequest = {
+      let request : TutorSignupRequest = {
         email: this.email,
         password: this.password,
         firstName: this.fName,
         lastName: this.lName,
-        isStudent: false
-      }
-    }
+      };
 
-    if(this.isStudent)
-    {
-      this.router.navigate(['/appointments', 'student']);
-    }
-    else
-    {
-      this.router.navigate(['/profile/0']); //TODO: grab created id
+      this.authenticationService.tutorSignUp(request).subscribe(id => {
+        this.router.navigate(['/profile', id]);
+      });
     }
   }
 
@@ -101,7 +97,7 @@ export class SignUpComponent {
   {
     if(this.isStudent)
     {
-      this.router.navigate(['/appointments', 'student']);
+      this.router.navigate(['/appointments', 'student', 0]);
     }
     else
     {

@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'login/:userType', component: LoginComponent},
   {path: 'signup/:userType', component: SignUpComponent},
   {path: 'profile/:tutorId', component: ProfileComponent},
-  {path: 'appointments/:userType', component: AppointmentsComponent},
+  {path: 'appointments/:userType/:id', component: AppointmentsComponent},
   {path: 'search', component: SearchComponent},
   {path: 'search/:tutorName', component: SearchComponent},
   {path: 'search/:tutorName/:subject', component: SearchComponent},

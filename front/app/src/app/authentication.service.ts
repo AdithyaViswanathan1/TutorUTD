@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { httpManager } from './httpManager';
-import { SignUpRequest } from './models/SignUpRequest';
+import { StudentLoginRequest } from './models/StudentLoginRequest';
+import { Observable } from 'rxjs';
+import { TutorLoginRequest } from './models/TutorLoginRequest';
+import { StudentSignupRequest } from './models/StudentSignupRequest';
+import { TutorSignupRequest } from './models/TutorSignupRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +16,28 @@ export class AuthenticationService {
     this.manager = httpManager;
   }
 
-  studentSignUp(user: SignUpRequest): boolean 
+  studentSignup(user: StudentSignupRequest): Observable<number>
   {
-    this.manager.signUp(user);   
-    return true;
+    let result = this.manager.studentSignup(user);   
+    return result;
   }
 
-  tutorSignUp(user: SignUpRequest): boolean
+  tutorSignUp(user: TutorSignupRequest): Observable<number>
   {
-    this.manager.signUp(user);
-    return true;
+    let result = this.manager.tutorSignup(user);
+    return result;
+  }
+
+  studentLogin(request : StudentLoginRequest) : Observable<number>
+  {
+    let result = this.manager.studentLogin(request);
+    return result;
+  }
+
+  tutorLogin(request : TutorLoginRequest) : Observable<number>
+  {
+    let result = this.manager.tutorLogin(request);
+    return result;
   }
 
 }
