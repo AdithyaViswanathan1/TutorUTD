@@ -47,7 +47,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         password_validation.validate_password(value)
         return value
 
-
 '''
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:

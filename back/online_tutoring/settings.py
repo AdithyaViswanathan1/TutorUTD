@@ -43,7 +43,7 @@ def get_secret(setting, secrets=secrets):
 SECRET_KEY = get_secret('SECRET_KEY')
 
 DATABASES = {
-    #just for baby testing, delete later
+    #just for testing, delete later
     #'default': {
     #    'ENGINE': 'django.db.backends.sqlite3',
     #    'NAME': 'mydatabase',
