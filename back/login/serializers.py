@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.models import BaseUserManager
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
-from . import models
+#from . import models
 #from student import models as StudentModel
 #from tutor import models as TutorModel
 
@@ -24,7 +24,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
     
     def get_auth_token(self, obj):
-        token = Token.objects.create(user=obj)
+        token, created = Token.objects.get_or_create(user=obj)
         return token.key
 
 

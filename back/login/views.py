@@ -24,7 +24,7 @@ def create_user_account(email, password, first_name="", last_name="", **extra_fi
         password=password, 
         first_name=first_name,
         last_name=last_name, 
-        #user_type=user_type
+        #user_type=user_type,
         **extra_fields)
     return user
 
@@ -58,12 +58,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
     
-    '''
-    @action(methods=['POST',], detail=False)
-    def student_register(self, request):
-        serializer = self.get_serializer(data=request.data)
-    '''
-    
     @action(methods=['POST',], detail=False)
     def logout(self, request):
         if request.user.is_authenticated:
@@ -71,7 +65,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             request.user.auth_token.delete()
             data = {'success': 'Sucessfully logged out'}
             return Response(data=data, status=status.HTTP_200_OK)
-        return Response('')
+        return Response('No one is logged in to logout')
     
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):
