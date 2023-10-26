@@ -17,6 +17,7 @@ import os
 import pymysql 
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
+from django.conf.global_settings import LOGIN_REDIRECT_URL, AUTH_USER_MODEL
 
 pymysql.install_as_MySQLdb()
 
@@ -42,6 +43,11 @@ def get_secret(setting, secrets=secrets):
 SECRET_KEY = get_secret('SECRET_KEY')
 
 DATABASES = {
+    #just for testing, delete later
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': 'mydatabase',
+    
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': get_secret("DB_NAME"),
@@ -61,13 +67,18 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sessions',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'login',
     'student',
     'tutor',
-    'rest_framework'
+    'rest_framework',
+    
+    #new!! delete later?
+    #'corsheaders',  #accept request from other origins
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
@@ -75,10 +86,17 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    
+    #new!! delete later?
+     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
-MIDDLEWARE = [
+
+MIDDLEWARE = [  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -154,3 +172,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#new!! maybe delete later
+AUTH_USER_MODEL = 'login.CustomUser'  #user database comes from what model.py
+#CORS_ORIGIN_ALLOW_ALL = False   #True --> all origins accepted; False --> on a list
+#CORS_ORIGIN_WHITELIST = ('http://localhost:8000',)  #list of origins authorized to make cross-site HTTPS requests

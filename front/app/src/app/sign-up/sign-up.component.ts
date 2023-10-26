@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
+import { SignUpRequest } from '../models/SignUpRequest';
+import { StudentSignupRequest } from '../models/StudentSignupRequest';
+import { TutorSignupRequest } from '../models/TutorSignupRequest';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +26,8 @@ export class SignUpComponent {
 
   constructor(
     private route : ActivatedRoute,
-    private router : Router) {
+    private router : Router,
+    private authenticationService: AuthenticationService) {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
@@ -59,16 +64,44 @@ export class SignUpComponent {
       this.noMatch = false;
     }
 
-    // submit form
-    console.log('submit form');
-
+    //call auth service for user
     if(this.isStudent)
     {
-      this.router.navigate(['/appointments', 'student']);
+      let request : StudentSignupRequest = {
+        email: this.email,
+        password: this.password,
+        firstName: this.fName,
+        lastName: this.lName,
+      };
+
+      this.authenticationService.studentSignup(request).subscribe(id => {
+        this.router.navigate(['/appointments', 'student', id]);
+      });
     }
     else
     {
-      this.router.navigate(['/profile']);
+      let request : TutorSignupRequest = {
+        email: this.email,
+        password: this.password,
+        firstName: this.fName,
+        lastName: this.lName,
+      };
+
+      this.authenticationService.tutorSignUp(request).subscribe(id => {
+        this.router.navigate(['/profile', id]);
+      });
+    }
+  }
+
+  devCheatNav()
+  {
+    if(this.isStudent)
+    {
+      this.router.navigate(['/appointments', 'student', 0]);
+    }
+    else
+    {
+      this.router.navigate(['/profile/0']);
     }
   }
 }
