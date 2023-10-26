@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Course } from '../models/Course';
 import { Appointment } from '../models/Appointment';
 
 @Component({
@@ -13,10 +12,9 @@ import { Appointment } from '../models/Appointment';
 export class ProfileComponent implements OnInit {
 
   tutorId: number = 0;
-  firstName: string = '';
-  lastName: string = '';
+  fullName: string = '';
   profilePicture: File = new File([], ''); //make a default image
-  courses: Course[] = [];
+  courses: string[] = [];
   appointments: Appointment[] = [];
   tutorSchedule: string[] = [];
 
@@ -33,8 +31,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this._subs.add(this.profileService.getTutorProfile(this.tutorId).subscribe(tutor => {
-      this.firstName = tutor.firstName;
-      this.lastName = tutor.lastName;
+      this.fullName = tutor.fullName;
       if(tutor.profilePicture){
         this.profilePicture = tutor.profilePicture;
       }

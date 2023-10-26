@@ -3,7 +3,7 @@ import { Appointment } from "./Appointment";
 export interface Student
 {
     studentId: number;
-    firstName: string;
-    lastName: string;
+    fullName: string;
+    totalHours: number;
     appointments?: Appointment[];
 }

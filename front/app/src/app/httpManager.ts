@@ -55,22 +55,14 @@ export class httpManager {
 
     dummyTutor : Tutor = {
         tutorId: 0,
-        firstName: 'John',
-        lastName: 'Smith',
+        fullName: 'John Smith',
         courses: [
-          {
-            classPrefix: 'MATH',
-            classNumber: 3163
-          },
-          {
-            classPrefix: 'CS',
-            classNumber: 4485
-          },
-          {
-            classPrefix: 'CS',
-            classNumber: 3377
-          }
+          'MATH 3163',
+          'CS 4485',
+          'CS 3377'
         ],
+        totalHours: 20,
+        available: true,
         appointments: [
           {
             appointmentId: 0,
