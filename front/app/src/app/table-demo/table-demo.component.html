@@ -1,0 +1,15 @@
+<div class="page-container">
+    <div class="header-text mb-3">Time Table Demo</div>
+    <div class="subheader-text mb-2">The time table component has 3 modes depending where it is used, which is controlled by an input variable</div>
+    <div class="subheader-text mb-5">Past dates and the current day cannot be selected in all cases</div>
+    <div class="body-test-mb-1">0: View only</div>
+    <div class="body-test-mb-2">No selection allowed</div>
+    <app-time-table class="mb-5" [tableType]=0 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <div class="body-test-mb-2">1: Tutor edit schedule</div>
+    <div class="body-test-mb-2">Can select any tile to toggle it as being in the tutor's schedule</div>
+    <div class="body-test-mb-2">Deselecting an already booked slot will trigger a warning to be confirmed before saving</div>
+    <app-time-table class="mb-5" [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <div class="body-test-mb-2">2: Student appointment booking</div>
+    <div class="body-test-mb-2">Can select only green tiles that are on the schedule and not already booked</div>
+    <app-time-table class="mb-5" [tableType]=2 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+</div>
