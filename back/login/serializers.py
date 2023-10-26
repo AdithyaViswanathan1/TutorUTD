@@ -2,9 +2,6 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.models import BaseUserManager
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
-#from . import models
-#from student import models as StudentModel
-#from tutor import models as TutorModel
 
 
 User = get_user_model()
@@ -20,8 +17,8 @@ class AuthUserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'auth_token')
-        read_only_fields = ('id',)
+        fields = ('id', 'email', 'first_name', 'last_name', 'user_type', 'auth_token')
+        read_only_fields = ('id', 'user_type',)
     
     def get_auth_token(self, obj):
         token, created = Token.objects.get_or_create(user=obj)
@@ -35,7 +32,7 @@ class EmptySerializer(serializers.Serializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'first_name', 'last_name')
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'user_type')
 
     def validate_email(self, value):
         user = User.objects.filter(email=value)
@@ -47,34 +44,29 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         password_validation.validate_password(value)
         return value
 
-'''
+
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'user_type')
+        fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
-        def validate_email(self, value):
-            user = User.objects.filter(email=value)
-            if user:
-                raise serializers.ValidateError('Email already in use.')
-            return BaseUserManager.normalize_email(value)
-        
-        def validate_password(self, value):
-            password_validation.validate_password(value)
-            return value
+        def create(self, validated_data):
+            user = CustomUser(
+                email=validated_data('email'),
+            )
+            user.set_password(validated_data('password'))
+            user.save()
+            return user
         
 class TutorRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'user_type')
+        fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
-        def validate_email(self, value):
-            user = User.objects.filter(email=value)
-            if user:
-                raise serializers.ValidateError('Email already in use.')
-            return BaseUserManager.normalize_email(value)
-        
-        def validate_password(self, value):
-            password_validation.validate_password(value)
-            return value
-'''
+        def create(self, validated_data):
+            user = CustomUser(
+                email=validated_data('email'),
+            )
+            user.set_password(validated_data('password'))
+            user.save()
+            return user

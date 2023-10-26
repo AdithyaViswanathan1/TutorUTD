@@ -7,37 +7,60 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from . import serializers
+from .serializers import StudentRegisterSerializer, TutorRegisterSerializer
 from rest_framework.generics import CreateAPIView
+
+from tutor.models import Tutor
+from student.models import Student
 
 User = get_user_model()
 
-"""HELPER FUNCTIONS"""
+#HELPER FUNCTIONS
 def get_and_authenticate_user(email, password):
     user = authenticate(username=email, password=password)
     if user is None:
         raise serial.ValidationError("Invalid username/password.")
     return user
 
-def create_user_account(email, password, first_name="", last_name="", **extra_fields): #user_type="", **extra_fields):
+def create_user_account(email, password, first_name="", last_name="", user_type="", **extra_fields):
     user = get_user_model().objects.create_user(
         email=email, 
         password=password, 
         first_name=first_name,
         last_name=last_name, 
-        #user_type=user_type,
-        **extra_fields)
+        user_type=user_type,
+        **extra_fields
+    )
+    
+    #insert information into the student/tutor database
+    #FIXME: no such table error
+    '''
+    if user_type=='student':
+        Student.objects.create(
+            email=email,
+            password=password,
+            full_name=first_name + ' ' + last_name,
+        )
+    elif user_type=='tutor':
+        Tutor.objects.create(
+            email=email,
+            password=password,
+            full_name=first_name + ' ' + last_name,
+        )
+    '''
+        
     return user
 
 
-"""AUTHENTICATION, LOGIN, REGISTER, LOGOUT FUNCTIONS"""
+#AUTHENTICATION, LOGIN, REGISTER, LOGOUT FUNCTIONS
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
     serializer_class = serializers.EmptySerializer
     serializer_classes = {
         'login': serializers.UserLoginSerializer,
-        'register': serializers.UserRegisterSerializer,
-        #'tutor_register': serializers.TutorRegisterSerializer,
-        #'student_register': serializers.StudentRegisterSerializer,
+        #'register': serializers.UserRegisterSerializer,
+        'student_register': serializers.StudentRegisterSerializer,
+        'tutor_register': serializers.TutorRegisterSerializer,
     }
     queryset = ''
 
@@ -49,7 +72,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
     
-    
+    '''
+    #delete later
     @action(methods=['POST',], detail=False)
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -57,6 +81,24 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = create_user_account(**serializer.validated_data)
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
+    '''
+    
+    @action(methods=['POST',], detail=False)
+    def student_register(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = create_user_account(**serializer.validated_data, user_type='student')
+        data = serializers.AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
+    
+    @action(methods=['POST',], detail=False)
+    def tutor_register(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = create_user_account(**serializer.validated_data, user_type='tutor')
+        data = serializers.AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
+    
     
     @action(methods=['POST',], detail=False)
     def logout(self, request):
@@ -65,8 +107,9 @@ class AuthViewSet(viewsets.GenericViewSet):
             request.user.auth_token.delete()
             data = {'success': 'Sucessfully logged out'}
             return Response(data=data, status=status.HTTP_200_OK)
-        return Response('No one is logged in to logout')
-    
+        return Response('Logged Out')
+
+
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):
             raise ImproperlyConfigured("serializer_classes should be a dict mapping.")
