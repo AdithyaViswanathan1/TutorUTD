@@ -33,6 +33,10 @@ export class LandingPageComponent {
       this.router.navigate(['/signup', 'tutor']);
     }
   }
+
+  toDemoPage() {
+    this.router.navigate(['/demo']);
+  }
 }
 
 
