@@ -19,6 +19,10 @@ export class ProfileComponent implements OnInit {
   courses: Course[] = [];
   appointments: Appointment[] = [];
   tutorSchedule: string[] = [];
+  classPrefix: string = '';
+  classNumber: string = '';
+  isEditing: boolean = false;
+  biography: string = '___________________'
 
   private _subs : Subscription = new Subscription();
 
@@ -50,6 +54,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnDestroy(): void {
     this._subs.unsubscribe();
+  }
+
+  addCourse(){ //TODO: add checking to ensure fields are valid
+    const newCourse: Course = {
+      classPrefix: this.classPrefix,
+      classNumber: parseInt(this.classNumber)
+    };
+
+    this.courses.push(newCourse);
+
+    this.classPrefix = '';
+    this.classNumber = '';
   }
 
 }
