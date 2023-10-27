@@ -23,31 +23,33 @@ def get_and_authenticate_user(email, password):
     return user
 
 def create_user_account(email, password, first_name="", last_name="", user_type="", **extra_fields):
-    user = get_user_model().objects.create_user(
-        email=email, 
-        password=password, 
-        first_name=first_name,
-        last_name=last_name, 
-        user_type=user_type,
-        **extra_fields
-    )
+    # user = get_user_model().objects.create_user(
+    #     email=email, 
+    #     password=password, 
+    #     first_name=first_name,
+    #     last_name=last_name, 
+    #     user_type=user_type,
+    #     **extra_fields
+    # )
     
     #insert information into the student/tutor database
     #FIXME: no such table error
-    '''
+    
     if user_type=='student':
-        Student.objects.create(
+        user = Student(
             email=email,
             password=password,
             full_name=first_name + ' ' + last_name,
         )
+        user.save()
     elif user_type=='tutor':
-        Tutor.objects.create(
+        user = Tutor(
             email=email,
             password=password,
             full_name=first_name + ' ' + last_name,
         )
-    '''
+        user.save()
+    
         
     return user
 
