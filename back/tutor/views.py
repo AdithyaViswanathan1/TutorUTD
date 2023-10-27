@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Tutor
 
 def say_hello(request):
-    return HttpResponse('Hello world! This is the login endpoint.')
+    return HttpResponse('Hello world! This is the tutor endpoint.')
 
 # run command "python3 manage.py makemigrations" to execute this sql query
 # query to add tutor
@@ -14,12 +14,12 @@ def say_hello(request):
 # test.save()
 
 # RAW SQL COMMAND EXAMPLE (SELECT)
-for p in Tutor.objects.raw("SELECT * FROM tutor"):
-    print("tutor::",p.full_name,p.email)
+# for p in Tutor.objects.raw("SELECT * FROM tutor"):
+#     print("tutor::",p.full_name,p.email)
 
-#UPDATE COMMAND EXAMPLE'
-query = 'update tutor set full_name="adith" WHERE full_name="adit";'
-Tutor.objects.raw(query)
+# #UPDATE COMMAND EXAMPLE'
+# query = 'update tutor set full_name="adith" WHERE full_name="adit";'
+# Tutor.objects.raw(query)
 
-for p in Tutor.objects.raw("SELECT * FROM tutor"):
-    print("tutor::",p.full_name,p.email)
+# for p in Tutor.objects.raw("SELECT * FROM tutor"):
+#     print("tutor::",p.full_name,p.email)

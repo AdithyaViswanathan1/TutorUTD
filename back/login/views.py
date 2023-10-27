@@ -29,25 +29,18 @@ def create_user_account(email, password, first_name="", last_name="", user_type=
         first_name=first_name,
         last_name=last_name, 
         user_type=user_type,
-        **extra_fields
     )
     
     #insert information into the student/tutor database
     #FIXME: no such table error
-    '''
     if user_type=='student':
         Student.objects.create(
             email=email,
-            password=password,
-            full_name=first_name + ' ' + last_name,
         )
     elif user_type=='tutor':
         Tutor.objects.create(
             email=email,
-            password=password,
-            full_name=first_name + ' ' + last_name,
         )
-    '''
         
     return user
 

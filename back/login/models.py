@@ -11,12 +11,12 @@ class UserManager(BaseUserManager):
 
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     username = None
-    email = models.EmailField('email address', max_length=100, unique=True)
-    first_name = models.CharField('First Name', max_length=255, blank=True, null=False)
-    last_name = models.CharField('Last Name', max_length=255, blank=True, null=False)
-    password = models.CharField('Password', max_length=100, blank=True, null=False)
+    email = models.EmailField(verbose_name='email address', max_length=100, unique=True)
+    first_name = models.CharField(verbose_name='First Name', max_length=255, blank=True, null=False)
+    last_name = models.CharField(verbose_name='Last Name', max_length=255, blank=True, null=False)
+    password = models.CharField(verbose_name='Password', max_length=100, blank=True, null=False)
     
     #to discern if the user is a student or tutor
     USER_TYPE_CHOICES = (('student', 'Student'), ('tutor', 'Tutor'))

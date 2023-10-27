@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.models import BaseUserManager
+from .models import User
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 
 
-User = get_user_model()
+user = get_user_model()
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -31,7 +32,7 @@ class EmptySerializer(serializers.Serializer):
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = user
         fields = ('id', 'email', 'password', 'first_name', 'last_name', 'user_type')
 
     def validate_email(self, value):
@@ -47,11 +48,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = user
         fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
         def create(self, validated_data):
-            user = CustomUser(
+            user = User(
                 email=validated_data('email'),
             )
             user.set_password(validated_data('password'))
@@ -60,11 +61,11 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         
 class TutorRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = user
         fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
         def create(self, validated_data):
-            user = CustomUser(
+            user = User(
                 email=validated_data('email'),
             )
             user.set_password(validated_data('password'))

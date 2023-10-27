@@ -14,5 +14,5 @@ class Tutor(models.Model):
     background_checked = models.IntegerField(blank=True, null=True)
     available = models.IntegerField(blank=True, null=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tutor'
