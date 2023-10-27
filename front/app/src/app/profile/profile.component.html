@@ -4,11 +4,11 @@
         <div class="user-container">
             <img src="assets/images/default.jpg" alt="profile image">
             <div style="font-size: 24px;">
-                <div style="margin-bottom: 3rem">Name: {{firstName}} {{lastName}}</div>
+                <div style="margin-bottom: 3rem">Name: {{fullName}}</div>
                 <div style="margin-bottom: 3rem">
                     Subjects:
                     <ng-container *ngFor="let course of courses">
-                        {{course.classPrefix}} {{course.classNumber}}&nbsp;&nbsp;
+                        {{course}}&nbsp;&nbsp;
                     </ng-container>
                 </div>
                 <div>Bio: {{biography}}</div>
@@ -30,7 +30,7 @@
                     <div class="row">
                         <div *ngFor="let course of courses" class="col-md-3 mb-3">
                         <div style="border: 1px solid #ccc; padding: 10px;">
-                            {{course.classPrefix}} {{course.classNumber}}
+                            {{course}}
                         </div>
                         </div>
                     </div>

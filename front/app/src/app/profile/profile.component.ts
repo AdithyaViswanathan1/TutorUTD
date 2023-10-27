@@ -53,16 +53,13 @@ export class ProfileComponent implements OnInit {
     this._subs.unsubscribe();
   }
 
-  addCourse(){ //TODO: add checking to ensure fields are valid
-    const newCourse: Course = {
-      classPrefix: this.classPrefix,
-      classNumber: parseInt(this.classNumber)
-    };
-
-    this.courses.push(newCourse);
-
-    this.classPrefix = '';
-    this.classNumber = '';
-  }
-
+  addCourse() {
+    if (this.classPrefix && this.classNumber) {
+        const courseString = this.classPrefix + this.classNumber;
+        this.courses.push(courseString);
+        
+        this.classPrefix = '';
+        this.classNumber = '';
+    }
+}
 }
