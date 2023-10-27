@@ -71,10 +71,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'login',
     'student',
     'tutor',
-    'rest_framework',
     
     #new!! delete later?
     #'corsheaders',  #accept request from other origins

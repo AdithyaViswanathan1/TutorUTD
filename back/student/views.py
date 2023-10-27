@@ -1,5 +1,18 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
+from .models import Student
+from .serializers import StudentSerializer
 
-def say_hello(request):
-    return HttpResponse('Hello world! This is the student endpoint.')
+class StudentViewSet(ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    
+
+    @action(methods=['POST'], detail=False)
+    def add_hours(self, request):
+        pass
+    
+    @action(methods=['POST',], detail=False)
+    def make_appointment(self, request):
+        pass

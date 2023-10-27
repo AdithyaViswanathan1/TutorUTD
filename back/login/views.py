@@ -31,15 +31,20 @@ def create_user_account(email, password, first_name="", last_name="", user_type=
         user_type=user_type,
     )
     
-    #insert information into the student/tutor database
-    #FIXME: no such table error
+    full_name = first_name + ' ' + last_name
     if user_type=='student':
         Student.objects.create(
             email=email,
+            full_name=full_name,
+            password=password,
         )
     elif user_type=='tutor':
         Tutor.objects.create(
             email=email,
+            full_name=full_name,
+            password=password,
+            total_hours=0,
+            background_checked=False,
         )
         
     return user
@@ -64,17 +69,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = get_and_authenticate_user(**serializer.validated_data)
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
-    
-    '''
-    #delete later
-    @action(methods=['POST',], detail=False)
-    def register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = create_user_account(**serializer.validated_data)
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
-    '''
     
     @action(methods=['POST',], detail=False)
     def student_register(self, request):

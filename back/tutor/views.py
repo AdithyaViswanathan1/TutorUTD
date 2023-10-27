@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework.viewsets import ModelViewSet
 from .models import Tutor
+from .serializers import TutorSerializer
 
-def say_hello(request):
-    return HttpResponse('Hello world! This is the tutor endpoint.')
+class TutorViewSet(ModelViewSet):
+    queryset = Tutor.objects.all()
+    serializer_class = TutorSerializer
+
 
 # run command "python3 manage.py makemigrations" to execute this sql query
 # query to add tutor
@@ -23,3 +27,5 @@ def say_hello(request):
 
 # for p in Tutor.objects.raw("SELECT * FROM tutor"):
 #     print("tutor::",p.full_name,p.email)
+
+
