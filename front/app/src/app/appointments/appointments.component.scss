@@ -1,0 +1,62 @@
+.page-container
+{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 5rem;
+}
+
+.apt-container
+{
+    display: flex;
+    flex-direction: column;
+    min-width: 50%;
+}
+
+.apt-card
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.apt-description
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.cancel-button
+{
+    background-color: red;
+    border-radius: 1px;
+    color: white;
+    cursor: pointer;
+    height: 50px;
+    width: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-profile-button
+{
+    background-color: var(--fadedText);
+    border-radius: 1px;
+    color: black;
+    cursor: pointer;
+    height: 50px;
+    width: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+hr
+{
+    width: 600px;
+    border: 1px solid #000;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
