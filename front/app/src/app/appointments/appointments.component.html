@@ -1,11 +1,14 @@
 <app-navbar [user]="userTypeInt"></app-navbar>
+<app-cancel-confirmation *ngIf="showCancelConfirmation" 
+    [appointment]="cancelApt" [userType]="userType"
+    (close)="closeModal()" (cancel)="cancelAppointment($event)"></app-cancel-confirmation>
 <div class="page-container my-3">
-    <div class="header-text">Appointments</div>
+    <div class="header-text mb-3">Appointments</div>
     <div class="apt-container">
         <div *ngFor="let apt of appointments">
             <div class="apt-card mb-2">
                 <div class="apt-description">
-                    <div>{{apt.time}}</div>
+                    <div>{{apt.time.split('.')[0]}}, {{apt.time.split('.')[1]}}</div>
                     <div class="d-flex flex-row">
                         <div *ngIf="userType == 'student'">{{apt.tutorName}}&emsp;</div>
                         <div *ngIf="userType == 'tutor'">{{apt.studentName}}&emsp;</div>
@@ -14,10 +17,12 @@
                     </div>      
                 </div>
                 <div class="d-flex flex-row">
-
+                    <div *ngIf="userType == 'student'" class="view-profile-button" (click)="toTutorProfile(apt.tutorId)">View Profile</div>
+                    <div class="cancel-button" (click)="showModal(apt.appointmentId)">Cancel</div>
                 </div>
             </div>
+            <hr>
         </div>
     </div>
-
+    <app-time-table [tableType]=0 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
 </div>

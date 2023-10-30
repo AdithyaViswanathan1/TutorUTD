@@ -17,6 +17,17 @@ export class AppointmentsComponent implements OnInit{
   userType: string = '';
   userTypeInt: number = 0;
 
+  showCancelConfirmation: boolean = false;
+  cancelId: number = -1;
+  cancelApt: Appointment = {
+    appointmentId: -1,
+    tutorId: -1,
+    studentId: -1,
+    tutorName: '',
+    studentName: '',
+    time: ''
+  };
+
   private _subs : Subscription = new Subscription();
 
   constructor(
@@ -55,6 +66,26 @@ export class AppointmentsComponent implements OnInit{
 
   ngOnDestroy(): void {
     this._subs.unsubscribe();
+  }
+
+  toTutorProfile(id : number){
+    this.router.navigate(['/profile', id]);
+  }
+
+  showModal(id : number){
+    console.log("showing modal for id: " + id)
+    this.showCancelConfirmation = true;
+    this.cancelId = id;
+    this.cancelApt = this.appointments.find(a => a.appointmentId == id)!;
+  }
+
+  closeModal(){
+    this.showCancelConfirmation = false;
+  }
+
+  cancelAppointment(id : number){
+    console.log("cancelling id: " + id);
+    this.showCancelConfirmation = false;
   }
 
 }
