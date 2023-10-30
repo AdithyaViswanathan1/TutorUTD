@@ -15,6 +15,10 @@ import { SearchComponent } from './search/search.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TimeTableComponent } from './time-table/time-table.component';
+import { CancelConfirmationComponent } from './modals/cancel-confirmation/cancel-confirmation.component';
+import { BookSessionComponent } from './modals/book-session/book-session.component';
+import { BookingConfirmationComponent } from './modals/booking-confirmation/booking-confirmation.component';
+import { DeselectWarningComponent } from './modals/deselect-warning/deselect-warning.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { TimeTableComponent } from './time-table/time-table.component';
     SearchComponent,
     AppointmentsComponent,
     ProfileComponent,
-    TimeTableComponent
+    TimeTableComponent,
+    CancelConfirmationComponent,
+    BookSessionComponent,
+    BookingConfirmationComponent,
+    DeselectWarningComponent
   ],
   imports: [
     BrowserModule,

@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._subs.add(this.profileService.getTutorProfile(this.tutorId).subscribe(tutor => {
+    this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
       this.fullName = tutor.fullName;
       if(tutor.profilePicture){
         this.profilePicture = tutor.profilePicture;
