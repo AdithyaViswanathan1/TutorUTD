@@ -15,7 +15,6 @@ import { SearchComponent } from './search/search.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TimeTableComponent } from './time-table/time-table.component';
-import { TableDemoComponent } from './table-demo/table-demo.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +26,7 @@ import { TableDemoComponent } from './table-demo/table-demo.component';
     SearchComponent,
     AppointmentsComponent,
     ProfileComponent,
-    TimeTableComponent,
-    TableDemoComponent
+    TimeTableComponent
   ],
   imports: [
     BrowserModule,

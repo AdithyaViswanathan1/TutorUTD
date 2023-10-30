@@ -1,4 +1,47 @@
+<app-navbar [user]="2"></app-navbar>
 <div class="page-container">
-    <p>profile works!</p>
+    <div *ngIf="!isEditing">
+        <div class="user-container">
+            <img src="assets/images/default.jpg" alt="profile image">
+            <div style="font-size: 24px;">
+                <div style="margin-bottom: 3rem">Name: {{fullName}}</div>
+                <div style="margin-bottom: 3rem">
+                    Subjects:
+                    <ng-container *ngFor="let course of courses">
+                        {{course}}&nbsp;&nbsp;
+                    </ng-container>
+                </div>
+                <div>Bio: {{biography}}</div>
+            </div>
+        </div>
+        <button style="width: 200px; margin-bottom: 10px" (click)="isEditing = !isEditing">Edit Profile</button>
+    </div>
+    <div *ngIf="isEditing">
+        <div class="user-container">
+            <img src="assets/images/default.jpg" alt="profile image">
+            <div>
+                <b style="font-size: 24px">Classes:</b>
+                <div class="class-list">
+                    <div style="font-size: 20px; margin-bottom: 10px">
+                        Class Prefix: <input type="text" id="classPrefixInput" [(ngModel)]="classPrefix">
+                        Class Number: <input type="text" id="classNumberInput" [(ngModel)]="classNumber">
+                        <button (click)="addCourse()">Add</button>
+                    </div>
+                    <div class="row">
+                        <div *ngFor="let course of courses" class="col-md-3 mb-3">
+                        <div style="border: 1px solid #ccc; padding: 10px;">
+                            {{course}}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <b style="font-size: 24px">Bio:</b>
+                <div>
+                    <p>This is my biography!</p>
+                </div>
+            </div>
+        </div>
+        <button style="width: 200px; margin-bottom: 10px" (click)="isEditing = !isEditing">Done Editing</button>
+    </div>
     <app-time-table [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
 </div>

@@ -32,20 +32,24 @@ def create_user_account(email, password, first_name="", last_name="", user_type=
     )
     
     full_name = first_name + ' ' + last_name
+    #insert information into the student/tutor database
+    
     if user_type=='student':
-        Student.objects.create(
+        user = Student(
             email=email,
             full_name=full_name,
             password=password,
         )
     elif user_type=='tutor':
-        Tutor.objects.create(
+        user = Tutor(
             email=email,
             full_name=full_name,
             password=password,
             total_hours=0,
             background_checked=False,
         )
+        user.save()
+    
         
     return user
 

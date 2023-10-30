@@ -17,6 +17,10 @@ export class ProfileComponent implements OnInit {
   courses: string[] = [];
   appointments: Appointment[] = [];
   tutorSchedule: string[] = [];
+  classPrefix: string = '';
+  classNumber: string = '';
+  isEditing: boolean = false;
+  biography: string = '___________________'
 
   private _subs : Subscription = new Subscription();
 
@@ -49,4 +53,13 @@ export class ProfileComponent implements OnInit {
     this._subs.unsubscribe();
   }
 
+  addCourse() {
+    if (this.classPrefix && this.classNumber) {
+        const courseString = this.classPrefix + this.classNumber;
+        this.courses.push(courseString);
+        
+        this.classPrefix = '';
+        this.classNumber = '';
+    }
+}
 }

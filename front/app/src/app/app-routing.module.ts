@@ -6,7 +6,6 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { SearchComponent } from './search/search.component';
-import { TableDemoComponent } from './table-demo/table-demo.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -20,7 +19,6 @@ const routes: Routes = [
   {path: 'search/:tutorName/:subject/:classNum', component: SearchComponent},
   {path: 'search/:subject', component: SearchComponent},
   {path: 'search/:subject/:classNum', component: SearchComponent},
-  {path: 'demo', component: TableDemoComponent}
 ];
 
 @NgModule({

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
-
+from student.models import Student
+from tutor.models import Tutor
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
