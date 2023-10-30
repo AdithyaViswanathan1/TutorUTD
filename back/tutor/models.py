@@ -16,3 +16,6 @@ class Tutor(models.Model):
     class Meta:
         managed = False
         db_table = 'tutor'
+    
+    def __str__(self):
+        return f'Hi. My name is {self.full_name}. I teach these subjects {self.subject_list}'
