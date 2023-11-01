@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from . import serializers
-from .serializers import StudentRegisterSerializer, TutorRegisterSerializer
+from .serializers import StudentRegisterSerializer, TutorRegisterSerializer, UserLoginSerializer
 from rest_framework.generics import CreateAPIView
 
 from tutor.models import Tutor

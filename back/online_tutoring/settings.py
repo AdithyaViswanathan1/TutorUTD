@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     'login',
     'student',
     'tutor',
-    
+    'appointments',
     #new!! delete later?
     #'corsheaders',  #accept request from other origins
     'rest_framework.authtoken',
