@@ -23,30 +23,30 @@ def get_and_authenticate_user(email, password):
     return user
 
 def create_user_account(email, password, first_name="", last_name="", user_type="", **extra_fields):
-    # user = get_user_model().objects.create_user(
-    #     email=email, 
-    #     password=password, 
-    #     first_name=first_name,
-    #     last_name=last_name, 
-    #     user_type=user_type,
-    #     **extra_fields
-    # )
+    user = get_user_model().objects.create_user(
+        email=email, 
+        password=password, 
+        first_name=first_name,
+        last_name=last_name, 
+        user_type=user_type,
+    )
     
+    full_name = first_name + ' ' + last_name
     #insert information into the student/tutor database
-    #FIXME: no such table error
     
     if user_type=='student':
         user = Student(
             email=email,
+            full_name=full_name,
             password=password,
-            full_name=first_name + ' ' + last_name,
         )
-        user.save()
     elif user_type=='tutor':
         user = Tutor(
             email=email,
+            full_name=full_name,
             password=password,
-            full_name=first_name + ' ' + last_name,
+            total_hours=0,
+            background_checked=False,
         )
         user.save()
     
@@ -73,17 +73,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = get_and_authenticate_user(**serializer.validated_data)
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_200_OK)
-    
-    '''
-    #delete later
-    @action(methods=['POST',], detail=False)
-    def register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = create_user_account(**serializer.validated_data)
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
-    '''
     
     @action(methods=['POST',], detail=False)
     def student_register(self, request):
