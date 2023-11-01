@@ -8,6 +8,7 @@ import { StudentSignupRequest } from './models/StudentSignupRequest';
 import { StudentLoginRequest } from './models/StudentLoginRequest';
 import { Observable, of } from 'rxjs';
 import { Tutor } from './models/Tutor';
+import { Student } from './models/Student';
 
 
 @Injectable({
@@ -37,19 +38,25 @@ export class httpManager {
     studentSignup(user: StudentSignupRequest) : Observable<number>
     {
         //return this.http.post(this.backendUrl, user);
-        return of(0);
+        return of(1);
     }
 
     studentLogin(user: StudentLoginRequest) : Observable<number>
     {
         //return this.http.post(this.backendUrl, user);
-        return of(0);
+        return of(1);
     }
 
-    getTutorProfile(id: number) : Observable<Tutor>
+    getTutor(id: number) : Observable<Tutor>
     {
         //return this.http.get(this.backendUrl + '/' + id);
         return of(this.dummyTutor);
+    }
+
+    getStudent(id: number) : Observable<Student>
+    {
+        //return this.http.get(this.backendUrl + '/' + id);
+        return of(this.dummyStudent);
     }
 
 
@@ -70,7 +77,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: 'Fri Oct 27 2023.11:00 AM',
+            time: "Tue Oct 31 2023.10:30 AM",
             subject: 'CS 3377'
           },
           {
@@ -79,7 +86,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: 'Sat Oct 28 2023.10:30 AM'
+            time: "Wed Nov 01 2023.11:30 AM"
           },
           {
             appointmentId: 2,
@@ -87,7 +94,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: 'Tue Oct 31 2023.11:00 AM',
+            time: "Sat Nov 04 2023.12:00 PM",
             subject: 'MATH 3163'
           }
         ],
@@ -120,5 +127,39 @@ export class httpManager {
           "Sat Nov 04 2023.11:30 AM",
           "Sat Nov 04 2023.12:00 PM",
         ]
-      }
+    }
+
+    dummyStudent : Student = {
+      studentId : 0,
+      fullName : 'Jane Doe',
+      totalHours : 152,
+      appointments : [
+        {
+          appointmentId: 0,
+          studentId: 1,
+          tutorId: 0,
+          tutorName: 'John Smith',
+          studentName: 'Jane Doe',
+          time: "Tue Oct 31 2023.10:30 AM",
+          subject: 'CS 3377'
+        },
+        {
+          appointmentId: 1,
+          studentId: 1,
+          tutorId: 0,
+          tutorName: 'John Smith',
+          studentName: 'Jane Doe',
+          time: "Wed Nov 01 2023.11:30 AM"
+        },
+        {
+          appointmentId: 2,
+          studentId: 1,
+          tutorId: 0,
+          tutorName: 'John Smith',
+          studentName: 'Jane Doe',
+          time: "Sat Nov 04 2023.12:00 PM",
+          subject: 'MATH 3163'
+        }
+      ]
+    }
 }

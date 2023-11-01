@@ -1,0 +1,19 @@
+<div class="modal">
+    <div class="modal-content">
+        <div class="header-text my-3 align-self-center">Cancel Appointment</div>
+        <div class="body-text">This will cancel the following appointment:</div>
+        <div class="apt-description body-text">
+            <div>{{appointment.time.split('.')[0]}}, {{appointment.time.split('.')[1]}}</div>
+            <div class="d-flex flex-row">
+                <div *ngIf="userType == 'student'">{{appointment.tutorName}}&emsp;</div>
+                <div *ngIf="userType == 'tutor'">{{appointment.studentName}}&emsp;</div>
+                <div *ngIf="appointment.subject">Subject: {{appointment.subject}}</div>
+                <div *ngIf="!appointment.subject">Subject: N/A</div>
+            </div>      
+        </div>
+        <div class="button-container mt-4">
+            <div class="return-button" (click)="return()">Return</div>
+            <div class="confirm-button" (click)="confirm()">Confirm</div>
+        </div>
+    </div> 
+</div>

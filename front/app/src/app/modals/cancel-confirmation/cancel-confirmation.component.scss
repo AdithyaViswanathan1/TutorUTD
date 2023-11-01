@@ -1,40 +1,31 @@
-.page-container
-{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin-left: 5rem;
-}
-
-.apt-container
-{
+.apt-description{
     display: flex;
     flex-direction: column;
-    width: 650px;
+    margin-left: 50px;
 }
 
-.apt-card
+.header-text{
+    color: var(--utdOrange);
+}
+
+.button-container
 {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 1rem;
     width: 100%;
+    font-size: 20px;
 }
 
-.apt-description
-{
-    display: flex;
-    flex-direction: column;
-}
-
-.cancel-button
+.confirm-button
 {
     background-color: red;
     border-radius: 1px;
     color: white;
     cursor: pointer;
-    height: 50px;
-    width: 125px;
+    height: 60px;
+    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,25 +33,24 @@
     margin-left: 1rem;
 }
 
-.view-profile-button
+.return-button
 {
     background-color: gainsboro;
     border-radius: 1px;
     color: black;
     cursor: pointer;
-    height: 50px;
-    width: 125px;
+    height: 60px;
+    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
     margin-left: 1rem;
 }
-
-hr
+  
+.body-text
 {
-    width: 650px;
-    border: 1px solid #000;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    font-size: 20px;
 }
+
+ 
