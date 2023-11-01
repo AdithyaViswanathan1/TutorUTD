@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from . import serializers
-from .serializers import StudentRegisterSerializer, TutorRegisterSerializer
+from .serializers import StudentRegisterSerializer, TutorRegisterSerializer, UserLoginSerializer
 from rest_framework.generics import CreateAPIView
 
 from tutor.models import Tutor
@@ -22,7 +22,7 @@ def get_and_authenticate_user(email, password):
         raise serial.ValidationError("Invalid username/password.")
     return user
 
-def create_user_account(email, password, first_name="", last_name="", user_type="", **extra_fields):
+def create_user_account(email, password, first_name, last_name, user_type="", **extra_fields):
     user = get_user_model().objects.create_user(
         email=email, 
         password=password, 
@@ -43,8 +43,7 @@ def create_user_account(email, password, first_name="", last_name="", user_type=
     elif user_type=='tutor':
         user = Tutor(
             email=email,
-            password=password,
-            full_name=first_name + ' ' + last_name,
+            full_name=full_name,
         )
         user.save()
     

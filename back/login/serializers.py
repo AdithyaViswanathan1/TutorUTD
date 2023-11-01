@@ -51,7 +51,7 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
         def create(self, validated_data):
-            user = CustomUser(
+            user = User(
                 email=validated_data('email'),
             )
             user.set_password(validated_data('password'))
@@ -64,7 +64,7 @@ class TutorRegisterSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
         def create(self, validated_data):
-            user = CustomUser(
+            user = User(
                 email=validated_data('email'),
             )
             user.set_password(validated_data('password'))
