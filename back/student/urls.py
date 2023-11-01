@@ -1,7 +1,10 @@
 from django.urls import path
-from . import views
+from rest_framework import routers
+from .views import StudentViewSet
+
+router = routers.DefaultRouter()
+router.register('', StudentViewSet, basename='student')
+
+urlpatterns = router.urls
 
 
-urlpatterns = [
-    path('', views.say_hello)
-]
