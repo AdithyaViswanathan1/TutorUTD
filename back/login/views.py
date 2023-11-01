@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from . import serializers
-from .serializers import StudentRegisterSerializer, TutorRegisterSerializer
+from .serializers import StudentRegisterSerializer, TutorRegisterSerializer, UserLoginSerializer
 from rest_framework.generics import CreateAPIView
 
 from tutor.models import Tutor
@@ -32,13 +32,12 @@ def create_user_account(email, password, first_name="", last_name="", user_type=
     )
     
     full_name = first_name + ' ' + last_name
-    #insert information into the student/tutor database
     
     if user_type=='student':
         user = Student(
-            email=email,
-            full_name=full_name,
-            password=password,
+            email=user,
+            full_name=user,
+            
         )
     elif user_type=='tutor':
         user = Tutor(
@@ -60,7 +59,6 @@ class AuthViewSet(viewsets.GenericViewSet):
     serializer_class = serializers.EmptySerializer
     serializer_classes = {
         'login': serializers.UserLoginSerializer,
-        #'register': serializers.UserRegisterSerializer,
         'student_register': serializers.StudentRegisterSerializer,
         'tutor_register': serializers.TutorRegisterSerializer,
     }
