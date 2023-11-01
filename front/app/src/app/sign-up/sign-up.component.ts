@@ -4,6 +4,7 @@ import { AuthenticationService } from '../authentication.service';
 import { SignUpRequest } from '../models/SignUpRequest';
 import { StudentSignupRequest } from '../models/StudentSignupRequest';
 import { TutorSignupRequest } from '../models/TutorSignupRequest';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-sign-up',
@@ -27,7 +28,8 @@ export class SignUpComponent {
   constructor(
     private route : ActivatedRoute,
     private router : Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private cookieService: CookieService) {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
@@ -75,6 +77,8 @@ export class SignUpComponent {
       };
 
       this.authenticationService.studentSignup(request).subscribe(id => {
+        this.cookieService.set('userId', id.toString());
+        this.cookieService.set('userType', 'student');
         this.router.navigate(['/appointments', 'student', id]);
       });
     }
@@ -88,6 +92,8 @@ export class SignUpComponent {
       };
 
       this.authenticationService.tutorSignUp(request).subscribe(id => {
+        this.cookieService.set('userId', id.toString());
+        this.cookieService.set('userType', 'tutor');
         this.router.navigate(['/profile', id]);
       });
     }
@@ -97,10 +103,14 @@ export class SignUpComponent {
   {
     if(this.isStudent)
     {
+      this.cookieService.set('userId', '1');
+      this.cookieService.set('userType', 'student');
       this.router.navigate(['/appointments', 'student', 0]);
     }
     else
     {
+      this.cookieService.set('userId', '0');
+      this.cookieService.set('userType', 'tutor');
       this.router.navigate(['/profile/0']);
     }
   }
