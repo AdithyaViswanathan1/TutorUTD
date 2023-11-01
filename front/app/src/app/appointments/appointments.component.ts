@@ -3,6 +3,7 @@ import { ProfileService } from '../profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Appointment } from '../models/Appointment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-appointments',
@@ -33,12 +34,11 @@ export class AppointmentsComponent implements OnInit{
   constructor(
     private profileService: ProfileService,
     private route : ActivatedRoute,
-    private router : Router) {
-      this.route.params.subscribe(params => {
-      this.userType = params['userType'];
-      this.userId = params['id'];
-    });
-  }
+    private router : Router,
+    private cookieService: CookieService) {
+      this.userId = parseInt(this.cookieService.get('userId'));
+      this.userType = this.cookieService.get('userType');
+    }
 
   ngOnInit(): void {
     if(this.userType == 'tutor')

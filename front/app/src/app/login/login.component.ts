@@ -47,7 +47,7 @@ export class LoginComponent {
       };
 
       this.authenticationService.studentLogin(request).subscribe(id => {
-        this.router.navigate(['/appointments/student', id]);
+        this.router.navigate(['/appointments']);
       });
     }
     else
