@@ -79,7 +79,7 @@ export class SignUpComponent {
       this.authenticationService.studentSignup(request).subscribe(id => {
         this.cookieService.set('userId', id.toString());
         this.cookieService.set('userType', 'student');
-        this.router.navigate(['/appointments', 'student', id]);
+        this.router.navigate(['/appointments']);
       });
     }
     else
@@ -105,7 +105,7 @@ export class SignUpComponent {
     {
       this.cookieService.set('userId', '1');
       this.cookieService.set('userType', 'student');
-      this.router.navigate(['/appointments', 'student', 0]);
+      this.router.navigate(['/appointments']);
     }
     else
     {
