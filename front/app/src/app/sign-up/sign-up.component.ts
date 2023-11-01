@@ -4,6 +4,7 @@ import { AuthenticationService } from '../authentication.service';
 import { StudentSignupRequest } from '../models/StudentSignupRequest';
 import { TutorSignupRequest } from '../models/TutorSignupRequest';
 import { CookieService } from 'ngx-cookie-service';
+import { RegisterRequest } from '../models/RegisterRequest';
 
 @Component({
   selector: 'app-sign-up',
@@ -83,11 +84,12 @@ export class SignUpComponent implements OnInit {
     //call auth service for user
     if(this.isStudent)
     {
-      let request : StudentSignupRequest = {
+      let request : RegisterRequest = {
         email: this.email,
         password: this.password,
-        firstName: this.fName,
-        lastName: this.lName,
+        first_name: this.fName,
+        last_name: this.lName,
+        user_type: 'student'
       };
 
       this.authenticationService.studentSignup(request).subscribe(id => {
@@ -98,11 +100,12 @@ export class SignUpComponent implements OnInit {
     }
     else
     {
-      let request : TutorSignupRequest = {
+      let request : RegisterRequest = {
         email: this.email,
         password: this.password,
-        firstName: this.fName,
-        lastName: this.lName,
+        first_name: this.fName,
+        last_name: this.lName,
+        user_type: 'tutor'
       };
 
       this.authenticationService.tutorSignUp(request).subscribe(id => {

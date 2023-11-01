@@ -7,6 +7,7 @@ import { StudentSignupRequest } from './models/StudentSignupRequest';
 import { TutorSignupRequest } from './models/TutorSignupRequest';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { RegisterRequest } from './models/RegisterRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -31,13 +32,13 @@ export class AuthenticationService {
     this.router.navigate(['']);
   }
 
-  studentSignup(user: StudentSignupRequest): Observable<number>
+  studentSignup(user: RegisterRequest): Observable<number>
   {
     let result = this.httpManager.studentSignup(user);   
     return result;
   }
 
-  tutorSignUp(user: TutorSignupRequest): Observable<number>
+  tutorSignUp(user: RegisterRequest): Observable<number>
   {
     let result = this.httpManager.tutorSignup(user);
     return result;

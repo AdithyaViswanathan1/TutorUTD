@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginRequest } from './models/LoginRequest';
-import { SignUpRequest } from './models/SignUpRequest';
 import { TutorSignupRequest } from './models/TutorSignupRequest';
 import { TutorLoginRequest } from './models/TutorLoginRequest';
 import { StudentSignupRequest } from './models/StudentSignupRequest';
@@ -9,13 +7,14 @@ import { StudentLoginRequest } from './models/StudentLoginRequest';
 import { Observable, of } from 'rxjs';
 import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
+import { RegisterRequest } from './models/RegisterRequest';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class httpManager {
-    backendUrl : string = 'https://example.com/api';
+    backendUrl : string = 'http://127.0.0.1:8000/';
 
     http: HttpClient;
 
@@ -23,9 +22,12 @@ export class httpManager {
         this.http = httpClient;
     }
 
-    tutorSignup(user: TutorSignupRequest) : Observable<number>
+    tutorSignup(user: RegisterRequest) : Observable<number>
     {
-        //return this.http.post(this.backendUrl, user);
+        let res = this.http.post(this.backendUrl + 'login/api/auth/tutor_register', user);
+        res.subscribe(data => {
+          console.log(data);
+        });
         return of(0);
     }
 
@@ -35,7 +37,7 @@ export class httpManager {
         return of(0);
     }
 
-    studentSignup(user: StudentSignupRequest) : Observable<number>
+    studentSignup(user: RegisterRequest) : Observable<number>
     {
         //return this.http.post(this.backendUrl, user);
         return of(1);
