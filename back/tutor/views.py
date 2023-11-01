@@ -35,6 +35,7 @@ class TutorDetail(APIView):
             return Response({"Error": "Movie Does Not Exist"},status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk):
+        print("I AM", request.user.full_name)
         movie = self.get_tutor_by_pk(pk)
         serializer = TutorSerializer(movie)
         return Response(serializer.data)
