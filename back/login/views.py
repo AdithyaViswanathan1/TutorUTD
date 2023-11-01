@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from . import serializers
 from .serializers import StudentRegisterSerializer, TutorRegisterSerializer, UserLoginSerializer
 from rest_framework.generics import CreateAPIView
-
 from tutor.models import Tutor
 from student.models import Student
 
@@ -31,26 +30,48 @@ def create_user_account(email, password, first_name="", last_name="", user_type=
         user_type=user_type,
     )
     
+    user.save()
     full_name = first_name + ' ' + last_name
     
+    # TODO: FIX. Currently the error is that when trying to register,
+    # the user gets saved but when trying to query the user object
+    # it does not exist at the time of calling.
     if user_type=='student':
-        user = Student(
-            email=email,
-            full_name=full_name,
-            
+        student = Student(
+            email=User.objects.only(email),
+            full_name=full_name
         )
+        student.save()
     elif user_type=='tutor':
-        user = Tutor(
-            email=email,
+        tutor = Tutor(
+            email=User.objects.only(email),
             full_name=full_name,
-            password=password,
             total_hours=0,
             background_checked=False,
         )
-        user.save()
+        tutor.save()
     
         
     return user
+
+# Attempted to remedy the above problem with these calls.
+def create_student_profile(email, full_name):
+    student = Student(
+            email=User.objects.only(email),
+            full_name=full_name
+        )
+    student.save()
+    return student
+
+def create_tutor_profile(email, full_name, total_hours=0, background_checked=False):
+    tutor = Tutor(
+            email=User.objects.only(email),
+            full_name=full_name,
+            total_hours=total_hours,
+            background_checked=background_checked,
+        )
+    tutor.save()
+    return tutor
 
 
 #AUTHENTICATION, LOGIN, REGISTER, LOGOUT FUNCTIONS
@@ -77,6 +98,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = create_user_account(**serializer.validated_data, user_type='student')
+        # DATA BEING PASSED IN WRONGLY HERE
+        create_student_profile(**serializer.validated_data)
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
     
@@ -85,6 +108,8 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = create_user_account(**serializer.validated_data, user_type='tutor')
+        # DATA ALSO BEING PASSED IN WRONG HERE
+        tutor = create_tutor_profile(**serializer.validated_data)
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
     
