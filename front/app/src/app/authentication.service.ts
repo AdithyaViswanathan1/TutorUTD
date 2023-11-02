@@ -6,13 +6,14 @@ import { TutorLoginRequest } from './models/TutorLoginRequest';
 import { StudentSignupRequest } from './models/StudentSignupRequest';
 import { TutorSignupRequest } from './models/TutorSignupRequest';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   
-  constructor(private httpManager: httpManager, private cookieService: CookieService) { 
+  constructor(private httpManager: httpManager, private cookieService: CookieService, private router: Router) { 
   }
 
   isAuthenticated() : boolean {
@@ -21,6 +22,13 @@ export class AuthenticationService {
       return false;
     }
     return true;
+  }
+
+  logout()
+  {
+    this.cookieService.delete('userId');
+    this.cookieService.delete('userType');
+    this.router.navigate(['']);
   }
 
   studentSignup(user: StudentSignupRequest): Observable<number>
@@ -46,5 +54,4 @@ export class AuthenticationService {
     let result = this.httpManager.tutorLogin(request);
     return result;
   }
-
 }

@@ -38,24 +38,21 @@ export class TimeTableComponent implements OnInit {
   }
 
   initTimes() {
-    for (let hour = 8; hour < 20; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        if(hour < 12) 
-        {
-          const time = `${hour}:${minute === 0 ? '00' : minute} AM`;
-          this.appointmentTimes.push(time);
-        }
-        else if(hour > 12)
-        {
-          const time = `${hour - 12}:${minute === 0 ? '00' : minute} PM`;
-          this.appointmentTimes.push(time);
-        }
-        else
-        {
-          const time = `${hour}:${minute === 0 ? '00' : minute} PM`;
-          this.appointmentTimes.push(time);
-        }
-        
+    for (let hour = 8; hour <= 22; hour++) {
+      if(hour < 12) 
+      {
+        const time = `${hour}:00 AM`;
+        this.appointmentTimes.push(time);
+      }
+      else if(hour > 12)
+      {
+        const time = `${hour - 12}:00 PM`;
+        this.appointmentTimes.push(time);
+      }
+      else
+      {
+        const time = `12:00 PM`;
+        this.appointmentTimes.push(time);
       }
     }
   }
