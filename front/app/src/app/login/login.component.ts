@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentLoginRequest } from '../models/StudentLoginRequest';
 import { TutorLoginRequest } from '../models/TutorLoginRequest';
 import { AuthenticationService } from '../authentication.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   isStudent: boolean = true;
   emailNotFound: boolean = false;
   wrongPassword: boolean = false;
@@ -21,10 +22,26 @@ export class LoginComponent {
   constructor(
     private route : ActivatedRoute,
     private router : Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private cookieService: CookieService) {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
+  }
+
+  ngOnInit(): void {
+    if(this.authenticationService.isAuthenticated())
+    {
+      let userType = this.cookieService.get('userType');
+      if(userType == 'student')
+      {
+        this.router.navigate(['/appointments']);
+      }
+      else if(userType == 'tutor')
+      {
+        this.router.navigate(['/profile', this.cookieService.get('userId')]);
+      }
+    }
   }
 
   login(){
@@ -47,6 +64,8 @@ export class LoginComponent {
       };
 
       this.authenticationService.studentLogin(request).subscribe(id => {
+        this.cookieService.set('userId', id.toString());
+        this.cookieService.set('userType', 'student');
         this.router.navigate(['/appointments']);
       });
     }
@@ -58,6 +77,8 @@ export class LoginComponent {
       };
 
       this.authenticationService.tutorLogin(request).subscribe(id => {
+        this.cookieService.set('userId', id.toString());
+        this.cookieService.set('userType', 'tutor');
         this.router.navigate(['/profile', id]);
       });
     }

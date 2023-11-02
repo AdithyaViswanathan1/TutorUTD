@@ -1,4 +1,4 @@
-<app-navbar [user]="userTypeInt"></app-navbar>
+<app-navbar></app-navbar>
 <app-cancel-confirmation *ngIf="showCancelConfirmation" 
     [appointment]="cancelApt" [userType]="userType"
     (close)="closeModal()" (cancel)="cancelAppointment($event)"></app-cancel-confirmation>

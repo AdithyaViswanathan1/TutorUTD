@@ -70,6 +70,7 @@ export class httpManager {
         ],
         totalHours: 20,
         available: true,
+        profilePicture: new File(['assets/images/default.jpg'], 'profilePicture.jpg'),
         appointments: [
           {
             appointmentId: 0,
