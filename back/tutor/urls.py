@@ -1,8 +1,10 @@
 from django.urls import path
-from rest_framework import routers
-from .views import TutorViewSet
+from tutor import views
+from tutor.views import TutorList, TutorCreate, TutorDetail
 
-router = routers.DefaultRouter()
-router.register('tutor', TutorViewSet, basename='tutor')
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('', views.say_hello),
+    path('list/', TutorList.as_view()),
+    path("list/<int:pk>", TutorDetail.as_view()),
+    path('create/', TutorCreate.as_view()),
+]
