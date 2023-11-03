@@ -1,0 +1,27 @@
+<div class="modal">
+    <div class="modal-content-profile">
+        <div class="header-text my-3 align-self-center">Edit Profile</div>
+        <div><b>Name</b></div>
+        <input class="input-box" type="text" id="name" name="name" [(ngModel)]="nameInput">
+        <div>
+            <b>Subjects</b> (click to remove) 
+            <button class="course-button" (click)="addCourse = true">Add</button>
+            <button *ngIf="addCourse" class="course-button" (click)="addCourseToList()">Save</button>
+            <button *ngIf="addCourse" class="cancel-button" (click)="addCourse = false">Cancel</button>
+        </div>
+        <div class="course-container">
+            <div *ngFor="let course of courses; let i = index">
+              <div class="course-item" (click)="removeCourse(course)">
+                {{ course }}
+              </div>
+            </div>
+            <input class="course-input" *ngIf="addCourse" [(ngModel)]="newCourse">
+          </div>
+        <div><b>Bio</b></div>
+        <input class="input-box" type="text" id="bio" name="bio" [(ngModel)]="bioInput">
+        <div class="button-container mt-4">
+            <div class="return-button" (click)="cancelChanges()" style="cursor: pointer">Cancel</div>
+            <div class="confirm-button" (click)="saveChanges()" style="cursor: pointer">Save</div>
+        </div>
+    </div>
+</div>

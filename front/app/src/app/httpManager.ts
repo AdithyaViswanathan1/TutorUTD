@@ -66,7 +66,8 @@ export class httpManager {
         courses: [
           'MATH 3163',
           'CS 4485',
-          'CS 3377'
+          'CS 3377',
+          'CS 4398'
         ],
         totalHours: 20,
         available: true,
@@ -131,8 +132,9 @@ export class httpManager {
           "Wed Nov 08 2023.10:00 AM",
           "Wed Nov 08 2023.11:00 AM",
           "Wed Nov 08 2023.12:00 PM",
-          "Wed Nov 08 2023.01:00 PM",
-        ]
+          "Wed Nov 08 2023.01:00 PM"
+        ],
+        biography: "This is my biography!"
     }
 
     dummyStudent : Student = {
