@@ -1,10 +1,56 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.models import BaseUserManager
+from .models import User
+from student.models import Student, Tutor
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
+import re
 
 
-User = get_user_model()
+user = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    obj_type = serializers.SerializerMethodField()
+    my_type = None
+
+    def get_obj_type(self, t):
+        self.my_type = t
+        #print("MY TYPE:",self.my_type)
+
+    class Meta:
+        model = User
+        fields = "__all__"
+        #fields = ['first_name', 'last_name', 'email', 'password', 'user_type']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        print(validated_data)
+        user = User(
+            email=validated_data['email'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name']
+        )
+        user.set_password(validated_data['password'])
+        user.user_type = self.my_type
+        user.save()
+        print("MY TYPE = ")
+        if self.my_type == "student":
+            print("USER TYPE IS STUDENT")
+            Student.objects.create(student=user,total_hours=0)
+        else:
+            Tutor.objects.create(tutor=user,total_hours=0)
+        return user
+    
+    def validate_password(self,value):
+        special_chars = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+        if len(value) < 8:
+            raise serializers.ValidationError("Password is too short! Must be at least 8 characters.")
+        elif not bool(re.search(r'[A-Z]', value)):
+            raise serializers.ValidationError("Password must contain at least one uppercase letter.")
+        elif special_chars.search(value) == None:
+            raise serializers.ValidationError("Password must contain at least one special character.")
+        else:
+            return value
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -31,7 +77,7 @@ class EmptySerializer(serializers.Serializer):
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = user
         fields = ('id', 'email', 'password', 'first_name', 'last_name', 'user_type')
 
     def validate_email(self, value):
@@ -47,11 +93,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = user
         fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
         def create(self, validated_data):
-            user = CustomUser(
+            user = User(
                 email=validated_data('email'),
             )
             user.set_password(validated_data('password'))
@@ -60,11 +106,11 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         
 class TutorRegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = user
         fields = ('id', 'email', 'password', 'first_name', 'last_name')
         
         def create(self, validated_data):
-            user = CustomUser(
+            user = User(
                 email=validated_data('email'),
             )
             user.set_password(validated_data('password'))

@@ -7,109 +7,88 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from . import serializers
-from .serializers import StudentRegisterSerializer, TutorRegisterSerializer
+from .serializers import StudentRegisterSerializer, TutorRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework.generics import CreateAPIView
-
 from tutor.models import Tutor
 from student.models import Student
+from rest_framework.authtoken.models import Token
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.decorators import api_view
+
 
 User = get_user_model()
-
-#HELPER FUNCTIONS
-def get_and_authenticate_user(email, password):
-    user = authenticate(username=email, password=password)
-    if user is None:
-        raise serial.ValidationError("Invalid username/password.")
-    return user
-
-def create_user_account(email, password, first_name="", last_name="", user_type="", **extra_fields):
-    # user = get_user_model().objects.create_user(
-    #     email=email, 
-    #     password=password, 
-    #     first_name=first_name,
-    #     last_name=last_name, 
-    #     user_type=user_type,
-    #     **extra_fields
-    # )
-    
-    #insert information into the student/tutor database
-    #FIXME: no such table error
-    
-    if user_type=='student':
-        user = Student(
-            email=email,
-            password=password,
-            full_name=first_name + ' ' + last_name,
-        )
-        user.save()
-    elif user_type=='tutor':
-        user = Tutor(
-            email=email,
-            password=password,
-            full_name=first_name + ' ' + last_name,
-        )
-        user.save()
-    
-        
-    return user
-
 
 #AUTHENTICATION, LOGIN, REGISTER, LOGOUT FUNCTIONS
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
     serializer_class = serializers.EmptySerializer
+    # purpose: to get the right fields
     serializer_classes = {
-        'login': serializers.UserLoginSerializer,
-        #'register': serializers.UserRegisterSerializer,
+        'student_login': serializers.UserLoginSerializer, 
+        'tutor_login': serializers.UserLoginSerializer,
         'student_register': serializers.StudentRegisterSerializer,
         'tutor_register': serializers.TutorRegisterSerializer,
     }
     queryset = ''
 
     @action(methods=['POST',], detail=False)
-    def login(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = get_and_authenticate_user(**serializer.validated_data)
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_200_OK)
-    
-    '''
-    #delete later
+    def student_login(self, request):
+        if request.method == 'POST':
+            email = request.data.get('email')
+            password = request.data.get('password')
+            user = authenticate(email=email, password=password)
+            #print("LOGIN: User typr", user.user_type)
+
+            if user and user.user_type=="student":
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key}, status=status.HTTP_200_OK)
+
+            return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
+        
     @action(methods=['POST',], detail=False)
-    def register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = create_user_account(**serializer.validated_data)
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
-    '''
+    def tutor_login(self, request):
+        if request.method == 'POST':
+            email = request.data.get('email')
+            password = request.data.get('password')
+            user = authenticate(email=email, password=password)
+            #print("LOGIN: User typr", user.user_type)
+
+            if user and user.user_type=="tutor":
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key}, status=status.HTTP_200_OK)
+
+            return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
     
     @action(methods=['POST',], detail=False)
     def student_register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = create_user_account(**serializer.validated_data, user_type='student')
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
+        if request.method == 'POST':
+            serializer = UserSerializer(data=request.data)
+            serializer.get_obj_type("student")
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @action(methods=['POST',], detail=False)
     def tutor_register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = create_user_account(**serializer.validated_data, user_type='tutor')
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
-    
-    
+        if request.method == 'POST':
+            serializer = UserSerializer(data=request.data)
+            serializer.get_obj_type("tutor")
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     @action(methods=['POST',], detail=False)
-    def logout(self, request):
-        if request.user.is_authenticated:
-            logout(request)
-            request.user.auth_token.delete()
-            data = {'success': 'Sucessfully logged out'}
-            return Response(data=data, status=status.HTTP_200_OK)
-        return Response('Logged Out')
+    #@permission_classes([IsAuthenticated])
+    def logout(self,request):
+        if request.method == 'POST':
+            try:
+                # Delete the user's token to logout
+                request.user.auth_token.delete()
+                return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def get_serializer_class(self):

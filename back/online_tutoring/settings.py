@@ -71,11 +71,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'login',
     'student',
     'tutor',
-    'rest_framework',
-    
+    'appointments',
     #new!! delete later?
     #'corsheaders',  #accept request from other origins
     'rest_framework.authtoken',
@@ -85,7 +85,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
     ],
     
     #new!! delete later?
@@ -175,6 +175,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #new!! maybe delete later
-AUTH_USER_MODEL = 'login.CustomUser'  #user database comes from what model.py
+AUTH_USER_MODEL = 'login.User'  #user database comes from what model.py
 #CORS_ORIGIN_ALLOW_ALL = False   #True --> all origins accepted; False --> on a list
 #CORS_ORIGIN_WHITELIST = ('http://localhost:8000',)  #list of origins authorized to make cross-site HTTPS requests
