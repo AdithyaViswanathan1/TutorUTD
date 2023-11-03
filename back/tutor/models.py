@@ -17,4 +17,4 @@ class Tutor(models.Model):
         db_table = 'tutor'
     
     def __str__(self):
-        return f'Hi. My name is {self.full_name}. I teach these subjects {self.subject_list}'
+        return f'{self.tutor.first_name + " " + self.tutor.last_name}. Subjects: {self.subject_list}'

@@ -13,6 +13,10 @@ class Student(models.Model):
     class Meta:
         managed = True
         db_table = 'student'
+    
+    def __str__(self):
+        return f'{self.student.first_name + " " + self.student.last_name}'
+
 
 # class Favorite_Tutors(models.Model):
 #     student = models.ForeignKey(Student, on_delete=models.CASCADE)
