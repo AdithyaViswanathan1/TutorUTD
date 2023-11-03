@@ -78,35 +78,38 @@ def create_tutor_profile(email, full_name, total_hours=0, background_checked=Fal
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
     serializer_class = serializers.EmptySerializer
+    # purpose: to get the right fields
     serializer_classes = {
-        'login': serializers.UserLoginSerializer,
+        'student_login': serializers.UserLoginSerializer, 
+        'tutor_login': serializers.UserLoginSerializer,
         'student_register': serializers.StudentRegisterSerializer,
         'tutor_register': serializers.TutorRegisterSerializer,
     }
     queryset = ''
 
     @action(methods=['POST',], detail=False)
-    def login(self, request):
-        # serializer = self.get_serializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # user = get_and_authenticate_user(**serializer.validated_data)
-        # data = serializers.AuthUserSerializer(user).data
-        # return Response(data=data, status=status.HTTP_200_OK)
+    def student_login(self, request):
         if request.method == 'POST':
             email = request.data.get('email')
             password = request.data.get('password')
-
-            # user = None
-            # if '@' in email:
-            #     try:
-            #         user = User.objects.get(email=email)
-            #     except ObjectDoesNotExist:
-            #         pass
-
-            # if not user:
             user = authenticate(email=email, password=password)
+            #print("LOGIN: User typr", user.user_type)
 
-            if user:
+            if user and user.user_type=="student":
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key}, status=status.HTTP_200_OK)
+
+            return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+    @action(methods=['POST',], detail=False)
+    def tutor_login(self, request):
+        if request.method == 'POST':
+            email = request.data.get('email')
+            password = request.data.get('password')
+            user = authenticate(email=email, password=password)
+            #print("LOGIN: User typr", user.user_type)
+
+            if user and user.user_type=="tutor":
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key}, status=status.HTTP_200_OK)
 
@@ -114,13 +117,6 @@ class AuthViewSet(viewsets.GenericViewSet):
     
     @action(methods=['POST',], detail=False)
     def student_register(self, request):
-        # serializer = self.get_serializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # user = create_user_account(**serializer.validated_data, user_type='student')
-        # # DATA BEING PASSED IN WRONGLY HERE
-        # #create_student_profile(**serializer.validated_data)
-        # data = serializers.AuthUserSerializer(user).data
-        # return Response(data=data, status=status.HTTP_201_CREATED)
         if request.method == 'POST':
             serializer = UserSerializer(data=request.data)
             serializer.get_obj_type("student")
@@ -131,13 +127,6 @@ class AuthViewSet(viewsets.GenericViewSet):
     
     @action(methods=['POST',], detail=False)
     def tutor_register(self, request):
-        # serializer = self.get_serializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # user = create_user_account(**serializer.validated_data, user_type='tutor')
-        # # DATA ALSO BEING PASSED IN WRONG HERE
-        # tutor = create_tutor_profile(**serializer.validated_data)
-        # data = serializers.AuthUserSerializer(user).data
-        # return Response(data=data, status=status.HTTP_201_CREATED)
         if request.method == 'POST':
             serializer = UserSerializer(data=request.data)
             serializer.get_obj_type("tutor")
@@ -145,24 +134,6 @@ class AuthViewSet(viewsets.GenericViewSet):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
-    # @action(methods=['POST',], detail=False)
-    # #@permission_classes([IsAuthenticated])
-    # def logout(self, request):
-    #     if request.user.is_authenticated:
-    #         logout(request)
-    #         request.user.auth_token.delete()
-    #         data = {'success': 'Sucessfully logged out'}
-    #         return Response(data=data, status=status.HTTP_200_OK)
-    #     return Response('ERROR: NOT AUTHENTICATED')
-    #     # if request.method == 'POST':
-    #     #     try:
-    #     #         # Delete the user's token to logout
-    #     #         request.user.auth_token.delete()
-    #     #         return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
-    #     #     except Exception as e:
-    #     #         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(methods=['POST',], detail=False)
     #@permission_classes([IsAuthenticated])
