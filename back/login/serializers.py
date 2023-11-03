@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.models import BaseUserManager
 from .models import User
-from student.models import Student
+from student.models import Student, Tutor
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 
@@ -9,6 +9,13 @@ from rest_framework import serializers
 user = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
+    obj_type = serializers.SerializerMethodField()
+    my_type = None
+
+    def get_obj_type(self, t):
+        self.my_type = t
+        #print("MY TYPE:",self.my_type)
+
     class Meta:
         model = User
         fields = "__all__"
@@ -23,12 +30,14 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name']
         )
         user.set_password(validated_data['password'])
+        user.user_type = self.my_type
         user.save()
-        if user.user_type == "student":
+        print("MY TYPE = ")
+        if self.my_type == "student":
             print("USER TYPE IS STUDENT")
             Student.objects.create(student=user,total_hours=0)
         else:
-            print("USER TYPE NOT STUDENT:", validated_data['user_type'])
+            Tutor.objects.create(tutor=user,total_hours=0)
         return user
 
 

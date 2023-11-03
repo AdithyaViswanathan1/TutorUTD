@@ -123,6 +123,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         # return Response(data=data, status=status.HTTP_201_CREATED)
         if request.method == 'POST':
             serializer = UserSerializer(data=request.data)
+            serializer.get_obj_type("student")
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -130,13 +131,20 @@ class AuthViewSet(viewsets.GenericViewSet):
     
     @action(methods=['POST',], detail=False)
     def tutor_register(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = create_user_account(**serializer.validated_data, user_type='tutor')
-        # DATA ALSO BEING PASSED IN WRONG HERE
-        tutor = create_tutor_profile(**serializer.validated_data)
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
+        # serializer = self.get_serializer(data=request.data)
+        # serializer.is_valid(raise_exception=True)
+        # user = create_user_account(**serializer.validated_data, user_type='tutor')
+        # # DATA ALSO BEING PASSED IN WRONG HERE
+        # tutor = create_tutor_profile(**serializer.validated_data)
+        # data = serializers.AuthUserSerializer(user).data
+        # return Response(data=data, status=status.HTTP_201_CREATED)
+        if request.method == 'POST':
+            serializer = UserSerializer(data=request.data)
+            serializer.get_obj_type("tutor")
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
     # @action(methods=['POST',], detail=False)
