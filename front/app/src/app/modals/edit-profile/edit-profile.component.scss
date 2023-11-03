@@ -1,0 +1,53 @@
+.modal-content-profile {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-button{
+    width: 60px;
+    margin-left: 5px;
+}
+
+.cancel-button{
+    width: 67px;
+    margin-left: 5px;
+}
+
+.course-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+  
+.course-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 8rem;
+    margin-right: 40px;
+    cursor: pointer;
+}
+
+.course-input{
+    width: 8rem;
+    padding: 10px;
+    margin: 10px;
+}
+
+.button-container
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    font-size: 20px;
+}
+
+.input-box{
+    margin-bottom: 30px;
+}

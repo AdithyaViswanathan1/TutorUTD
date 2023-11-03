@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   classPrefix: string = '';
   classNumber: string = '';
   isEditing: boolean = false;
-  biography: string = '___________________'
+  biography: string = '';
 
   private _subs : Subscription = new Subscription();
 
@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
       this.fullName = tutor.fullName;
+      this.biography = tutor.biography;
       if(tutor.profilePicture){
         this.profilePicture = tutor.profilePicture;
       }
@@ -61,5 +62,21 @@ export class ProfileComponent implements OnInit {
         this.classPrefix = '';
         this.classNumber = '';
     }
-}
+  } 
+
+  showModal(){
+    this.isEditing = true;
+  }
+
+  closeModal(){
+    this.isEditing = false;
+  }
+
+  editName(name: string){
+    this.fullName = name;
+  }
+
+  editBio(bio: string){
+    this.biography = bio;
+  }
 }

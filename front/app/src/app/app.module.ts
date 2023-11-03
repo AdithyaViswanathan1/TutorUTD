@@ -19,6 +19,7 @@ import { CancelConfirmationComponent } from './modals/cancel-confirmation/cancel
 import { BookSessionComponent } from './modals/book-session/book-session.component';
 import { BookingConfirmationComponent } from './modals/booking-confirmation/booking-confirmation.component';
 import { DeselectWarningComponent } from './modals/deselect-warning/deselect-warning.component';
+import { EditProfileComponent } from './modals/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { DeselectWarningComponent } from './modals/deselect-warning/deselect-war
     CancelConfirmationComponent,
     BookSessionComponent,
     BookingConfirmationComponent,
-    DeselectWarningComponent
+    DeselectWarningComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
