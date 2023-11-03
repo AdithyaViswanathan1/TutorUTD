@@ -18,62 +18,6 @@ from rest_framework.decorators import api_view
 
 User = get_user_model()
 
-#HELPER FUNCTIONS
-def get_and_authenticate_user(email, password):
-    user = authenticate(username=email, password=password)
-    if user is None:
-        raise serial.ValidationError("Invalid username/password.")
-    return user
-
-def create_user_account(email, password, first_name="", last_name="", user_type="", **extra_fields):
-    user = get_user_model().objects.create_user(
-        email=email, 
-        password=password, 
-        first_name=first_name,
-        last_name=last_name, 
-        user_type=user_type,
-    )
-    
-    user.save()
-    full_name = first_name + ' ' + last_name
-    
-    # TODO: FIX. Currently the error is that when trying to register,
-    # the user gets saved but when trying to query the user object
-    # it does not exist at the time of calling.
-    if user_type=='student':
-        student = Student()
-        student.save()
-    elif user_type=='tutor':
-        tutor = Tutor(
-            email=User.objects.get(email=email),
-            full_name=full_name,
-            total_hours=0,
-            background_checked=False,
-        )
-        tutor.save()
-    
-        
-    return user
-
-# Attempted to remedy the above problem with these calls.
-def create_student_profile():
-    student = Student(
-            total_hours=0
-        )
-    student.save()
-    return student
-
-def create_tutor_profile(email, full_name, total_hours=0, background_checked=False):
-    tutor = Tutor(
-            email=User.objects.only(email),
-            full_name=full_name,
-            total_hours=total_hours,
-            background_checked=background_checked,
-        )
-    tutor.save()
-    return tutor
-
-
 #AUTHENTICATION, LOGIN, REGISTER, LOGOUT FUNCTIONS
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
