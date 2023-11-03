@@ -1,22 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="navbar">
-        <div class="logo-container-navbar">
-            <img src="assets/images/navbarlogo.png" alt="navbar logo">
-            <label class="logo">Online Tutor App</label>
-        </div>
-        <ul *ngIf="user === 1">
-            <li><a href="#">Search</a></li>
-            <li><a href="#">Appointments</a></li>
-        </ul>
-        <ul *ngIf="user === 2">
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Appointments</a></li>
-        </ul>
+
+<div class="navbar">
+    <div class="logo-container-navbar">
+        <img src="assets/images/navbarlogo.png" alt="navbar logo">
+        <label class="logo">Online Tutor App</label>
     </div>
-</body>
-</html>
+    <div class="links-container" *ngIf="cookieService.get('userType') === 'student'">
+        <div class="link" (click)="toSearch()">Search</div>
+        <div class="link" (click)="toAppointments()">Appointments</div>
+        <fa-icon class="user-icon" [icon]="faUser" (click)="togglePopup()"></fa-icon>
+        <div class="pop-up" *ngIf="showPopup" (click)="logout()">
+            <fa-icon class="logout-icon" [icon]="faRightFromBracket"></fa-icon>
+            <div>Logout</div>
+        </div> 
+    </div>
+    <div class="links-container" *ngIf="cookieService.get('userType') === 'tutor'">
+        <div class="link" (click)="toProfile()">Profile</div>
+        <div class="link" (click)="toAppointments()">Appointments</div>
+        <fa-icon class="user-icon" [icon]="faUser" (click)="togglePopup()"></fa-icon>
+        <div class="pop-up" *ngIf="showPopup" (click)="logout()">
+            <fa-icon class="logout-icon" [icon]="faRightFromBracket"></fa-icon>
+            <div>Logout</div>
+        </div> 
+    </div>
+</div>

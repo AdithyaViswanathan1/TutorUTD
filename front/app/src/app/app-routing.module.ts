@@ -6,19 +6,16 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { SearchComponent } from './search/search.component';
+import { canActivate } from './auth.guard';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'login/:userType', component: LoginComponent},
   {path: 'signup/:userType', component: SignUpComponent},
-  {path: 'profile/:tutorId', component: ProfileComponent},
-  {path: 'appointments/:userType/:id', component: AppointmentsComponent},
-  {path: 'search', component: SearchComponent},
-  {path: 'search/:tutorName', component: SearchComponent},
-  {path: 'search/:tutorName/:subject', component: SearchComponent},
-  {path: 'search/:tutorName/:subject/:classNum', component: SearchComponent},
-  {path: 'search/:subject', component: SearchComponent},
-  {path: 'search/:subject/:classNum', component: SearchComponent},
+  {path: 'profile/:tutorId', component: ProfileComponent, canActivate: [canActivate]},
+  {path: 'appointments', component: AppointmentsComponent, canActivate: [canActivate]},
+  {path: 'search', component: SearchComponent, canActivate: [canActivate]},
+  {path: 'search/:searchString', component: SearchComponent, canActivate: [canActivate]},
 ];
 
 @NgModule({

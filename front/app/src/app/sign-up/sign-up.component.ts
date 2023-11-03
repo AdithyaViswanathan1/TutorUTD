@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
-import { SignUpRequest } from '../models/SignUpRequest';
 import { StudentSignupRequest } from '../models/StudentSignupRequest';
 import { TutorSignupRequest } from '../models/TutorSignupRequest';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   isStudent: boolean = true;
   missingFields: boolean = false;
   badPassword: boolean = false;
@@ -27,10 +27,26 @@ export class SignUpComponent {
   constructor(
     private route : ActivatedRoute,
     private router : Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private cookieService: CookieService) {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
+  }
+
+  ngOnInit(): void {
+    if(this.authenticationService.isAuthenticated())
+    {
+      let userType = this.cookieService.get('userType');
+      if(userType == 'student')
+      {
+        this.router.navigate(['/appointments']);
+      }
+      else if(userType == 'tutor')
+      {
+        this.router.navigate(['/profile', this.cookieService.get('userId')]);
+      }
+    }
   }
 
   signUp() {
@@ -75,7 +91,9 @@ export class SignUpComponent {
       };
 
       this.authenticationService.studentSignup(request).subscribe(id => {
-        this.router.navigate(['/appointments', 'student', id]);
+        this.cookieService.set('userId', id.toString());
+        this.cookieService.set('userType', 'student');
+        this.router.navigate(['/appointments']);
       });
     }
     else
@@ -88,6 +106,8 @@ export class SignUpComponent {
       };
 
       this.authenticationService.tutorSignUp(request).subscribe(id => {
+        this.cookieService.set('userId', id.toString());
+        this.cookieService.set('userType', 'tutor');
         this.router.navigate(['/profile', id]);
       });
     }
@@ -97,10 +117,14 @@ export class SignUpComponent {
   {
     if(this.isStudent)
     {
-      this.router.navigate(['/appointments', 'student', 0]);
+      this.cookieService.set('userId', '1');
+      this.cookieService.set('userType', 'student');
+      this.router.navigate(['/appointments']);
     }
     else
     {
+      this.cookieService.set('userId', '0');
+      this.cookieService.set('userType', 'tutor');
       this.router.navigate(['/profile/0']);
     }
   }

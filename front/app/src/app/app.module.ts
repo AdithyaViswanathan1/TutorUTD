@@ -20,6 +20,7 @@ import { BookSessionComponent } from './modals/book-session/book-session.compone
 import { BookingConfirmationComponent } from './modals/booking-confirmation/booking-confirmation.component';
 import { DeselectWarningComponent } from './modals/deselect-warning/deselect-warning.component';
 import { EditProfileComponent } from './modals/edit-profile/edit-profile.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { EditProfileComponent } from './modals/edit-profile/edit-profile.compone
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
