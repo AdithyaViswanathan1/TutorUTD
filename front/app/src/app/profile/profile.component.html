@@ -3,15 +3,17 @@
 <div class="page-container">
     <div class="user-container">
         <img src="assets/images/default.jpg" alt="profile image">
-        <div style="font-size: 24px;">
-            <div style="margin-bottom: 3rem"><b>Name:</b> {{fullName}}</div>
-            <div style="margin-bottom: 3rem">
-                <b>Subjects:</b>
+        <div class="name-and-bio-container">
+            <div class="tutor-name"><b>{{fullName}}</b></div>
+            <div class="tutor-bio">{{biography}}</div>
+        </div>
+        <div>
+            <b class="course-list">Course List:</b>
+            <ul class="subjects-list">
                 <ng-container *ngFor="let course of courses">
-                    {{course}}&nbsp;&nbsp;
+                    <li>{{course}}</li>
                 </ng-container>
-            </div>
-            <div><b>Bio:</b> {{biography}}</div>
+            </ul>
         </div>
     </div>
     <button style="width: 200px; margin-bottom: 10px" (click)="showModal()">Edit Profile</button>
