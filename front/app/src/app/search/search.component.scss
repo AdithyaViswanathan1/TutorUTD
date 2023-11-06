@@ -1,0 +1,15 @@
+.page-container
+{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 5rem;
+}
+
+hr
+{
+    width: 650px;
+    border: 1px solid #000;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
