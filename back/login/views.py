@@ -79,6 +79,8 @@ class AuthViewSet(viewsets.GenericViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # from rest_framework.permissions import IsAuthenticated
+    # permission_classes = [IsAuthenticated]
     @action(methods=['POST',], detail=False)
     #@permission_classes([IsAuthenticated])
     def logout(self,request):
