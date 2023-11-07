@@ -15,7 +15,7 @@ import { Student } from './models/Student';
     providedIn: 'root'
 })
 export class httpManager {
-    backendUrl : string = 'https://example.com/api';
+    backendUrl : string = 'http://127.0.0.1:8000/';
 
     http: HttpClient;
 
@@ -23,10 +23,11 @@ export class httpManager {
         this.http = httpClient;
     }
 
-    tutorSignup(user: TutorSignupRequest) : Observable<number>
+    tutorSignup(user: TutorSignupRequest) : void
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(0);
+        //todo: return http status code
+        this.http.post(this.backendUrl + "login/tutor_register/", user).subscribe(
+          res => console.log(res));
     }
 
     tutorLogin(user: TutorLoginRequest) : Observable<number>

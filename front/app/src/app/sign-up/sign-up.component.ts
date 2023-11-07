@@ -62,7 +62,7 @@ export class SignUpComponent implements OnInit {
     }
 
     //check for bad password
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/; // 8 characters, 1 uppercase, 1 number, 1 special character
     if (!passwordRegex.test(this.password)) {
       this.badPassword = true;
       return;
@@ -86,30 +86,23 @@ export class SignUpComponent implements OnInit {
       let request : StudentSignupRequest = {
         email: this.email,
         password: this.password,
-        firstName: this.fName,
-        lastName: this.lName,
+        full_name: this.fName + ' ' + this.lName
       };
 
-      this.authenticationService.studentSignup(request).subscribe(id => {
-        this.cookieService.set('userId', id.toString());
-        this.cookieService.set('userType', 'student');
-        this.router.navigate(['/appointments']);
-      });
+      this.authenticationService.studentSignup(request);
+      this.router.navigate(['/login', 'student']);
+
     }
     else
     {
       let request : TutorSignupRequest = {
         email: this.email,
         password: this.password,
-        firstName: this.fName,
-        lastName: this.lName,
+        full_name: this.fName + ' ' + this.lName
       };
 
-      this.authenticationService.tutorSignUp(request).subscribe(id => {
-        this.cookieService.set('userId', id.toString());
-        this.cookieService.set('userType', 'tutor');
-        this.router.navigate(['/profile', id]);
-      });
+      this.authenticationService.tutorSignUp(request);
+      this.router.navigate(['/login', 'tutor']);
     }
   }
 

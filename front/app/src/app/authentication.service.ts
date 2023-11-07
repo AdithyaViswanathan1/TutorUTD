@@ -31,16 +31,14 @@ export class AuthenticationService {
     this.router.navigate(['']);
   }
 
-  studentSignup(user: StudentSignupRequest): Observable<number>
+  studentSignup(user: StudentSignupRequest): void
   {
-    let result = this.httpManager.studentSignup(user);   
-    return result;
+    this.httpManager.studentSignup(user);   
   }
 
-  tutorSignUp(user: TutorSignupRequest): Observable<number>
+  tutorSignUp(user: TutorSignupRequest): void
   {
-    let result = this.httpManager.tutorSignup(user);
-    return result;
+    this.httpManager.tutorSignup(user);
   }
 
   studentLogin(request : StudentLoginRequest) : Observable<number>
