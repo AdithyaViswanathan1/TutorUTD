@@ -7,6 +7,7 @@ from rest_framework import status
 from tutor.serializers import TutorSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from login.models import User
 
 def say_hello(request):
     return HttpResponse('Hello world!!! This is the login endpoint.')
@@ -61,19 +62,23 @@ class TutorProfileEdit(APIView):
             token_key = request.data['token']
             tutor = self.get_tutor_by_token(token_key)
 
-            #if name field is in request.data, then update name separately and give rest of the request to TutorSerializer
-            # if "name"
+            #if name field is in request.data, then update name separately
+            if "full_name" in request.data.keys():
+                #print("FULL NAME", request.data['full_name'])
+                tutor_id = tutor.tutor_id
+                User.objects.filter(id=tutor_id).update(full_name=request.data['full_name'])
 
-            # take all fields in request.data except token and update fields in tutor table with given user_id
-            data = self.without_keys(request.data, "token")
-            # print("Request without token",data)
-            # print("Tutor", tutor.available)
+            # take all fields in request.data except token,full_name and update fields in tutor table with given user_id
+            data = self.without_keys(request.data, ["token","full_name"])
+            print("Request without token and full_name",data)
+            
             serializer = TutorSerializer(tutor, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response({"Success": "Profile Updated"}, status=status.HTTP_201_CREATED)
         except:
-            return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 # run command "python3 manage.py makemigrations" to execute this sql query
 # query to add tutor
