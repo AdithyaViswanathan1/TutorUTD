@@ -18,7 +18,7 @@
             <input class="course-input" *ngIf="addCourse" [(ngModel)]="newCourse">
           </div>
         <div><b>Bio</b></div>
-        <input class="input-box" type="text" id="bio" name="bio" [(ngModel)]="bioInput">
+        <textarea class="textarea-box" id="bio" name="bio" [(ngModel)]="bioInput"></textarea>
         <div class="button-container mt-4">
             <div class="return-button" (click)="cancelChanges()" style="cursor: pointer">Cancel</div>
             <div class="confirm-button" (click)="saveChanges()" style="cursor: pointer">Save</div>

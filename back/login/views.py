@@ -66,8 +66,8 @@ class AuthViewSet(viewsets.GenericViewSet):
             serializer.get_obj_type("student")
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
     @action(methods=['POST',], detail=False)
     def tutor_register(self, request):
@@ -76,8 +76,8 @@ class AuthViewSet(viewsets.GenericViewSet):
             serializer.get_obj_type("tutor")
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     # from rest_framework.permissions import IsAuthenticated
     # permission_classes = [IsAuthenticated]
