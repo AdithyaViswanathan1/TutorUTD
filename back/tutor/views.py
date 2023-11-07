@@ -42,6 +42,8 @@ class TutorProfile(APIView):
         token_key = request.data['token']
         tutor = self.get_tutor_by_token(token_key)
         serializer = TutorSerializer(tutor)
+        name = User.objects.get(id=tutor.tutor_id).full_name
+        print("FULL NAME GET", name, type(serializer.data))
         return Response(serializer.data)
 
 class TutorProfileEdit(APIView):
@@ -71,7 +73,7 @@ class TutorProfileEdit(APIView):
             # take all fields in request.data except token,full_name and update fields in tutor table with given user_id
             data = self.without_keys(request.data, ["token","full_name"])
             print("Request without token and full_name",data)
-            
+
             serializer = TutorSerializer(tutor, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save()

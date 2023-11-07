@@ -3,7 +3,7 @@ from login.models import User
 
 # Create your models here.
 class Tutor(models.Model):
-    tutor = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True)  # Field name made lowercase.
+    tutor = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True, related_name="user")  # Field name made lowercase.
     total_hours = models.IntegerField(blank=True,default=0)
     subject_list = models.CharField(max_length=1000, blank=True, null=True)
     biography = models.CharField(max_length=1000, blank=True, null=True)
