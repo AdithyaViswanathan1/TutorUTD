@@ -11,4 +11,5 @@ export interface Tutor
     courses: string[];
     appointments?: Appointment[];
     tutorSchedule?: string[];
+    biography: string;
 }

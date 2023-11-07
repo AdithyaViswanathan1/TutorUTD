@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from tutor.serializers import TutorSerializer
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 
 def say_hello(request):
     return HttpResponse('Hello world!!! This is the login endpoint.')
@@ -27,32 +28,48 @@ class TutorCreate(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TutorDetail(APIView):
-    def get_tutor_by_pk(self, pk):
+class TutorProfile(APIView):
+    def get_tutor_by_token(self, token):
         try:
-            movie = Tutor.objects.get(pk=pk)
+            userid = Token.objects.filter(key=token).values_list('user_id', flat=True).first()
+            movie = Tutor.objects.get(pk=userid)
             return movie
         except Tutor.DoesNotExist:
-            return Response({"Error": "Movie Does Not Exist"},status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "Tutor Does Not Exist"},status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request, pk):
-        print("I AM", request.user.full_name)
-        movie = self.get_tutor_by_pk(pk)
-        serializer = TutorSerializer(movie)
+    def get(self, request):
+        token_key = request.data['token']
+        tutor = self.get_tutor_by_token(token_key)
+        serializer = TutorSerializer(tutor)
         return Response(serializer.data)
+
+class TutorProfileEdit(APIView):
+    def get_tutor_by_token(self, token):
+        try:
+            userid = Token.objects.filter(key=token).values_list('user_id', flat=True).first()
+            movie = Tutor.objects.get(pk=userid)
+            return movie
+        except Tutor.DoesNotExist:
+            return Response({"Error": "Tutor Does Not Exist"},status=status.HTTP_404_NOT_FOUND)
     
-    def put(self, request, pk):
-        movie = self.get_tutor_by_pk(pk)
-        serializer = TutorSerializer(movie, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk):
-        movie = self.get_tutor_by_pk(pk)
-        movie.delete()
-        return Response({"Response": "Successfully deleted record"},status=status.HTTP_204_NO_CONTENT)
+    def without_keys(self, d, keys):
+        return {x: d[x] for x in d if x not in keys}
+
+    def put(self, request):
+        try:
+            print(type(request))
+            token_key = request.data['token']
+            tutor = self.get_tutor_by_token(token_key)
+            # take all fields in request.data except token and update fields in tutor table with given user_id
+            data = self.without_keys(request.data, "token")
+            # print("Request without token",data)
+            # print("Tutor", tutor.available)
+            serializer = TutorSerializer(tutor, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"Success": "Profile Updated"}, status=status.HTTP_201_CREATED)
+        except:
+            return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 # run command "python3 manage.py makemigrations" to execute this sql query
 # query to add tutor

@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
-import { SignUpRequest } from '../models/SignUpRequest';
 import { StudentSignupRequest } from '../models/StudentSignupRequest';
 import { TutorSignupRequest } from '../models/TutorSignupRequest';
 import { CookieService } from 'ngx-cookie-service';
@@ -11,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   isStudent: boolean = true;
   missingFields: boolean = false;
   badPassword: boolean = false;
@@ -33,6 +32,21 @@ export class SignUpComponent {
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
     });
+  }
+
+  ngOnInit(): void {
+    if(this.authenticationService.isAuthenticated())
+    {
+      let userType = this.cookieService.get('userType');
+      if(userType == 'student')
+      {
+        this.router.navigate(['/appointments']);
+      }
+      else if(userType == 'tutor')
+      {
+        this.router.navigate(['/profile', this.cookieService.get('userId')]);
+      }
+    }
   }
 
   signUp() {

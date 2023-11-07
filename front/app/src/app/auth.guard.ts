@@ -7,9 +7,10 @@ export const canActivate: CanActivateFn = (route: ActivatedRouteSnapshot, state:
   if(inject(AuthenticationService).isAuthenticated())
   {
     if (route.url.toString().includes('search') && inject(CookieService).get('userType') === 'tutor') {
-      inject(Router).navigate(['']);
+      inject(Router).navigate(['profile', inject(CookieService).get('userId')]);
       return false;
     }
+
     return true;
   }
   else
