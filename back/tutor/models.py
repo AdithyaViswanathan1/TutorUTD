@@ -18,3 +18,10 @@ class Tutor(models.Model):
     
     def __str__(self):
         return f'{self.tutor.first_name + " " + self.tutor.last_name}. Subjects: {self.subject_list}'
+
+class TutorAvail(models.Model):
+    tutor = models.ForeignKey(Tutor,on_delete=models.CASCADE)
+    time = models.CharField(max_length=500, blank=True, null=False)
+
+    def __str__(self):
+        return f"{self.tutor} - {self.time}"
