@@ -25,9 +25,8 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(verbose_name='email address', max_length=100, unique=True)
-    first_name = models.CharField(verbose_name='First Namee', max_length=255, blank=True, null=False)
-    last_name = models.CharField(verbose_name='Last Name', max_length=255, blank=True, null=False)
     password = models.CharField(verbose_name='Password', max_length=100, blank=True, null=False)
+    full_name = models.CharField(verbose_name='Full Name', max_length=255, blank=True, null=False)
     
     #to discern if the user is a student or tutor
     USER_TYPE_CHOICES = (('student', 'Student'), ('tutor', 'Tutor'))
