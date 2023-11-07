@@ -1,7 +1,10 @@
 from rest_framework import serializers
-from tutor.models import Tutor
+from tutor.models import Tutor, TutorAvail
 from login.models import User
 from login.serializers import UserSerializer
+
+class EmptySerializer(serializers.Serializer):
+    pass
 
 class TutorSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('user_info')
@@ -33,3 +36,14 @@ class TutorSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError("ERROR: Full Name should include first and last name separated by a space")
     #     else:
     #         return value
+
+class TutorAvailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TutorAvail
+        fields = "__all__"
+
+
+class GetProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tutor
+        fields = ('tutor_id','total_hours','full_name')

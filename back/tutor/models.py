@@ -4,13 +4,13 @@ from login.models import User
 # Create your models here.
 class Tutor(models.Model):
     tutor = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True, related_name="user")  # Field name made lowercase.
-    total_hours = models.IntegerField(blank=True,default=0)
-    subject_list = models.CharField(max_length=1000, blank=True, null=True)
-    biography = models.CharField(max_length=1000, blank=True, null=True)
-    hours = models.CharField(max_length=1000, blank=True, null=True)
-    profile_picture = models.CharField(max_length=1000, blank=True, null=True)
-    background_checked = models.BooleanField(blank=True, default=False)
-    available = models.BooleanField(blank=True, default=False)
+    total_hours = models.IntegerField(verbose_name="Total Hours Completed", blank=True,default=0)
+    subject_list = models.CharField(verbose_name="Subject List", max_length=1000, blank=True, null=True)
+    biography = models.CharField(verbose_name="Biography", max_length=1000, blank=True, null=True)
+    hours = models.CharField(verbose_name="Available Times", max_length=1000, blank=True, null=True)
+    profile_picture = models.CharField(verbose_name="Profile Picture", max_length=1000, blank=True, null=True)
+    background_checked = models.BooleanField(verbose_name="Background Check Complete", blank=True, default=False)
+    available = models.BooleanField(verbose_name="Is Available?", blank=True, default=False)
 
     class Meta:
         managed = True
