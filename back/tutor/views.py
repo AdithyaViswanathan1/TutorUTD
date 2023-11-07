@@ -60,6 +60,10 @@ class TutorProfileEdit(APIView):
             print(type(request))
             token_key = request.data['token']
             tutor = self.get_tutor_by_token(token_key)
+
+            #if name field is in request.data, then update name separately and give rest of the request to TutorSerializer
+            # if "name"
+
             # take all fields in request.data except token and update fields in tutor table with given user_id
             data = self.without_keys(request.data, "token")
             # print("Request without token",data)
