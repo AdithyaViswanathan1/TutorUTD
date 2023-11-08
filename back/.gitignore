@@ -1,5 +1,6 @@
 # Ignore Python cache files
 */__pycache__/
+*/migrations/__pycache__/
 
 # Ignore secrets file
 secrets.json

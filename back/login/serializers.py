@@ -27,8 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         print(validated_data)
         user = User(
             email=validated_data['email'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            full_name=validated_data['full_name']
         )
         user.set_password(validated_data['password'])
         user.user_type = self.my_type
@@ -63,7 +62,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'user_type', 'auth_token')
+        fields = ('id', 'email', 'full_name', 'user_type', 'auth_token')
         read_only_fields = ('id', 'user_type',)
     
     def get_auth_token(self, obj):
@@ -78,7 +77,7 @@ class EmptySerializer(serializers.Serializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = user
-        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'user_type')
+        fields = ('id', 'email', 'password', 'full_name', 'user_type')
 
     def validate_email(self, value):
         user = User.objects.filter(email=value)
@@ -94,7 +93,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = user
-        fields = ('id', 'email', 'password', 'first_name', 'last_name')
+        fields = ('id', 'email', 'password', 'full_name')
         
         def create(self, validated_data):
             user = User(
@@ -107,7 +106,7 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
 class TutorRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = user
-        fields = ('id', 'email', 'password', 'first_name', 'last_name')
+        fields = ('id', 'email', 'password', 'full_name')
         
         def create(self, validated_data):
             user = User(
