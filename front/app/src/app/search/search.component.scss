@@ -1,9 +1,56 @@
 .page-container
 {
     display: flex;
-    justify-content: center;
+    align-items: center;
     flex-direction: column;
     margin-left: 5rem;
+}
+
+.search-container
+{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.field-row
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+}
+
+.field-label
+{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-wrap: nowrap;
+}
+
+.input-field
+{
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #000;
+}
+
+.search-button
+{
+    background-color: var(--positiveButton);
+    border-radius: 1px;
+    color: black;
+    cursor: pointer;
+    height: 50px;
+    width: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-left: 1rem;
+
 }
 
 hr

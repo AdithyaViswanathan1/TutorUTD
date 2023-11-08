@@ -1,2 +1,13 @@
 <app-navbar></app-navbar>
-<p>search works!</p>
+<div class="page-container">
+    <div class="header-text my-3">Tutor Search</div>
+    <form (ngSubmit)="search()" class="search-container">
+        <div class="field-row">
+            <div class="field-label">Class Prefix</div>
+            <input type="text" class="input-field form-control" [(ngModel)]="classPrefix" name="classPrefix" style="margin-right: 30px;">
+            <div class="field-label">Class Number</div>
+            <input type="text" class="input-field form-control" [(ngModel)]="classNumber" name="classNumber">
+        </div>
+        <div class="field-row"></div>
+    </form>
+</div>

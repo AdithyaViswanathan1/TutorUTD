@@ -13,6 +13,9 @@ export class SearchComponent implements OnInit{
   
   searchString: string = '';
   results: Tutor[] = [];
+  classPrefix: string = '';
+  classNumber: string = '';
+  tutorName: string = '';
 
   noResults: boolean = false;
 
@@ -35,6 +38,11 @@ export class SearchComponent implements OnInit{
         this.noResults = true;
       }
     }));
+  }
+
+  search() : void
+  {
+
   }
 
 }
