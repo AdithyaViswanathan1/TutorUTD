@@ -9,6 +9,7 @@ import { StudentLoginRequest } from './models/StudentLoginRequest';
 import { Observable, of } from 'rxjs';
 import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
+import { LoginResponse } from './models/LoginResponse';
 
 
 @Injectable({
@@ -30,22 +31,20 @@ export class httpManager {
           res => console.log(res));
     }
 
-    tutorLogin(user: TutorLoginRequest) : Observable<number>
+    tutorLogin(user: TutorLoginRequest) : Observable<LoginResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(0);
+        return this.http.post<LoginResponse>(this.backendUrl + "login/tutor_login/", user);
     }
 
-    studentSignup(user: StudentSignupRequest) : Observable<number>
+    studentSignup(user: StudentSignupRequest) : void
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(1);
+      this.http.post(this.backendUrl + "login/student_register/", user).subscribe(
+        res => console.log(res));
     }
 
-    studentLogin(user: StudentLoginRequest) : Observable<number>
+    studentLogin(user: StudentLoginRequest) : Observable<LoginResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(1);
+        return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
     }
 
     getTutor(id: number) : Observable<Tutor>
