@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Student
 from . import serializers as ota_serializers
+from appointments.models import AppointmentManager
 from tutor.models import Tutor
 
 class StudentViewSet(viewsets.GenericViewSet):
@@ -16,28 +17,40 @@ class StudentViewSet(viewsets.GenericViewSet):
         'get_tutors': ota_serializers.GetTutors,
         'cancel_appointment': ota_serializers.CancelAppointment,
         'add_favorite_tutor': ota_serializers.AddFavoriteTutor,
+        'remove_favorite_tutor': ota_serializers.RemoveFavoriteTutor
     }
-    
-    @action(methods=['POST'], detail=True)
-    def add_hours(self, request):
-        return Response('This is a placeholder.')
     
     @action(methods=['POST'], detail=False)
     def make_appointment(self, request):
         serializer = self.get_serializer(data=request.data)
-        return Response('This is a placeholder.')
+        try:
+            serializer.validate(request.data)
+        except drf_serializers.ValidationError as e:
+            return Response('Failed to make appointment: ' + e.detail[0])
+        return Response(request.data)
 
     @action(methods=['POST'], detail=True)
     def cancel_appointment(self, request):
+        serializer = self.get_serializer(data=request.data)
         return Response('This is a placeholder.')
 
-    @action(methods=['GET'], detail=False)
+    # Need to accept information from the client to filter through which
+    # tutors to get. Hence, this must be a POST to accept data,
+    # but this will not make any changes in the database.
+    @action(methods=['GET', 'POST'], detail=False)
     def get_tutors(self, request):
+        serializer = self.get_serializer(data=request.data)
         return Response('This is a placeholder.')
 
-    @action(methods=['POST'], detail=True)
+    @action(methods=['POST'], detail=False)
     def add_favorite_tutor(self, request):
+        serializer = self.get_serializer(data=request.data)
         return Response('This is a placeholder.')
+    
+    @action(methods=['POST'], detail=False)
+    def remove_favorite_tutor(self, request):
+        serializer = self.get_serializer(data=request.data)
+        return Response('This is a placeholder')
     
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):

@@ -57,7 +57,7 @@ class AuthViewSet(viewsets.GenericViewSet):
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key}, status=status.HTTP_200_OK)
 
-            return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
     
     @action(methods=['POST',], detail=False)
     def student_register(self, request):
@@ -84,13 +84,13 @@ class AuthViewSet(viewsets.GenericViewSet):
     @action(methods=['POST',], detail=False)
     #@permission_classes([IsAuthenticated])
     def logout(self,request):
-        if request.method == 'POST':
-            try:
-                # Delete the user's token to logout
-                request.user.auth_token.delete()
-                return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
-            except Exception as e:
-                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # if request.method == 'POST':
+        try:
+            # Delete the user's token to logout
+            request.user.auth_token.delete()
+            return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def get_serializer_class(self):
