@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.viewsets import ModelViewSet
-from .models import Tutor, TutorAvail
+from .models import Tutor, TutorAvail, TutorSubjects
 from rest_framework.response import Response
 from rest_framework import status
 from tutor.serializers import TutorSerializer
@@ -140,6 +140,14 @@ class TutorViewSet(viewsets.GenericViewSet):
             # if it does not, then add it to database with current tutor_id
             TutorAvail.objects.create(tutor=tutor,time=time)
             print(f"{time} ADDED to DB")
+    
+    def update_subjects(self, tutor, new_subjects):
+        # Delete current subjects for this tutor
+        TutorSubjects.objects.filter(tutor_id=tutor.tutor_id).delete()
+        # Add new subjects to the database (for this tutor)
+        for subject in new_subjects:
+            TutorSubjects.objects.create(tutor=tutor,subject=subject)
+            print(f"{subject} ADDED to DB")
 
     # API CALLS
     @action(methods=['GET',], detail=False)
@@ -147,8 +155,6 @@ class TutorViewSet(viewsets.GenericViewSet):
         token_key = request.data['token']
         tutor = self.get_tutor_by_token(token_key)
         serializer = TutorSerializer(tutor)
-        name = User.objects.get(id=tutor.tutor_id).full_name
-        print("FULL NAME GET", name, type(serializer.data))
         return Response(serializer.data)
 
     @action(methods=['PUT',], detail=False)
@@ -168,11 +174,13 @@ class TutorViewSet(viewsets.GenericViewSet):
                 new_times = request.data['hours']
                 self.update_times(tutor, new_times)
 
-                
+            if "subject_list" in request.data.keys() and request.data['subject_list'] != None:
+                new_subjects = request.data['subject_list']
+                self.update_subjects(tutor, new_subjects)
 
             # take all fields in request.data except token,full_name and update fields in tutor table with given user_id
-            data = self.without_keys(request.data, ["token","full_name","hours"])
-            print("Request without token and full_name and hours",data)
+            data = self.without_keys(request.data, ["token","full_name","hours", "subject_list"])
+            print("Request without token, full_name, hours, subject_list",data)
 
             serializer = TutorSerializer(tutor, data=data, partial=True)
             if serializer.is_valid():
