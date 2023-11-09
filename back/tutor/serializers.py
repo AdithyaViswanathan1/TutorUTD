@@ -8,16 +8,21 @@ class EmptySerializer(serializers.Serializer):
 
 class TutorSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('user_info')
+    times = serializers.SerializerMethodField('available_times')
 
     def user_info(self, obj): 
         # print ('selffff   ', serializers)
         prof_obj = User.objects.get(id=obj.tutor_id)
-        return {'full_name':prof_obj.full_name}
+        return prof_obj.full_name
+    
+    def available_times(self, obj):
+        times = TutorAvail.objects.filter(tutor_id=obj.tutor_id).values_list('time', flat=True)
+        return times
     
     class Meta:
         model = Tutor
         #fields = '__all__'
-        fields = ('tutor_id','user','total_hours','subject_list','biography','hours','profile_picture','background_checked','available')
+        fields = ('tutor_id','user', 'times', 'total_hours','subject_list','biography', 'profile_picture','background_checked','available')
 
     # def validate(self,data):
     #     if data['name'] == data['description']:
