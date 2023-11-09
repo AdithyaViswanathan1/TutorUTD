@@ -43,11 +43,6 @@ def get_secret(setting, secrets=secrets):
 SECRET_KEY = get_secret('SECRET_KEY')
 
 DATABASES = {
-    #just for testing, delete later
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': 'mydatabase',
-    
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': get_secret("DB_NAME"),
@@ -57,6 +52,11 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+#DUO Settings
+CLIENT_ID = get_secret('CLIENT_ID')
+CLIENT_SECRET = get_secret('CLIENT_SECRET')
+API_HOSTNAME = get_secret('API_HOSTNAME')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -76,8 +76,6 @@ INSTALLED_APPS = [
     'student',
     'tutor',
     'appointments',
-    #new!! delete later?
-    #'corsheaders',  #accept request from other origins
     'rest_framework.authtoken',
 ]
 
@@ -177,5 +175,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #new!! maybe delete later
 AUTH_USER_MODEL = 'login.User'  #user database comes from what model.py
-#CORS_ORIGIN_ALLOW_ALL = False   #True --> all origins accepted; False --> on a list
-#CORS_ORIGIN_WHITELIST = ('http://localhost:8000',)  #list of origins authorized to make cross-site HTTPS requests
