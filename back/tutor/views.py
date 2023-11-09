@@ -125,6 +125,13 @@ class TutorViewSet(viewsets.GenericViewSet):
             return movie
         except Tutor.DoesNotExist:
             return Response({"Error": "Tutor Does Not Exist"},status=status.HTTP_404_NOT_FOUND)
+    
+    def get_tutor_by_id(self, userid):
+        try:
+            movie = Tutor.objects.get(pk=userid)
+            return movie
+        except Tutor.DoesNotExist:
+            return Response({"Error": "Tutor Does Not Exist"},status=status.HTTP_404_NOT_FOUND)
         
     def without_keys(self, d, keys):
         return {x: d[x] for x in d if x not in keys}
@@ -152,8 +159,8 @@ class TutorViewSet(viewsets.GenericViewSet):
     # API CALLS
     @action(methods=['GET',], detail=False)
     def get_profile(self, request):
-        token_key = request.data['token']
-        tutor = self.get_tutor_by_token(token_key)
+        userid = request.data['id']
+        tutor = self.get_tutor_by_id(userid)
         serializer = TutorSerializer(tutor)
         return Response(serializer.data)
 
@@ -161,8 +168,8 @@ class TutorViewSet(viewsets.GenericViewSet):
     def edit_profile(self, request):
         try:
             print(type(request))
-            token_key = request.data['token']
-            tutor = self.get_tutor_by_token(token_key)
+            userid = request.data['id']
+            tutor = self.get_tutor_by_id(userid)
             tutor_id = tutor.tutor_id
 
             #if name field is in request.data, then update name separately
