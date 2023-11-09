@@ -41,7 +41,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
             if user and user.user_type=="student":
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key}, status=status.HTTP_200_OK)
+                return Response({'token': token.key, "id": user.id}, status=status.HTTP_200_OK)
 
             return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
         
@@ -55,7 +55,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
             if user and user.user_type=="tutor":
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key}, status=status.HTTP_200_OK)
+                return Response({'token': token.key, "id": user.id}, status=status.HTTP_200_OK)
 
             return Response({'error': f'Invalid credentials {email}, {password}'}, status=status.HTTP_401_UNAUTHORIZED)
     
