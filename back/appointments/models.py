@@ -1,21 +1,18 @@
 from django.db import models
 from student.models import *
 from tutor.models import *
+from datetime import datetime
 
 class Appointments(models.Model):
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    tutor_id = models.ForeignKey(Tutor, on_delete=models.CASCADE)
-    date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE)
+    time = models.DateTimeField(null=False, default=datetime.min)
     location = models.CharField(max_length=100)
+    course = models.CharField(max_length=20, null=True, default='None')
 
     class Meta:
         managed = True
         db_table = 'appointments'
 
-class AppointmentManager(models.Manager):
-    def create(self, **kwargs):
-        pass
 
 

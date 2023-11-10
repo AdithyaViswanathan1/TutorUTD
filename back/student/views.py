@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.core.exceptions import ImproperlyConfigured
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework import serializers as drf_serializers
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Student
 from . import serializers as ota_serializers
-from appointments.models import AppointmentManager
+from appointments.models import Appointments
 from tutor.models import Tutor
+
+import json
 
 class StudentViewSet(viewsets.GenericViewSet):
     queryset = Student.objects.all()
@@ -22,12 +24,26 @@ class StudentViewSet(viewsets.GenericViewSet):
     
     @action(methods=['POST'], detail=False)
     def make_appointment(self, request):
-        serializer = self.get_serializer(data=request.data)
         try:
-            serializer.validate(request.data)
+            print(request.data)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            dates = request.data.get('dates')
+            student_id = request.data.get('student_id')
+            tutor_id = request.data.get('tutor_id')
+            student = Student.objects.get(student_id=student_id)
+            tutor = Tutor.objects.get(tutor_id=tutor_id)
+            for date in dates:
+                Appointments.objects.create(student=student, 
+                                           tutor=tutor,
+                                           time=date,
+                                           location=request.data.get('location'),
+                                           course=request.data.get('course'))
+            return Response(status=status.HTTP_201_CREATED, data='Created successfully.')
+        
         except drf_serializers.ValidationError as e:
-            return Response('Failed to make appointment: ' + e.detail[0])
-        return Response(request.data)
+            return Response(status=status.HTTP_400_BAD_REQUEST, data='Failed to make appointment: ' + str(e))
 
     @action(methods=['POST'], detail=True)
     def cancel_appointment(self, request):

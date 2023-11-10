@@ -1,51 +1,67 @@
 
 from rest_framework import serializers
-from datetime import date, datetime
+from rest_framework.authtoken.models import Token
+from student.models import Student
+from tutor.models import Tutor
+from datetime import datetime
 
 class MakeAppointment(serializers.Serializer):
-    token = serializers.HiddenField(default='')
+    student_id = serializers.IntegerField(required=True)
     tutor_id = serializers.IntegerField(required=True)
-    start_time = serializers.TimeField(required=True)
-    end_time = serializers.TimeField(required=True)
-    date = serializers.DateField(required=True)
-    location = serializers.CharField(max_length=100, default='online', required=False)
+    dates = serializers.ListField(required=True, child=serializers.DateTimeField(required=True, 
+                                                                  input_formats=["%Y-%m-%dThh:mm", "iso-8601"]))
+    location = serializers.CharField(max_length=20, default='online', required=False)
+    course = serializers.CharField(max_length=20, default='', required=False)
 
     class Meta:
-        fields = ('token', 'tutor_id', 'start_time', 'end_time', 'date', 'location')
-    
-    # validates the date. the date passed in will be compared with today's date. 
-    # if it occurs before, then it is invalid
-    def _validate_date(self, data):
-        date_obj = datetime.strptime(data, '%Y-%m-%d').date()
-        return date_obj >= date.today()
+        fields = ('student_id', 'tutor_id', 'dates', 'location')
 
-    # takes in the time that the user passes in as well as
-    # the validated date from above
-    def _validate_time(self, *argv):
-        if argv is None:
-            return -1
+    def _validate_date(self, request: datetime):
+        today = datetime.today().date()
+        return request.date() >= today
+    
+    # the date has already been validated at this point
+    def _validate_time(self, request: datetime):
+        if (datetime.today().date() == request.date()):
+            return request.time() > datetime.now().time()
+        # the time passed in is just a start time, so any start time after today should be valid
+        return True
+
+    def _validate_times(self, requested_dates: list[datetime]):
+        if not requested_dates:
+            raise serializers.ValidationError(detail="No dates specified.")
         
-        # argv = [start_time, end_time, date]
-        start_time = datetime.strptime(argv[0], '%H:%M').time() 
-        end_time = datetime.strptime(argv[1], '%H:%M').time()
-        date_obj = datetime.strptime(argv[2], '%Y-%m-%d').date()
+        invalid_dates = []
+        for request in requested_dates:
+            if not self._validate_date(request):
+                invalid_dates.append(request)
+            elif not self._validate_time(request):
+                invalid_dates.append(request)
         
-        if date_obj == date.today():
-            return start_time > datetime.now().replace(second=0, microsecond=0).time() and end_time > start_time
-        return end_time > start_time
+        if invalid_dates:
+            msg = 'The following times were invalid: '
+            for date in invalid_dates:
+                msg += str(date) + ', '
+            msg = msg[0:len(msg)-2]
+            raise serializers.ValidationError(detail=msg)
+
+        
+    def _validate_tutor(self, tutor_id):
+        if tutor_id < 0:
+            raise serializers.ValidationError(detail='Invalid tutor ID: '+ str(tutor_id))
+        try:
+            Tutor.objects.get(tutor_id=tutor_id)
+        except Tutor.DoesNotExist:
+            raise serializers.ValidationError('Tutor could not be found')
+        
     
     def validate(self, data):
-        if int(data['tutor_id']) < 0:
-            raise serializers.ValidationError(detail='Invalid tutor ID: '+ data['tutor_id'])
-        print(data)
-        if not self._validate_date(data['date']):
-            raise serializers.ValidationError(detail='Invalid date provided. Must be on or after ' + str(date.today()))
-        if not self._validate_time(data['start_time'], data['end_time'], data['date']): 
-            raise serializers.ValidationError(detail='Invalid time received. Start time is ' + data['start_time'] + \
-                                              ' and End time is ' + data['end_time'])
-        # NYI, validate the token
-        # if data['token'] == '':
-        #     raise serializers.ValidationError(detail='No token received, please log in to the system.')
+        try:
+            self._validate_tutor(data['tutor_id'])
+            self._validate_times(data['dates'])
+        except serializers.ValidationError as e:
+            raise e 
+        
         return data
 
 class AddFavoriteTutor(serializers.Serializer):
