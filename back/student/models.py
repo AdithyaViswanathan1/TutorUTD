@@ -23,7 +23,3 @@ class Favorite_Tutors(models.Model):
     class Meta:
         managed = True
         db_table = 'favorite_tutors'
-
-class Favorite_Tutors_Manager(models.Model):
-    def create(self):
-        pass
