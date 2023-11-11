@@ -34,8 +34,10 @@ class User(AbstractUser):
     USER_TYPE_CHOICES = (('student', 'Student'), ('tutor', 'Tutor'))
     user_type = models.CharField(default='student', max_length=7, choices=USER_TYPE_CHOICES)
     
+    #for Duo
+    duo_data = models.JSONField(null=True, blank=True)
+    
     USERNAME_FIELD = 'email'
-    #REQUIRED_FIELDS = [first_name, last_name, password, user_type]
     REQUIRED_FIELDS = []
 
     objects = UserManager()
