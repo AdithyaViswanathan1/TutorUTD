@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { httpManager } from './httpManager';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

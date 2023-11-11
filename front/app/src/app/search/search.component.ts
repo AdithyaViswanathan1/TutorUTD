@@ -31,9 +31,14 @@ export class SearchComponent implements OnInit{
    }
   
   ngOnInit(): void {
+    if(this.searchString == undefined)
+    {
+      return;
+    }
     this._subs.add(this.searchService.search(this.searchString).subscribe(res => {
       this.results = res;
-      if(this.results.length == 0 && this.searchString != '')
+      console.log(this.results);
+      if(this.results.length == 0 && this.searchString == undefined)
       {
         this.noResults = true;
       }
@@ -42,7 +47,17 @@ export class SearchComponent implements OnInit{
 
   search() : void
   {
+    if(this.classPrefix == '' && this.classNumber == '' && this.tutorName == '')
+    {
+      return;
+    }
+    this.searchString = this.classPrefix + "+" + this.classNumber + "+" + this.tutorName;
+    this.router.navigate(['/search', this.searchString]);
+  }
 
+  toTutorProfile(id : number)
+  {
+    this.router.navigate(['/profile', id]);
   }
 
 }

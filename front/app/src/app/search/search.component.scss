@@ -3,14 +3,13 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-left: 5rem;
+    margin-inline: 5rem;
 }
 
 .search-container
 {
     display: flex;
-    flex-direction: column;
-    width: 70%;
+    flex-direction: row;
 }
 
 .field-row
@@ -37,25 +36,71 @@
     border: 1px solid #000;
 }
 
-.search-button
+.search-btn
 {
-    background-color: var(--positiveButton);
-    border-radius: 1px;
-    color: black;
+    background-color: #0082FA;
+    color: whitesmoke;
+    border: none;
     cursor: pointer;
-    height: 50px;
-    width: 125px;
+    height: 85px;
+    width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-left: 1rem;
 
 }
 
+.view-profile-btn
+{
+    background-color: gainsboro;
+    color: black;
+    border: none;
+    cursor: pointer;
+    height: 110px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-left: 1rem;
+    font-size: 25px;
+    margin-left: auto;
+}
+
+.results-container
+{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.result-card
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: 120px
+}
+
+.profile-pic
+{
+    height: 110px;
+    width: 110px;
+    margin-right: 25px;
+}
+
+.result-text
+{
+    font-size: 24px;
+    color: black;
+}
+
 hr
 {
-    width: 650px;
+    width: 100%;
     border: 1px solid #000;
     margin-top: 1rem;
     margin-bottom: 1rem;
