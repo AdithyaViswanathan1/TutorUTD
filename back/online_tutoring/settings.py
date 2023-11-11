@@ -179,3 +179,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'login.User'  #user database comes from what model.py
 #CORS_ORIGIN_ALLOW_ALL = False   #True --> all origins accepted; False --> on a list
 #CORS_ORIGIN_WHITELIST = ('http://localhost:8000',)  #list of origins authorized to make cross-site HTTPS requests
+
+STATIC_URL = '/static/'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+AWS_S3_ACCESS_KEY_ID = 'AKIA2WZJRS6RYAOJF44B'
+
+AWS_S3_SECRET_ACCESS_KEY = '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'
+
+AWS_STORAGE_BUCKET_NAME = 'ota-pics'
+
+AWS_QUERYSTRING_AUTH = False

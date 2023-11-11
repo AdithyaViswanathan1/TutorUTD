@@ -27,7 +27,7 @@ class TutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutor
         #fields = '__all__'
-        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','subject_list','biography', 'profile_picture','background_checked','available')
+        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available')
 
     # def validate(self,data):
     #     if data['name'] == data['description']:
