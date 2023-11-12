@@ -59,6 +59,13 @@ export class httpManager {
         return of(this.dummyStudent);
     }
 
+    search(searchString : string) : Observable<Tutor[]>
+    {
+        //return this.http.get(this.backendUrl + '/' + searchString);
+        let res = [this.dummyTutor];
+        return of(res);
+    }
+
 
     dummyTutor : Tutor = {
         tutorId: 0,
