@@ -7,14 +7,11 @@ import { of } from 'rxjs';
 })
 export class SearchService {
 
-  manager: httpManager;
-
-  constructor(httpManager: httpManager) {
-    this.manager = httpManager;
+  constructor(private httpManager: httpManager) {
    }
 
   search(searchString : string)
   {
-    return this.manager.search(searchString);
+    return this.httpManager.search(searchString);
   }
 }

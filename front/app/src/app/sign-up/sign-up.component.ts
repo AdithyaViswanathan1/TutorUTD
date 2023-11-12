@@ -62,7 +62,7 @@ export class SignUpComponent implements OnInit {
     }
 
     //check for bad password
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/; // 8 characters, 1 uppercase, 1 number, 1 special character
     if (!passwordRegex.test(this.password)) {
       this.badPassword = true;
       return;
@@ -86,30 +86,28 @@ export class SignUpComponent implements OnInit {
       let request : StudentSignupRequest = {
         email: this.email,
         password: this.password,
-        firstName: this.fName,
-        lastName: this.lName,
+        full_name: this.fName + ' ' + this.lName
       };
 
-      this.authenticationService.studentSignup(request).subscribe(id => {
-        this.cookieService.set('userId', id.toString());
-        this.cookieService.set('userType', 'student');
-        this.router.navigate(['/appointments']);
-      });
+      this.authenticationService.studentSignup(request).subscribe(z =>
+        {
+          this.cookieService.set('duoQrUrl', z.enroll_url);
+          this.router.navigate(['/duo', 'student']);
+        });
     }
     else
     {
       let request : TutorSignupRequest = {
         email: this.email,
         password: this.password,
-        firstName: this.fName,
-        lastName: this.lName,
+        full_name: this.fName + ' ' + this.lName
       };
 
-      this.authenticationService.tutorSignUp(request).subscribe(id => {
-        this.cookieService.set('userId', id.toString());
-        this.cookieService.set('userType', 'tutor');
-        this.router.navigate(['/profile', id]);
-      });
+      this.authenticationService.tutorSignUp(request).subscribe(z =>
+        {
+          this.cookieService.set('duoQrUrl', z.enroll_url);
+          this.router.navigate(['/duo', 'tutor']);
+        });
     }
   }
 
@@ -119,12 +117,14 @@ export class SignUpComponent implements OnInit {
     {
       this.cookieService.set('userId', '1');
       this.cookieService.set('userType', 'student');
+      this.cookieService.set('authToken', '7027feb40e88ec1b8b5f53575fe69c2442ac8464');
       this.router.navigate(['/appointments']);
     }
     else
     {
       this.cookieService.set('userId', '0');
       this.cookieService.set('userType', 'tutor');
+      this.cookieService.set('authToken', '7027feb40e88ec1b8b5f53575fe69c2442ac8464');
       this.router.navigate(['/profile/0']);
     }
   }
