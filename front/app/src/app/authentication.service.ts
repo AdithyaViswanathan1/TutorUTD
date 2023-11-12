@@ -28,10 +28,6 @@ export class AuthenticationService {
     return true;
   }
 
-  getDuoQrUrl() : string {
-    return this.duoQrUrl;
-  }
-
   logout()
   {
     this.cookieService.delete('userId');
@@ -42,42 +38,24 @@ export class AuthenticationService {
   studentSignup(user: StudentSignupRequest): Observable<RegisterResponse>
   {
     let result = this.httpManager.studentSignup(user);   
-    result.subscribe(z => {
-      this.duoQrUrl = z.enroll_url;
-    });
     return result;
   }
 
   tutorSignUp(user: TutorSignupRequest): Observable<RegisterResponse>
   {
     let result = this.httpManager.tutorSignup(user);   
-    result.subscribe(z => {
-      this.duoQrUrl = z.enroll_url;
-    });
     return result;
   }
 
   studentLogin(request : StudentLoginRequest) : Observable<LoginResponse>
   {
     let result = this.httpManager.studentLogin(request);
-    result.subscribe(z => {
-      if(z.enroll_url)
-      {
-        this.duoQrUrl = z.enroll_url;
-      }
-    });
     return result;
   }
 
   tutorLogin(request : TutorLoginRequest) : Observable<LoginResponse>
   {
     let result = this.httpManager.tutorLogin(request);
-    result.subscribe(z => {
-      if(z.enroll_url)
-      {
-        this.duoQrUrl = z.enroll_url;
-      }
-    });
     return result;
   }
 }

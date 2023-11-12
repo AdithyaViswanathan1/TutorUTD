@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService.studentLogin(request).subscribe(response => {
         if(response.enroll_url)
         {
+          this.cookieService.set('duoQrUrl', response.enroll_url);
           this.router.navigate(['duo', 'student']);
         }
         if(response.user_id)
@@ -86,6 +87,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService.tutorLogin(request).subscribe(response => {
         if(response.enroll_url)
         {
+          this.cookieService.set('duoQrUrl', response.enroll_url);
           this.router.navigate(['duo', 'tutor']);
         }
         if(response.user_id)

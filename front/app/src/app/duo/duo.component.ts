@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-duo',
@@ -16,7 +17,8 @@ export class DuoComponent implements OnInit{
   constructor(
     private route : ActivatedRoute,
     private router : Router,
-    private authService : AuthenticationService
+    private authService : AuthenticationService,
+    private cookieService: CookieService
   ){
     this.route.params.subscribe(params => {
       this.isStudent = params['userType'] == 'student';
@@ -24,7 +26,8 @@ export class DuoComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.qrUrl = this.authService.getDuoQrUrl();
+    this.qrUrl = this.cookieService.get('duoQrUrl');
+    //this.qrUrl = this.authService.getDuoQrUrl();
     if(this.qrUrl == undefined || this.qrUrl == '')
     {
       //this.router.navigate(['']);
