@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
 import { LoginResponse } from './models/LoginResponse';
+import { RegisterResponse } from './models/RegisterResponse';
 
 
 @Injectable({
@@ -24,11 +25,10 @@ export class httpManager {
         this.http = httpClient;
     }
 
-    tutorSignup(user: TutorSignupRequest) : void
+    tutorSignup(user: TutorSignupRequest) : Observable<RegisterResponse>
     {
         //todo: return http status code
-        this.http.post(this.backendUrl + "login/tutor_register/", user).subscribe(
-          res => console.log(res));
+        return this.http.post<RegisterResponse>(this.backendUrl + "login/tutor_register/", user)
     }
 
     tutorLogin(user: TutorLoginRequest) : Observable<LoginResponse>
@@ -36,10 +36,9 @@ export class httpManager {
         return this.http.post<LoginResponse>(this.backendUrl + "login/tutor_login/", user);
     }
 
-    studentSignup(user: StudentSignupRequest) : void
+    studentSignup(user: StudentSignupRequest) : Observable<RegisterResponse>
     {
-      this.http.post(this.backendUrl + "login/student_register/", user).subscribe(
-        res => console.log(res));
+      return this.http.post<RegisterResponse>(this.backendUrl + "login/student_register/", user)
     }
 
     studentLogin(user: StudentLoginRequest) : Observable<LoginResponse>

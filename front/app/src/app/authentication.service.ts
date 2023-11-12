@@ -7,12 +7,16 @@ import { StudentSignupRequest } from './models/StudentSignupRequest';
 import { TutorSignupRequest } from './models/TutorSignupRequest';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { LoginResponse } from './models/LoginResponse';
+import { RegisterResponse } from './models/RegisterResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   
+  private duoQrUrl: string = '';
+
   constructor(private httpManager: httpManager, private cookieService: CookieService, private router: Router) { 
   }
 
@@ -24,6 +28,10 @@ export class AuthenticationService {
     return true;
   }
 
+  getDuoQrUrl() : string {
+    return this.duoQrUrl;
+  }
+
   logout()
   {
     this.cookieService.delete('userId');
@@ -31,25 +39,45 @@ export class AuthenticationService {
     this.router.navigate(['']);
   }
 
-  studentSignup(user: StudentSignupRequest): void
+  studentSignup(user: StudentSignupRequest): Observable<RegisterResponse>
   {
-    this.httpManager.studentSignup(user);   
-  }
-
-  tutorSignUp(user: TutorSignupRequest): void
-  {
-    this.httpManager.tutorSignup(user);
-  }
-
-  studentLogin(request : StudentLoginRequest) : Observable<number>
-  {
-    let result = this.httpManager.studentLogin(request);
+    let result = this.httpManager.studentSignup(user);   
+    result.subscribe(z => {
+      this.duoQrUrl = z.enroll_url;
+    });
     return result;
   }
 
-  tutorLogin(request : TutorLoginRequest) : Observable<number>
+  tutorSignUp(user: TutorSignupRequest): Observable<RegisterResponse>
+  {
+    let result = this.httpManager.tutorSignup(user);   
+    result.subscribe(z => {
+      this.duoQrUrl = z.enroll_url;
+    });
+    return result;
+  }
+
+  studentLogin(request : StudentLoginRequest) : Observable<LoginResponse>
+  {
+    let result = this.httpManager.studentLogin(request);
+    result.subscribe(z => {
+      if(z.enroll_url)
+      {
+        this.duoQrUrl = z.enroll_url;
+      }
+    });
+    return result;
+  }
+
+  tutorLogin(request : TutorLoginRequest) : Observable<LoginResponse>
   {
     let result = this.httpManager.tutorLogin(request);
+    result.subscribe(z => {
+      if(z.enroll_url)
+      {
+        this.duoQrUrl = z.enroll_url;
+      }
+    });
     return result;
   }
 }

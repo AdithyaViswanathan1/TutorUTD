@@ -1,4 +1,4 @@
 export interface LoginResponse {
-    user_id: number;
-    auth_token: string;
+    user_id?: number;
+    enroll_url?: string;
 }

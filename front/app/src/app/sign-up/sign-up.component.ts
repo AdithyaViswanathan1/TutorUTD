@@ -89,8 +89,11 @@ export class SignUpComponent implements OnInit {
         full_name: this.fName + ' ' + this.lName
       };
 
-      this.authenticationService.studentSignup(request);
-      this.router.navigate(['/login', 'student']);
+      this.authenticationService.studentSignup(request).subscribe(z =>
+        {
+          this.router.navigate(['/duo', 'student']);
+        });
+      
 
     }
     else
@@ -101,8 +104,10 @@ export class SignUpComponent implements OnInit {
         full_name: this.fName + ' ' + this.lName
       };
 
-      this.authenticationService.tutorSignUp(request);
-      this.router.navigate(['/login', 'tutor']);
+      this.authenticationService.tutorSignUp(request).subscribe(z =>
+        {
+          this.router.navigate(['/duo', 'tutor']);
+        });
     }
   }
 
