@@ -85,7 +85,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: "Sun Nov 05 2023.10:00 AM",
+            time: "Sun Nov 19 2023.10:00 AM",
             subject: 'CS 3377'
           },
           {
@@ -94,7 +94,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: "Wed Nov 08 2023.12:00 PM"
+            time: "Wed Nov 15 2023.12:00 PM"
           },
           {
             appointmentId: 2,
@@ -102,43 +102,39 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: "Thu Nov 02 2023.11:00 AM",
+            time: "Thu Nov 16 2023.11:00 AM",
             subject: 'MATH 3163'
           }
         ],
         tutorSchedule: [
-          "Fri Oct 27 2023.10:00 AM",
-          "Fri Oct 27 2023.11:00 AM",
-          "Fri Oct 27 2023.01:00 PM",
-          "Fri Oct 27 2023.12:00 PM",
-          "Sat Oct 28 2023.10:00 AM",
-          "Sat Oct 28 2023.01:00 PM",
-          "Sat Oct 28 2023.11:00 AM",
-          "Sat Oct 28 2023.12:00 PM",
-          "Tue Oct 31 2023.10:00 AM",
-          "Tue Oct 31 2023.11:00 AM",
-          "Tue Oct 31 2023.02:00 PM",
-          "Tue Oct 31 2023.09:00 AM",
-          "Wed Nov 01 2023.10:00 AM",
-          "Wed Nov 01 2023.08:00 AM",
-          "Wed Nov 01 2023.09:00 AM",
-          "Wed Nov 01 2023.12:00 PM",
-          "Thu Nov 02 2023.10:00 AM",
-          "Thu Nov 02 2023.11:00 AM",
-          "Thu Nov 02 2023.12:00 PM",
-          "Thu Nov 02 2023.01:00 PM",
-          "Sat Nov 04 2023.10:00 AM",
-          "Sat Nov 04 2023.11:00 AM",
-          "Sat Nov 04 2023.12:00 PM",
-          "Sat Nov 04 2023.01:00 PM",
-          "Sun Nov 05 2023.10:00 AM",
-          "Sun Nov 05 2023.11:00 AM",
-          "Sun Nov 05 2023.12:00 PM",
-          "Sun Nov 05 2023.01:00 PM",
-          "Wed Nov 08 2023.10:00 AM",
-          "Wed Nov 08 2023.11:00 AM",
-          "Wed Nov 08 2023.12:00 PM",
-          "Wed Nov 08 2023.01:00 PM"
+          "Fri.10:00 AM",
+          "Fri.11:00 AM",
+          "Fri.01:00 PM",
+          "Fri.12:00 PM",
+          "Sat.10:00 AM",
+          "Sat.01:00 PM",
+          "Sat.11:00 AM",
+          "Sat.12:00 PM",
+          "Tue.10:00 AM",
+          "Tue.11:00 AM",
+          "Tue.02:00 PM",
+          "Tue.09:00 AM",
+          "Wed.10:00 AM",
+          "Wed.08:00 AM",
+          "Wed.09:00 AM",
+          "Wed.12:00 PM",
+          "Thu.10:00 AM",
+          "Thu.11:00 AM",
+          "Thu.12:00 PM",
+          "Thu.01:00 PM",
+          "Sat.10:00 AM",
+          "Sat.11:00 AM",
+          "Sat.12:00 PM",
+          "Sat.01:00 PM",
+          "Sun.10:00 AM",
+          "Sun.11:00 AM",
+          "Sun.12:00 PM",
+          "Sun.01:00 PM"
         ],
         biography: "This is my biography!"
     }
@@ -154,7 +150,7 @@ export class httpManager {
           tutorId: 0,
           tutorName: 'John Smith',
           studentName: 'Jane Doe',
-          time: "Sun Nov 05 2023.10:00 AM",
+          time: "Sun Nov 19 2023.10:00 AM",
           subject: 'CS 3377'
         },
         {
@@ -163,7 +159,7 @@ export class httpManager {
           tutorId: 0,
           tutorName: 'John Smith',
           studentName: 'Jane Doe',
-          time: "Wed Nov 08 2023.12:00 PM"
+          time: "Wed Nov 15 2023.12:00 PM"
         },
         {
           appointmentId: 2,
@@ -171,7 +167,7 @@ export class httpManager {
           tutorId: 0,
           tutorName: 'John Smith',
           studentName: 'Jane Doe',
-          time: "Thu Nov 02 2023.11:00 AM",
+          time: "Thu Nov 16 2023.11:00 AM",
           subject: 'MATH 3163'
         }
       ]

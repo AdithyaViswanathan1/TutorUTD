@@ -25,7 +25,6 @@ export class TimeTableComponent implements OnInit {
   ngOnInit(): void {
     this.initWeek();
     this.initTimes();
-    this.initGrid();
   }
 
   initWeek() {
@@ -38,31 +37,33 @@ export class TimeTableComponent implements OnInit {
   }
 
   initTimes() {
-    for (let hour = 8; hour <= 22; hour++) {
-      if(hour < 12) 
+    for (let hour = 9; hour <= 20; hour++) {
+      for(let minute = 0; minute < 60; minute += 30)
       {
-        const time = `${hour}:00 AM`;
-        this.appointmentTimes.push(time);
-      }
-      else if(hour > 12)
-      {
-        const time = `${hour - 12}:00 PM`;
-        this.appointmentTimes.push(time);
-      }
-      else
-      {
-        const time = `12:00 PM`;
-        this.appointmentTimes.push(time);
-      }
+        let min = minute.toString();
+        if(minute === 0)
+        {
+          min = "00";
+        }
+        if(hour < 12) 
+        {
+          const time = `${hour}:${min} AM`;
+          this.appointmentTimes.push(time);
+        }
+        else if(hour > 12)
+        {
+          const time = `${hour - 12}:${min} PM`;
+          this.appointmentTimes.push(time);
+        }
+        else
+        {
+          const time = `12:${min} PM`;
+          this.appointmentTimes.push(time);
+        }
+      } 
     }
   }
 
-  initGrid() {
-    for(let i = 0; i < this.appointmentTimes.length; i++)
-    {
-
-    }
-  }
 
   previousWeek() {
     this.daysInWeek = this.daysInWeek.map(day => {
@@ -87,7 +88,7 @@ export class TimeTableComponent implements OnInit {
     }
     else if(this.tableType === 1) //if tutor editing schedule
     {
-      const dateTime = `${day.toDateString()}.${time}`;
+      const dateTime = `${day.toDateString().split(' ')[0]}.${time}`;
       if (this.selectedTimes.includes(dateTime)) 
       {
         this.selectedTimes = this.selectedTimes.filter(time => time !== dateTime); //remove the time from the array
@@ -100,7 +101,8 @@ export class TimeTableComponent implements OnInit {
     else if(this.tableType === 2) //if student booking an appointment
     {
       const dateTime = `${day.toDateString()}.${time}`;
-      if(this.selectedTimes.includes(dateTime)) //if time is in tutor schedule
+      const scheduleDate = `${day.toDateString().split(' ')[0]}.${time}`;
+      if(this.selectedTimes.includes(scheduleDate)) //if time is in tutor schedule
       {
         if (this.selectedAppointments.includes(dateTime)) 
         {
@@ -115,7 +117,7 @@ export class TimeTableComponent implements OnInit {
   }
 
   isSelected(day: Date, time: string) { //if time is in tutor schedule
-    const dateTime = `${day.toDateString()}.${time}`;
+    const dateTime = `${day.toDateString().split(' ')[0]}.${time}`;
     return this.selectedTimes.includes(dateTime);
   }
 
