@@ -21,6 +21,7 @@ import { BookingConfirmationComponent } from './modals/booking-confirmation/book
 import { DeselectWarningComponent } from './modals/deselect-warning/deselect-warning.component';
 import { EditProfileComponent } from './modals/edit-profile/edit-profile.component';
 import { CookieService } from 'ngx-cookie-service';
+import { DuoComponent } from './duo/duo.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { CookieService } from 'ngx-cookie-service';
     BookSessionComponent,
     BookingConfirmationComponent,
     DeselectWarningComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    DuoComponent
   ],
   imports: [
     BrowserModule,

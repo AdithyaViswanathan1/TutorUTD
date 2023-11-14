@@ -9,13 +9,15 @@ import { StudentLoginRequest } from './models/StudentLoginRequest';
 import { Observable, of } from 'rxjs';
 import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
+import { LoginResponse } from './models/LoginResponse';
+import { RegisterResponse } from './models/RegisterResponse';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class httpManager {
-    backendUrl : string = 'https://example.com/api';
+    backendUrl : string = 'http://127.0.0.1:8000/';
 
     http: HttpClient;
 
@@ -23,28 +25,25 @@ export class httpManager {
         this.http = httpClient;
     }
 
-    tutorSignup(user: TutorSignupRequest) : Observable<number>
+    tutorSignup(user: TutorSignupRequest) : Observable<RegisterResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(0);
+        //todo: return http status code
+        return this.http.post<RegisterResponse>(this.backendUrl + "login/tutor_register/", user)
     }
 
-    tutorLogin(user: TutorLoginRequest) : Observable<number>
+    tutorLogin(user: TutorLoginRequest) : Observable<LoginResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(0);
+        return this.http.post<LoginResponse>(this.backendUrl + "login/tutor_login/", user);
     }
 
-    studentSignup(user: StudentSignupRequest) : Observable<number>
+    studentSignup(user: StudentSignupRequest) : Observable<RegisterResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(1);
+      return this.http.post<RegisterResponse>(this.backendUrl + "login/student_register/", user)
     }
 
-    studentLogin(user: StudentLoginRequest) : Observable<number>
+    studentLogin(user: StudentLoginRequest) : Observable<LoginResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(1);
+        return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
     }
 
     getTutor(id: number) : Observable<Tutor>
@@ -57,6 +56,13 @@ export class httpManager {
     {
         //return this.http.get(this.backendUrl + '/' + id);
         return of(this.dummyStudent);
+    }
+
+    search(searchString : string) : Observable<Tutor[]>
+    {
+        //return this.http.get(this.backendUrl + '/' + searchString);
+        let res = [this.dummyTutor];
+        return of(res);
     }
 
 

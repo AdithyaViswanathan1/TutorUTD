@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { SearchComponent } from './search/search.component';
 import { canActivate } from './auth.guard';
+import { DuoComponent } from './duo/duo.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -16,6 +17,8 @@ const routes: Routes = [
   {path: 'appointments', component: AppointmentsComponent, canActivate: [canActivate]},
   {path: 'search', component: SearchComponent, canActivate: [canActivate]},
   {path: 'search/:searchString', component: SearchComponent, canActivate: [canActivate]},
+  {path: 'duo/:userType', component: DuoComponent},
+  {path: '**', component: LandingPageComponent}
 ];
 
 @NgModule({

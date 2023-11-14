@@ -57,37 +57,9 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True)
     
     
-class AuthUserSerializer(serializers.ModelSerializer):
-    auth_token = serializers.SerializerMethodField()
-    
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'full_name', 'user_type', 'auth_token')
-        read_only_fields = ('id', 'user_type',)
-    
-    def get_auth_token(self, obj):
-        token, created = Token.objects.get_or_create(user=obj)
-        return token.key
-
 
 class EmptySerializer(serializers.Serializer):
     pass
-
-
-class UserRegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = user
-        fields = ('id', 'email', 'password', 'full_name', 'user_type')
-
-    def validate_email(self, value):
-        user = User.objects.filter(email=value)
-        if user:
-            raise serializers.ValidationError("Email is already taken")
-        return BaseUserManager.normalize_email(value)
-
-    def validate_password(self, value):
-        password_validation.validate_password(value)
-        return value
 
 
 class StudentRegisterSerializer(serializers.ModelSerializer):

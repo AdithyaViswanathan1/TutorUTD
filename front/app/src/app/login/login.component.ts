@@ -63,10 +63,18 @@ export class LoginComponent implements OnInit {
         password: this.password
       };
 
-      this.authenticationService.studentLogin(request).subscribe(id => {
-        this.cookieService.set('userId', id.toString());
-        this.cookieService.set('userType', 'student');
-        this.router.navigate(['/appointments']);
+      this.authenticationService.studentLogin(request).subscribe(response => {
+        if(response.enroll_url)
+        {
+          this.cookieService.set('duoQrUrl', response.enroll_url);
+          this.router.navigate(['duo', 'student']);
+        }
+        if(response.user_id)
+        {
+          this.cookieService.set('userId', response.user_id.toString());
+          this.cookieService.set('userType', 'student');
+          this.router.navigate(['/appointments']);
+        }
       });
     }
     else
@@ -76,10 +84,18 @@ export class LoginComponent implements OnInit {
         password: this.password
       };
 
-      this.authenticationService.tutorLogin(request).subscribe(id => {
-        this.cookieService.set('userId', id.toString());
-        this.cookieService.set('userType', 'tutor');
-        this.router.navigate(['/profile', id]);
+      this.authenticationService.tutorLogin(request).subscribe(response => {
+        if(response.enroll_url)
+        {
+          this.cookieService.set('duoQrUrl', response.enroll_url);
+          this.router.navigate(['duo', 'tutor']);
+        }
+        if(response.user_id)
+        {
+          this.cookieService.set('userId', response.user_id.toString());
+          this.cookieService.set('userType', 'tutor');
+          this.router.navigate(['/profile', response.user_id]);
+        }
       });
     }
   }
