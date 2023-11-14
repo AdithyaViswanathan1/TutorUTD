@@ -1,7 +1,7 @@
 <div class="page-container mt-3">
     <div>
-        <button (click)="previousWeek()">Previous Week</button>
-        <button (click)="nextWeek()">Next Week</button>
+        <button (click)="previousWeek()" style="border-top-left-radius: 10px;">Previous Week</button>
+        <button (click)="nextWeek()" style="border-top-right-radius: 10px;">Next Week</button>
     </div>
     
     <table>
@@ -18,7 +18,7 @@
         <tbody>
             <tr *ngFor="let time of appointmentTimes">
                 <th class="time-block">{{ time }}</th>
-                <td *ngFor="let day of daysInWeek" style="height: 16px; padding: 0">
+                <td *ngFor="let day of daysInWeek" style="padding: 0">
                     <div class="time-slot" 
                         [class.selected]="isSelected(day, time)" 
                         [class.booked-tutor]="hasAppointment(day, time) && tableType == 1 && isSelected(day, time)"
