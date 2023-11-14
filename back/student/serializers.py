@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from .models import Student
-from tutor.models import Tutor
+from tutor.models import Tutor, TutorSubjects
 from appointments.models import Appointments
 
 
@@ -25,10 +25,11 @@ class CancelAppointment(serializers.Serializer):
     appointment_id = serializers.IntegerField(required=True)
 
 class GetTutors(serializers.Serializer):
-    course_number = serializers.CharField(required=True)
+    #course_number = serializers.CharField(required=True)
     
     class Meta:
-        fields = ('course_number')
+        model = TutorSubjects
+        fields = "__all__"
 
 class EmptySerializer(serializers.Serializer):
     pass
