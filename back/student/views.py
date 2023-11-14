@@ -19,6 +19,15 @@ class StudentViewSet(viewsets.GenericViewSet):
         'cancel_appointment': ota_serializers.CancelAppointment,
         'add_favorite_tutor': ota_serializers.AddFavoriteTutor,
     }
+
+    #Helper functions
+    def list_to_dict(self, id_and_name):
+        result = {}
+        for tutor in id_and_name:
+            id = tutor[0]
+            name = tutor[1]
+            result[name] = id
+        return result
     
     @action(methods=['POST'], detail=True)
     def add_hours(self, request):
@@ -60,11 +69,12 @@ class StudentViewSet(viewsets.GenericViewSet):
             name = request.data['tutor_name']
             # get tutor id and full_name from tutor_name
             id_and_name = User.objects.filter(full_name__icontains=name,user_type="tutor").values_list("id", "full_name").distinct()
-            result = {}
-            for tutor in id_and_name:
-                id = tutor[0]
-                name = tutor[1]
-                result[name] = id
+            result = self.list_to_dict(id_and_name)
+            return Response({"Result": result}, status=status.HTTP_201_CREATED)
+        elif len(request.data) == 0:
+            # list all tutors in the system
+            all_tutors = User.objects.filter(user_type="tutor").values_list('id', 'full_name')
+            result = self.list_to_dict(all_tutors)
             return Response({"Result": result}, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
