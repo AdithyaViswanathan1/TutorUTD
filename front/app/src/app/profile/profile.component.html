@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
-<app-edit-profile *ngIf="isEditing" [courses]="courses" (close)="closeModal()" (name)="editName($event)" (bio)="editBio($event)"></app-edit-profile>
+<app-edit-profile *ngIf="isEditing" [courses]="courses" (close)="closeTutorModal()" (name)="editName($event)" (bio)="editBio($event)"></app-edit-profile>
+<app-book-session *ngIf="bookingSession" (close)="closeStudentModal()"></app-book-session>
 <div class="page-container">
     <div class="user-container">
         <img src="assets/images/default.jpg" alt="profile image">
@@ -16,6 +17,7 @@
             </ul>
         </div>
     </div>
-    <button style="width: 200px; margin-bottom: 10px" (click)="showModal()">Edit Profile</button>
+    <button *ngIf="!isStudent" style="width: 200px; margin-bottom: 10px" (click)="showTutorModal()">Edit Profile</button>
+    <button *ngIf="isStudent" style="width: 200px; margin-bottom: 10px" (click)="showStudentModal()">Book Session</button>
     <app-time-table [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
 </div>
