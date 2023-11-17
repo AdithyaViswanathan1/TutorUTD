@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   classPrefix: string = '';
   classNumber: string = '';
   isEditing: boolean = false;
-  bookingSession: boolean = true;
+  bookingSession: boolean = false;
   biography: string = '';
 
   private _subs : Subscription = new Subscription();
