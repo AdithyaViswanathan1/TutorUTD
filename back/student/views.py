@@ -8,6 +8,7 @@ from .models import Student
 from . import serializers as ota_serializers
 from appointments.models import Appointments
 from tutor.models import Tutor
+from student.models import Favorite_Tutors
 
 import json
 
@@ -25,10 +26,8 @@ class StudentViewSet(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def make_appointment(self, request):
         try:
-            print(request.data)
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-
             dates = request.data.get('dates')
             student_id = request.data.get('student_id')
             tutor_id = request.data.get('tutor_id')
@@ -61,12 +60,30 @@ class StudentViewSet(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def add_favorite_tutor(self, request):
         serializer = self.get_serializer(data=request.data)
-        return Response('This is a placeholder.')
+        try:
+            serializer.is_valid(raise_exception=True)
+            tutor_id = request.data.get('tutor_id')
+            student_id = request.data.get('student_id')
+            tutor = Tutor.objects.get(tutor=tutor_id)
+            student = Student.objects.get(student=student_id)
+            Favorite_Tutors.objects.create(student=student, tutor=tutor)
+            return Response(status=status.HTTP_201_CREATED, data='Added favorite tutor succesfully.')
+        except drf_serializers.ValidationError as v:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data='Failed to add favorite tutor: ' + str(v))
     
-    @action(methods=['POST'], detail=False)
+    @action(methods=['DELETE'], detail=False)
     def remove_favorite_tutor(self, request):
         serializer = self.get_serializer(data=request.data)
-        return Response('This is a placeholder')
+        try:
+            serializer.is_valid(raise_exception=True)
+            tutor_id = request.data.get('tutor_id')
+            student_id = request.data.get('student_id')
+            tutor = Tutor.objects.get(tutor=tutor_id)
+            student = Student.objects.get(student=student_id)
+            Favorite_Tutors.objects.filter(tutor=tutor, student=student).delete()
+            return Response(status=status.HTTP_200_OK, data='Removed favorite tutor successfully')
+        except Favorite_Tutors.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND, data='Could not find favorite tutor.')
     
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):

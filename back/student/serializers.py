@@ -1,10 +1,19 @@
 
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from student.models import Student
+from student.models import Student, Favorite_Tutors
 from tutor.models import Tutor
 from datetime import datetime
 
+
+def _validate_tutor(tutor_id):
+        if tutor_id < 0:
+            raise serializers.ValidationError(detail='Invalid tutor ID: '+ str(tutor_id))
+        try:
+            Tutor.objects.get(tutor=tutor_id)
+        except Tutor.DoesNotExist:
+            raise serializers.ValidationError('Tutor could not be found')
+        
 class MakeAppointment(serializers.Serializer):
     student_id = serializers.IntegerField(required=True)
     tutor_id = serializers.IntegerField(required=True)
@@ -44,20 +53,10 @@ class MakeAppointment(serializers.Serializer):
                 msg += str(date) + ', '
             msg = msg[0:len(msg)-2]
             raise serializers.ValidationError(detail=msg)
-
-        
-    def _validate_tutor(self, tutor_id):
-        if tutor_id < 0:
-            raise serializers.ValidationError(detail='Invalid tutor ID: '+ str(tutor_id))
-        try:
-            Tutor.objects.get(tutor=tutor_id)
-        except Tutor.DoesNotExist:
-            raise serializers.ValidationError('Tutor could not be found')
-        
     
     def validate(self, data):
         try:
-            self._validate_tutor(data['tutor_id'])
+            _validate_tutor(data['tutor_id'])
             self._validate_times(data['dates'])
         except serializers.ValidationError as e:
             raise e 
@@ -65,22 +64,49 @@ class MakeAppointment(serializers.Serializer):
         return data
 
 class AddFavoriteTutor(serializers.Serializer):
-    token = serializers.HiddenField(default='')
+    student_id = serializers.IntegerField(required=True)
     tutor_id = serializers.IntegerField(required=True)
 
     class Meta:
-        fields = ('token', 'tutor_id')
+        fields = ('student_id', 'tutor_id')
+
+    def _already_exists(self, student_id, tutor_id):
+        if Favorite_Tutors.objects.filter(student=student_id, tutor=tutor_id):
+            raise serializers.ValidationError(detail='You have already favorited that tutor.')
+
+    def validate(self, data):
+        try:
+            _validate_tutor(data['tutor_id'])
+            self._already_exists(data['student_id'], data['tutor_id'])
+        except serializers.ValidationError as e:
+            raise e 
+        
+        return data
 
 class RemoveFavoriteTutor(serializers.Serializer):
-    token = serializers.HiddenField(default='')
+    student_id = serializers.IntegerField(required=True)
     tutor_id = serializers.IntegerField(required=True)
 
     class Meta:
-        fields = ('token', 'tutor_id')
+        fields = ('student_id', 'tutor_id')
+    
+    def _does_not_exist(self, student_id, tutor_id):
+        try:
+            favorite_tutor = Favorite_Tutors.objects.get(student=student_id, tutor=tutor_id)
+        except Favorite_Tutors.DoesNotExist as dne:
+            raise dne
+    
+    def validate(self, data):
+        try:
+            self._does_not_exist(data['student_id'], data['tutor_id'])
+        except Favorite_Tutors.DoesNotExist as dne:
+            raise dne
+        
+        return data        
 
 class CancelAppointment(serializers.Serializer):
     appointment_id = serializers.IntegerField(required=True)
-    token = serializers.CharField(max_length=40)
+    student_id = serializers.CharField(max_length=40)
     class Meta:
         fields = ('appointment_id')
 
