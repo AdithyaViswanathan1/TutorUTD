@@ -26,3 +26,29 @@
     margin: 0 5px;
     width: 100px;
 }
+
+.confirm-button
+{
+    background-color: #0082FA;
+    color: whitesmoke;
+    cursor: pointer;
+    height: 40px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.return-button
+{
+    background-color: gainsboro;
+    color: black;
+    cursor: pointer;
+    height: 40px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}

@@ -3,6 +3,7 @@ import { ProfileService } from '../profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Appointment } from '../models/Appointment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +22,7 @@ export class ProfileComponent implements OnInit {
   classPrefix: string = '';
   classNumber: string = '';
   isEditing: boolean = false;
+  isEditingSchedule: boolean = false;
   bookingSession: boolean = false;
   biography: string = '';
 
@@ -29,16 +31,16 @@ export class ProfileComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private route : ActivatedRoute,
-    private router : Router) {
+    private router : Router,
+    private cookieService: CookieService) {
       this.route.params.subscribe(params => {
       this.tutorId = params['tutorId'];
     });
-    this.route.params.subscribe(params => {
-      this.isStudent = params['userType'] == 'student';
-    })
   }
 
   ngOnInit(): void {
+    this.isStudent = this.cookieService.get('userType') == 'student';
+
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
       this.fullName = tutor.fullName;
       this.biography = tutor.biography;
@@ -91,5 +93,14 @@ export class ProfileComponent implements OnInit {
 
   editBio(bio: string){
     this.biography = bio;
+  }
+
+  editSchedule(){
+    this.isEditingSchedule = true;
+  }
+
+  saveSchedule(){
+    this.isEditingSchedule = false;
+    //TODO: call service to save schedule
   }
 }

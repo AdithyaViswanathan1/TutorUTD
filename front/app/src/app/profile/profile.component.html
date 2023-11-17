@@ -19,5 +19,8 @@
     </div>
     <button *ngIf="!isStudent" style="width: 200px; margin-bottom: 10px" (click)="showTutorModal()">Edit Profile</button>
     <button *ngIf="isStudent" style="width: 200px; margin-bottom: 10px" (click)="showStudentModal()">Book Session</button>
-    <app-time-table [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <app-time-table *ngIf="!isStudent && isEditingSchedule" [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <app-time-table *ngIf="isStudent || !isEditingSchedule" [tableType]=0 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <button *ngIf="!isStudent && !isEditingSchedule" class="btn btn-primary table-btn" (click)="editSchedule()">Edit Schedule</button>
+    <button *ngIf="!isStudent && isEditingSchedule" class="btn btn-primary table-btn" (click)="saveSchedule()">Save Schedule</button>
 </div>
