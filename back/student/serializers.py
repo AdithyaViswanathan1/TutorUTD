@@ -10,8 +10,8 @@ class MakeAppointment(serializers.Serializer):
     tutor_id = serializers.IntegerField(required=True)
     dates = serializers.ListField(required=True, child=serializers.DateTimeField(required=True, 
                                                                   input_formats=["%Y-%m-%dThh:mm", "iso-8601"]))
-    location = serializers.CharField(max_length=20, default='online', required=False)
-    course = serializers.CharField(max_length=20, default='', required=False)
+    location = serializers.CharField(max_length=20, required=False)
+    course = serializers.CharField(max_length=20, required=False)
 
     class Meta:
         fields = ('student_id', 'tutor_id', 'dates', 'location')
@@ -50,7 +50,7 @@ class MakeAppointment(serializers.Serializer):
         if tutor_id < 0:
             raise serializers.ValidationError(detail='Invalid tutor ID: '+ str(tutor_id))
         try:
-            Tutor.objects.get(tutor_id=tutor_id)
+            Tutor.objects.get(tutor=tutor_id)
         except Tutor.DoesNotExist:
             raise serializers.ValidationError('Tutor could not be found')
         

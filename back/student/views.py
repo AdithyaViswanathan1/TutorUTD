@@ -32,8 +32,8 @@ class StudentViewSet(viewsets.GenericViewSet):
             dates = request.data.get('dates')
             student_id = request.data.get('student_id')
             tutor_id = request.data.get('tutor_id')
-            student = Student.objects.get(student_id=student_id)
-            tutor = Tutor.objects.get(tutor_id=tutor_id)
+            student = Student.objects.get(student=student_id)
+            tutor = Tutor.objects.get(tutor=tutor_id)
             for date in dates:
                 Appointments.objects.create(student=student, 
                                            tutor=tutor,

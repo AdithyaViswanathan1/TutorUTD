@@ -7,7 +7,7 @@ class Appointments(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE)
     time = models.DateTimeField(null=False, default=datetime.min)
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, default='online')
     course = models.CharField(max_length=20, null=True, default='None')
 
     class Meta:
