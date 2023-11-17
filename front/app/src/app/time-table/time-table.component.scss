@@ -3,14 +3,24 @@
     display: flex;
     justify-content: center;
     width: 95%;
+    height: 100%;
     flex-direction: column;
 }
 
 table
 {
+    display: block;
     border-collapse: collapse;
     background-color: var(--defaultGrey);
     border: 1px solid black;
+    max-height: 300px;
+    overflow-y: scroll;
+    width: fit-content;
+}
+
+th 
+{
+    width: 150px;
 }
 
 th, td
@@ -23,6 +33,7 @@ th, td
 td
 {
     background-color: rgb(219 219 219);
+    height: 15px;
 }
 
 .date
@@ -55,6 +66,7 @@ td
 .booked-tutor
 {
     background-color: red;
+    pointer-events: none;
 }
 
 .booked-student

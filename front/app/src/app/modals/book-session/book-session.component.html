@@ -1,1 +1,14 @@
-<p>book-session works!</p>
+<div class="modal">
+    <div class="modal-content-book">
+        <div class="header-text my-3 align-self-center">Book Tutor Session</div>
+        <app-time-table [tableType]=2 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+        <div class="enter-class">
+            Class Prefix: <input type="text" class="input-box">
+            Class Number: <input type="text" class="input-box">
+        </div>
+        <div class="button-container mt-4">
+                <div class="return-button" (click)="cancelBooking()" style="cursor: pointer">Cancel</div>
+                <div class="confirm-button" (click)="saveBooking()" style="cursor: pointer">Save</div>
+        </div>
+    </div>
+</div>

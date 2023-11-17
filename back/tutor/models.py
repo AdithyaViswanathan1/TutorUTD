@@ -8,7 +8,7 @@ class Tutor(models.Model):
     #subject_list = models.CharField(verbose_name="Subject List", max_length=1000, blank=True, null=True)
     subject_list = None
     biography = models.CharField(verbose_name="Biography", max_length=1000, blank=True, null=True)
-    profile_picture = models.CharField(verbose_name="Profile Picture", max_length=1000, blank=True, null=True)
+    profile_picture = models.FileField(verbose_name="Profile Picture", upload_to="media/", blank=True, null=True)
     background_checked = models.BooleanField(verbose_name="Background Check Complete", blank=True, default=False)
     available = models.BooleanField(verbose_name="Is Available?", blank=True, default=False)
     #hours = models.CharField(verbose_name="Available Times", max_length=1000, blank=True, null=True)
@@ -18,7 +18,7 @@ class Tutor(models.Model):
         db_table = 'tutor'
     
     def __str__(self):
-        return f'{self.tutor.first_name + " " + self.tutor.last_name}. Subjects: {self.subject_list}'
+        return f'{self.tutor.full_name}'
 
 class TutorAvail(models.Model):
     tutor = models.ForeignKey(Tutor,on_delete=models.CASCADE)

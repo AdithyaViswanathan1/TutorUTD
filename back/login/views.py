@@ -54,8 +54,8 @@ def Duo_Authenticate(user):
     
     #Duo Authentication succeeded
     if auth_response['result'] == 'allow':
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key}, status=status.HTTP_200_OK)
+        userId = user.id
+        return Response({'user_id': userId}, status=status.HTTP_200_OK)
 
 
 

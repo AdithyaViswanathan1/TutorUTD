@@ -9,13 +9,15 @@ import { StudentLoginRequest } from './models/StudentLoginRequest';
 import { Observable, of } from 'rxjs';
 import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
+import { LoginResponse } from './models/LoginResponse';
+import { RegisterResponse } from './models/RegisterResponse';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class httpManager {
-    backendUrl : string = 'https://example.com/api';
+    backendUrl : string = 'http://127.0.0.1:8000/';
 
     http: HttpClient;
 
@@ -23,28 +25,25 @@ export class httpManager {
         this.http = httpClient;
     }
 
-    tutorSignup(user: TutorSignupRequest) : Observable<number>
+    tutorSignup(user: TutorSignupRequest) : Observable<RegisterResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(0);
+        //todo: return http status code
+        return this.http.post<RegisterResponse>(this.backendUrl + "login/tutor_register/", user)
     }
 
-    tutorLogin(user: TutorLoginRequest) : Observable<number>
+    tutorLogin(user: TutorLoginRequest) : Observable<LoginResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(0);
+        return this.http.post<LoginResponse>(this.backendUrl + "login/tutor_login/", user);
     }
 
-    studentSignup(user: StudentSignupRequest) : Observable<number>
+    studentSignup(user: StudentSignupRequest) : Observable<RegisterResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(1);
+      return this.http.post<RegisterResponse>(this.backendUrl + "login/student_register/", user)
     }
 
-    studentLogin(user: StudentLoginRequest) : Observable<number>
+    studentLogin(user: StudentLoginRequest) : Observable<LoginResponse>
     {
-        //return this.http.post(this.backendUrl, user);
-        return of(1);
+        return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
     }
 
     getTutor(id: number) : Observable<Tutor>
@@ -57,6 +56,13 @@ export class httpManager {
     {
         //return this.http.get(this.backendUrl + '/' + id);
         return of(this.dummyStudent);
+    }
+
+    search(searchString : string) : Observable<Tutor[]>
+    {
+        //return this.http.get(this.backendUrl + '/' + searchString);
+        let res = [this.dummyTutor];
+        return of(res);
     }
 
 
@@ -79,7 +85,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: "Sun Nov 05 2023.10:00 AM",
+            time: "Sun Nov 19 2023.10:00 AM",
             subject: 'CS 3377'
           },
           {
@@ -88,7 +94,7 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: "Wed Nov 08 2023.12:00 PM"
+            time: "Wed Nov 15 2023.12:00 PM"
           },
           {
             appointmentId: 2,
@@ -96,43 +102,39 @@ export class httpManager {
             tutorId: 0,
             tutorName: 'John Smith',
             studentName: 'Jane Doe',
-            time: "Thu Nov 02 2023.11:00 AM",
+            time: "Thu Nov 16 2023.11:00 AM",
             subject: 'MATH 3163'
           }
         ],
         tutorSchedule: [
-          "Fri Oct 27 2023.10:00 AM",
-          "Fri Oct 27 2023.11:00 AM",
-          "Fri Oct 27 2023.01:00 PM",
-          "Fri Oct 27 2023.12:00 PM",
-          "Sat Oct 28 2023.10:00 AM",
-          "Sat Oct 28 2023.01:00 PM",
-          "Sat Oct 28 2023.11:00 AM",
-          "Sat Oct 28 2023.12:00 PM",
-          "Tue Oct 31 2023.10:00 AM",
-          "Tue Oct 31 2023.11:00 AM",
-          "Tue Oct 31 2023.02:00 PM",
-          "Tue Oct 31 2023.09:00 AM",
-          "Wed Nov 01 2023.10:00 AM",
-          "Wed Nov 01 2023.08:00 AM",
-          "Wed Nov 01 2023.09:00 AM",
-          "Wed Nov 01 2023.12:00 PM",
-          "Thu Nov 02 2023.10:00 AM",
-          "Thu Nov 02 2023.11:00 AM",
-          "Thu Nov 02 2023.12:00 PM",
-          "Thu Nov 02 2023.01:00 PM",
-          "Sat Nov 04 2023.10:00 AM",
-          "Sat Nov 04 2023.11:00 AM",
-          "Sat Nov 04 2023.12:00 PM",
-          "Sat Nov 04 2023.01:00 PM",
-          "Sun Nov 05 2023.10:00 AM",
-          "Sun Nov 05 2023.11:00 AM",
-          "Sun Nov 05 2023.12:00 PM",
-          "Sun Nov 05 2023.01:00 PM",
-          "Wed Nov 08 2023.10:00 AM",
-          "Wed Nov 08 2023.11:00 AM",
-          "Wed Nov 08 2023.12:00 PM",
-          "Wed Nov 08 2023.01:00 PM"
+          "Fri.10:00 AM",
+          "Fri.11:00 AM",
+          "Fri.01:00 PM",
+          "Fri.12:00 PM",
+          "Sat.10:00 AM",
+          "Sat.01:00 PM",
+          "Sat.11:00 AM",
+          "Sat.12:00 PM",
+          "Tue.10:00 AM",
+          "Tue.11:00 AM",
+          "Tue.02:00 PM",
+          "Tue.09:00 AM",
+          "Wed.10:00 AM",
+          "Wed.08:00 AM",
+          "Wed.09:00 AM",
+          "Wed.12:00 PM",
+          "Thu.10:00 AM",
+          "Thu.11:00 AM",
+          "Thu.12:00 PM",
+          "Thu.01:00 PM",
+          "Sat.10:00 AM",
+          "Sat.11:00 AM",
+          "Sat.12:00 PM",
+          "Sat.01:00 PM",
+          "Sun.10:00 AM",
+          "Sun.11:00 AM",
+          "Sun.12:00 PM",
+          "Sun.01:00 PM"
         ],
         biography: "This is my biography!"
     }
@@ -148,7 +150,7 @@ export class httpManager {
           tutorId: 0,
           tutorName: 'John Smith',
           studentName: 'Jane Doe',
-          time: "Sun Nov 05 2023.10:00 AM",
+          time: "Sun Nov 19 2023.10:00 AM",
           subject: 'CS 3377'
         },
         {
@@ -157,7 +159,7 @@ export class httpManager {
           tutorId: 0,
           tutorName: 'John Smith',
           studentName: 'Jane Doe',
-          time: "Wed Nov 08 2023.12:00 PM"
+          time: "Wed Nov 15 2023.12:00 PM"
         },
         {
           appointmentId: 2,
@@ -165,7 +167,7 @@ export class httpManager {
           tutorId: 0,
           tutorName: 'John Smith',
           studentName: 'Jane Doe',
-          time: "Thu Nov 02 2023.11:00 AM",
+          time: "Thu Nov 16 2023.11:00 AM",
           subject: 'MATH 3163'
         }
       ]

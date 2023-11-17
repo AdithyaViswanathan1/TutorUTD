@@ -10,10 +10,10 @@
 #     path('profile/edit/', TutorProfileEdit.as_view()),
 # ]
 
-from rest_framework import routers
+from rest_framework.routers import SimpleRouter
 from .views import TutorViewSet
 
-router = routers.DefaultRouter()
+router = SimpleRouter()
 router.register('', TutorViewSet, basename='tutor')
 
 urlpatterns = router.urls

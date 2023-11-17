@@ -11,6 +11,7 @@ import { Appointment } from '../models/Appointment';
 })
 export class ProfileComponent implements OnInit {
 
+  isStudent: boolean = true;
   tutorId: number = 0;
   fullName: string = '';
   profilePicture: File = new File([], ''); //make a default image
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
   classPrefix: string = '';
   classNumber: string = '';
   isEditing: boolean = false;
+  bookingSession: boolean = false;
   biography: string = '';
 
   private _subs : Subscription = new Subscription();
@@ -31,6 +33,9 @@ export class ProfileComponent implements OnInit {
       this.route.params.subscribe(params => {
       this.tutorId = params['tutorId'];
     });
+    this.route.params.subscribe(params => {
+      this.isStudent = params['userType'] == 'student';
+    })
   }
 
   ngOnInit(): void {
@@ -64,12 +69,20 @@ export class ProfileComponent implements OnInit {
     }
   } 
 
-  showModal(){
+  showTutorModal(){
     this.isEditing = true;
   }
 
-  closeModal(){
+  showStudentModal(){
+    this.bookingSession = true;
+  }
+
+  closeTutorModal(){
     this.isEditing = false;
+  }
+
+  closeStudentModal(){
+    this.bookingSession = false;
   }
 
   editName(name: string){

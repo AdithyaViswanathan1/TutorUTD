@@ -106,6 +106,7 @@ from rest_framework.permissions import AllowAny
 from . import serializers
 from rest_framework.decorators import action
 import json
+from rest_framework import viewsets, parsers
 
 class TutorViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
@@ -184,6 +185,9 @@ class TutorViewSet(viewsets.GenericViewSet):
             if "subject_list" in request.data.keys() and request.data['subject_list'] != None:
                 new_subjects = request.data['subject_list']
                 self.update_subjects(tutor, new_subjects)
+            
+            # if "profile_picture" in request.data.keys() and request.data['profile_picture'] != None:
+            #     request.data['profile_picture'] = open(request.data['profile'], 'rb')
 
             # take all fields in request.data except token,full_name and update fields in tutor table with given user_id
             data = self.without_keys(request.data, ["token","full_name","hours", "subject_list"])
@@ -193,6 +197,8 @@ class TutorViewSet(viewsets.GenericViewSet):
             if serializer.is_valid():
                 serializer.save()
                 return Response({"Success": "Profile Updated"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
             # return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)

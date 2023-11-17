@@ -1,0 +1,10 @@
+<app-navbar></app-navbar>
+<div class="page-container">
+    <div class="header-text mt-3">Activate Duo 2FA!</div>
+    <div class="subheader-text mt-1">Download the Duo mobile app and scan the QR code</div>
+    <img class="qr-code mt-3" src={{qrUrl}} alt="Duo qr code">
+    <div class="btn-container mt-3">
+        <div class="return-btn" (click)="toLandingPage()">Return</div>
+        <div class="login-btn" (click)="toLogin()">To Login</div>
+    </div>
+</div>

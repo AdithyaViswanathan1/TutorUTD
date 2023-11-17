@@ -31,7 +31,7 @@
             <div class="warnings">
                 <div *ngIf="missingFields">* All Fields must be filled out!</div>
                 <div *ngIf="noMatch">* Passwords do not match!</div>
-                <div *ngIf="badPassword">* Password must be at least 8 characters and contain at least 1 capital letter and 1 number!</div>
+                <div *ngIf="badPassword">* Password must be at least 8 characters and contain at least 1 capital letter, 1 number and 1 special character!</div>
                 <div *ngIf="emailExists">* Email already in use!</div>
             </div>
             <button type="submit" class="btn btn-primary btn-block my-3">Sign Up</button>
