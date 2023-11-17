@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from student.models import Student, Favorite_Tutors
 from tutor.models import Tutor
+from appointments.models import Appointments
 from datetime import datetime
 
 
@@ -102,19 +103,45 @@ class RemoveFavoriteTutor(serializers.Serializer):
         except Favorite_Tutors.DoesNotExist as dne:
             raise dne
         
-        return data        
+        return data
+
+class GetFavoriteTutors(serializers.Serializer):
+    student = serializers.IntegerField(required=True)
+
+    class Meta:
+        fields = ('student_id')        
 
 class CancelAppointment(serializers.Serializer):
     appointment_id = serializers.IntegerField(required=True)
-    student_id = serializers.CharField(max_length=40)
+    student_id = serializers.IntegerField(required=True)
     class Meta:
-        fields = ('appointment_id')
+        fields = ('student_id', 'appointment_id')
+
+    def _appointment_exists(self, appointment_id, student_id):
+        try:
+            Appointments.objects.filter(id=appointment_id, student=student_id)
+        except Appointments.DoesNotExist as dne:
+            raise dne
+
+    def validate(self, data):
+        try:
+            self._appointment_exists(data['appointment_id'], data['student_id'])
+        except Appointments.DoesNotExist as dne:
+            raise dne
+        
+        return data
 
 class GetTutors(serializers.Serializer):
     course = serializers.CharField(required=True)
     
     class Meta:
         fields = ('course')
+
+class GetAppointments(serializers.Serializer):
+    student_id = serializers.IntegerField(required=True)
+
+    class Meta:
+        fields = ('student_id')
 
 class EmptySerializer(serializers.Serializer):
     pass
