@@ -11,6 +11,11 @@ export const canActivate: CanActivateFn = (route: ActivatedRouteSnapshot, state:
       return false;
     }
 
+    if (route.url.toString().includes('favorites') && inject(CookieService).get('userType') === 'tutor') {
+      inject(Router).navigate(['profile', inject(CookieService).get('userId')]);
+      return false;
+    }
+
     return true;
   }
   else

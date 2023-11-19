@@ -24,4 +24,19 @@ export class ProfileService {
   {
     return this.manager.getStudent(id);
   }
+
+  getFavorites(id : number) : Observable<Tutor[]>
+  {
+    return this.manager.getFavorites(id);
+  }
+
+  isFavorited(studentId : number, tutorId : number) : Observable<boolean>
+  {
+    return this.manager.isFavorited(studentId, tutorId);
+  }
+
+  toggleFavorite(studentId : number, tutorId : number) : Observable<boolean>
+  {
+    return this.manager.toggleFavorite(studentId, tutorId);
+  }
 }
