@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Appointment } from '../models/Appointment';
 import { CookieService } from 'ngx-cookie-service';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +26,9 @@ export class ProfileComponent implements OnInit {
   isEditingSchedule: boolean = false;
   bookingSession: boolean = false;
   biography: string = '';
+  isFavorited: boolean = false;
+
+  faStar = faStar;
 
   private _subs : Subscription = new Subscription();
 
@@ -55,6 +59,11 @@ export class ProfileComponent implements OnInit {
         this.tutorSchedule = tutor.tutorSchedule;
       }
     }));
+
+    this._subs.add(this.profileService.isFavorited(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
+        this.isFavorited = res;
+      }
+    ));
   }
 
   ngOnDestroy(): void {
@@ -102,5 +111,15 @@ export class ProfileComponent implements OnInit {
   saveSchedule(){
     this.isEditingSchedule = false;
     //TODO: call service to save schedule
+  }
+
+  toggleFavorite(){
+    this.profileService.toggleFavorite(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
+        if(res)
+        {
+          this.isFavorited = !this.isFavorited;
+        }
+      }
+    );
   }
 }

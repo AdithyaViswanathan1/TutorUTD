@@ -37,6 +37,11 @@ export class NavbarComponent{
         this.router.navigate(['/appointments']);
     }
 
+    toFavorites()
+    {
+        this.router.navigate(['/favorites']);
+    }
+
     logout()
     {
         this.authenticationService.logout();

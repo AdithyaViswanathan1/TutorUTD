@@ -6,6 +6,7 @@
     </div>
     <div class="links-container" *ngIf="cookieService.get('userType') === 'student'">
         <div class="link" (click)="toSearch()">Search</div>
+        <div class="link" (click)="toFavorites()">Favorites</div>
         <div class="link" (click)="toAppointments()">Appointments</div>
         <fa-icon class="user-icon" [icon]="faUser" (click)="togglePopup()"></fa-icon>
         <div class="pop-up" *ngIf="showPopup" (click)="logout()">

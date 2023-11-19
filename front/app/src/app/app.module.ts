@@ -22,6 +22,7 @@ import { DeselectWarningComponent } from './modals/deselect-warning/deselect-war
 import { EditProfileComponent } from './modals/edit-profile/edit-profile.component';
 import { CookieService } from 'ngx-cookie-service';
 import { DuoComponent } from './duo/duo.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { DuoComponent } from './duo/duo.component';
     BookingConfirmationComponent,
     DeselectWarningComponent,
     EditProfileComponent,
-    DuoComponent
+    DuoComponent,
+    FavoritesComponent
   ],
   imports: [
     BrowserModule,

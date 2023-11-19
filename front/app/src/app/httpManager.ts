@@ -58,6 +58,25 @@ export class httpManager {
         return of(this.dummyStudent);
     }
 
+    getFavorites(id: number) : Observable<Tutor[]>
+    {
+        //return this.http.get(this.backendUrl + '/' + id);
+        let res = [this.dummyTutor];
+        return of(res);
+    }
+
+    isFavorited(studentId: number, tutorId: number) : Observable<boolean>
+    {
+        //return this.http.get(this.backendUrl + '/' + id);
+        return of(false);
+    }
+
+    toggleFavorite(studentId: number, tutorId: number) : Observable<boolean>
+    {
+        //return this.http.get(this.backendUrl + '/' + id);
+        return of(true);
+    }
+
     search(searchString : string) : Observable<Tutor[]>
     {
         //return this.http.get(this.backendUrl + '/' + searchString);

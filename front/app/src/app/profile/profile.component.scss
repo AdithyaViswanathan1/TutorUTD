@@ -57,3 +57,24 @@
     border-top-right-radius: 0px;
     width: 200px;
 }
+
+.book-btn{
+    width: 200px;
+    height: 50px;
+    background-color: var(--utdGreen);
+    color: white;
+}
+
+.star{
+    font-size: 50px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.star-on{
+    color: gold;
+}
+
+.star-off{
+    color: gray;
+}
