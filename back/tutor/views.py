@@ -158,7 +158,7 @@ class TutorViewSet(viewsets.GenericViewSet):
             print(f"{subject} ADDED to DB")
 
     # API CALLS
-    @action(methods=['GET',], detail=False)
+    @action(methods=['POST',], detail=False)
     def get_profile(self, request):
         userid = request.data['id']
         tutor = self.get_tutor_by_id(userid)
