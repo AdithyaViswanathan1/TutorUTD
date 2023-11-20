@@ -48,8 +48,7 @@ export class httpManager {
 
     getTutor(id: number) : Observable<Tutor>
     {
-        //return this.http.get(this.backendUrl + '/' + id);
-        return of(this.dummyTutor);
+        return this.http.post<Tutor>(this.backendUrl + "tutor/get_profile/", {id: id});
     }
 
     getStudent(id: number) : Observable<Student>
@@ -86,17 +85,17 @@ export class httpManager {
 
 
     dummyTutor : Tutor = {
-        tutorId: 0,
-        fullName: 'John Smith',
-        courses: [
+        tutor_id: 0,
+        full_name: 'John Smith',
+        subjects: [
           'MATH 3163',
           'CS 4485',
           'CS 3377',
           'CS 4398'
         ],
-        totalHours: 20,
+        total_hours: 20,
         available: true,
-        profilePicture: new File(['assets/images/default.jpg'], 'profilePicture.jpg'),
+        profile_picture: new File(['assets/images/default.jpg'], 'profilePicture.jpg'),
         appointments: [
           {
             appointmentId: 0,
@@ -125,7 +124,7 @@ export class httpManager {
             subject: 'MATH 3163'
           }
         ],
-        tutorSchedule: [
+        times: [
           "Fri.10:00 AM",
           "Fri.11:00 AM",
           "Fri.01:00 PM",

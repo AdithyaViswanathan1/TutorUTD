@@ -46,17 +46,21 @@ export class ProfileComponent implements OnInit {
     this.isStudent = this.cookieService.get('userType') == 'student';
 
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
-      this.fullName = tutor.fullName;
+      this.fullName = tutor.full_name;
       this.biography = tutor.biography;
-      if(tutor.profilePicture){
-        this.profilePicture = tutor.profilePicture;
+      if(tutor.profile_picture){
+        this.profilePicture = tutor.profile_picture;
       }
-      this.courses = tutor.courses;
+      else
+      {
+        this.profilePicture = new File(['assets/images/default.jpg'], 'profilePicture.jpg');
+      }
+      this.courses = tutor.subjects;
       if(tutor.appointments){
         this.appointments = tutor.appointments;
       }
-      if(tutor.tutorSchedule){
-        this.tutorSchedule = tutor.tutorSchedule;
+      if(tutor.times){
+        this.tutorSchedule = tutor.times;
       }
     }));
 

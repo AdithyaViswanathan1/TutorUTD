@@ -48,8 +48,8 @@ export class AppointmentsComponent implements OnInit{
         if(tutor.appointments){
           this.appointments = tutor.appointments;
         }
-        if(tutor.tutorSchedule){
-          this.tutorSchedule = tutor.tutorSchedule;
+        if(tutor.times){
+          this.tutorSchedule = tutor.times;
         }
       }));
     }

@@ -30,7 +30,7 @@ export class EditProfileComponent {
 
   ngOnInit(): void {
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
-      this.nameInput = tutor.fullName;
+      this.nameInput = tutor.full_name;
       this.bioInput = tutor.biography;
     }));
   }
