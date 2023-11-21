@@ -2,8 +2,10 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from student.models import Student
-from tutor.models import Tutor
 from datetime import datetime
+from .models import Student
+from tutor.models import Tutor, TutorSubjects
+from appointments.models import Appointments
 
 class MakeAppointment(serializers.Serializer):
     student_id = serializers.IntegerField(required=True)
@@ -87,8 +89,13 @@ class CancelAppointment(serializers.Serializer):
 class GetTutors(serializers.Serializer):
     course = serializers.CharField(required=True)
     
+    # class Meta:
+    #     fields = ('course')
+    #course_number = serializers.CharField(required=True)
+    
     class Meta:
-        fields = ('course')
+        model = TutorSubjects
+        fields = "__all__"
 
 class EmptySerializer(serializers.Serializer):
     pass
