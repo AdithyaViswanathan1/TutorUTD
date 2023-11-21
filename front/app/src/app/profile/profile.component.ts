@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Appointment } from '../models/Appointment';
 import { CookieService } from 'ngx-cookie-service';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { ProfileEdit } from '../models/ProfileEdit';
 
 @Component({
   selector: 'app-profile',
@@ -27,6 +28,8 @@ export class ProfileComponent implements OnInit {
   bookingSession: boolean = false;
   biography: string = '';
   isFavorited: boolean = false;
+  totalHours: number = 0;
+  editInput: ProfileEdit = {fullName: '', biography: '', courses: []};
 
   faStar = faStar;
 
@@ -47,7 +50,10 @@ export class ProfileComponent implements OnInit {
 
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
       this.fullName = tutor.full_name;
+      this.editInput.fullName = tutor.full_name;
       this.biography = tutor.biography;
+      this.editInput.biography = tutor.biography;
+      this.totalHours = tutor.total_hours;
       if(tutor.profile_picture){
         this.profilePicture = tutor.profile_picture;
       }
@@ -56,6 +62,7 @@ export class ProfileComponent implements OnInit {
         this.profilePicture = new File(['assets/images/default.jpg'], 'profilePicture.jpg');
       }
       this.courses = tutor.subjects;
+      this.editInput.courses = tutor.subjects;
       if(tutor.appointments){
         this.appointments = tutor.appointments;
       }
@@ -96,16 +103,19 @@ export class ProfileComponent implements OnInit {
     this.isEditing = false;
   }
 
+  saveTutorModal(data: ProfileEdit){
+    this.isEditing = false;
+    
+    this.profileService.editProfile(this.tutorId, data).subscribe(res => {
+      this.editInput = data;
+      this.fullName = data.fullName ? data.fullName : this.fullName;
+      this.biography = data.biography ? data.biography : this.biography;
+      this.courses = data.courses ? data.courses : this.courses;
+    });
+  }
+
   closeStudentModal(){
     this.bookingSession = false;
-  }
-
-  editName(name: string){
-    this.fullName = name;
-  }
-
-  editBio(bio: string){
-    this.biography = bio;
   }
 
   editSchedule(){
@@ -114,7 +124,12 @@ export class ProfileComponent implements OnInit {
 
   saveSchedule(){
     this.isEditingSchedule = false;
-    //TODO: call service to save schedule
+    let data : ProfileEdit = {hours: this.tutorSchedule};
+    this.profileService.editProfile(this.tutorId, data).subscribe(res => {});
+  }
+
+  updateSchedule(data : string[]){
+    this.tutorSchedule = data;
   }
 
   toggleFavorite(){

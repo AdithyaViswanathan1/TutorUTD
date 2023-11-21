@@ -11,6 +11,7 @@ import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
 import { LoginResponse } from './models/LoginResponse';
 import { RegisterResponse } from './models/RegisterResponse';
+import { ProfileEdit } from './models/ProfileEdit';
 
 
 @Injectable({
@@ -43,12 +44,17 @@ export class httpManager {
 
     studentLogin(user: StudentLoginRequest) : Observable<LoginResponse>
     {
-        return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
+      return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
     }
 
     getTutor(id: number) : Observable<Tutor>
     {
-        return this.http.post<Tutor>(this.backendUrl + "tutor/get_profile/", {id: id});
+      return this.http.post<Tutor>(this.backendUrl + "tutor/get_profile/", {id: id});
+    }
+
+    editProfile(id: number, data: ProfileEdit) : Observable<boolean>
+    {
+      return this.http.put<boolean>(this.backendUrl + "tutor/edit_profile/", {id: id, full_name: data.fullName, biography: data.biography, subject_list: data.courses, hours: data.hours});
     }
 
     getStudent(id: number) : Observable<Student>
