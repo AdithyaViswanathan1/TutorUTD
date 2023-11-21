@@ -48,7 +48,7 @@ class StudentViewSet(viewsets.GenericViewSet):
         if "course_prefix" in request.data.keys() and "course_number" not in request.data.keys():
             prefix = request.data['course_prefix'].lower()
             # get tutor_id of matching prefix
-            tutor_ids = TutorSubjects.objects.filter(subject__contains=prefix).values_list('tutor_id', flat=True).distinct()
+            tutor_ids = TutorSubjects.objects.filter(subject__icontains=prefix).values_list('tutor_id', flat=True).distinct()
             # get tutor_names from previous ids
             tutor_names = User.objects.filter(pk__in=tutor_ids).values_list('full_name', flat=True)
             result = dict(zip(tutor_names, tutor_ids))
@@ -59,7 +59,7 @@ class StudentViewSet(viewsets.GenericViewSet):
             number = str(request.data['course_number'])
             search_string = f"{prefix} {number}"
             # get tutor_id of matching prefix
-            tutor_ids = TutorSubjects.objects.filter(subject=search_string).values_list('tutor_id', flat=True).distinct()
+            tutor_ids = TutorSubjects.objects.filter(subject__iexact=search_string).values_list('tutor_id', flat=True).distinct()
             # get tutor_names from previous ids
             tutor_names = User.objects.filter(pk__in=tutor_ids).values_list('full_name', flat=True)
             result = dict(zip(tutor_names, tutor_ids))
