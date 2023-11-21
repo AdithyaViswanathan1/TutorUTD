@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ProfileService } from '../../profile.service';
+import { ProfileEdit } from 'src/app/models/ProfileEdit';
 
 @Component({
   selector: 'app-edit-profile',
@@ -8,31 +9,27 @@ import { ProfileService } from '../../profile.service';
   styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent {
-  @Input() courses: string[] = [];
+  @Input() input: ProfileEdit = {fullName: '', biography: '', courses: []};
 
-  @Output() cancel = new EventEmitter<number>();
   @Output() close = new EventEmitter();
-  @Output() name = new EventEmitter<string>();
-  @Output() bio = new EventEmitter<string>();
+  @Output() save = new EventEmitter<ProfileEdit>();
 
   private _subs : Subscription = new Subscription();
 
-  nameInput: string = '';
-  bioInput: string = '';
+  name: string = '';
+  bio: string = '';
+  courses: string[] = [];
 
   addCourse: boolean = false;
   newCourse: string = "";
-
-  tutorId: number = 0;
 
   constructor(private profileService: ProfileService) { 
   }
 
   ngOnInit(): void {
-    this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
-      this.nameInput = tutor.full_name;
-      this.bioInput = tutor.biography;
-    }));
+    this.name=this.input.fullName || "";
+    this.bio=this.input.biography || "";
+    this.courses=this.input.courses || [];
   }
 
   cancelChanges()
@@ -42,9 +39,12 @@ export class EditProfileComponent {
 
   saveChanges()
   {
-    this.name.emit(this.nameInput);
-    this.bio.emit(this.bioInput);
-    this.close.emit();
+    let out : ProfileEdit = {
+      fullName: this.name, 
+      biography: this.bio, 
+      courses: this.courses
+    };
+    this.save.emit(out);
   }
 
   addCourseToList(){

@@ -14,8 +14,6 @@ import { RegisterResponse } from './models/RegisterResponse';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  
-  private duoQrUrl: string = '';
 
   constructor(private httpManager: httpManager, private cookieService: CookieService, private router: Router) { 
   }

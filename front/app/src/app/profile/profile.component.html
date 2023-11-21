@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<app-edit-profile *ngIf="isEditing" [courses]="courses" (close)="closeTutorModal()" (name)="editName($event)" (bio)="editBio($event)"></app-edit-profile>
+<app-edit-profile *ngIf="isEditing" [input]="editInput" (close)="closeTutorModal()" (save)="saveTutorModal($event)"></app-edit-profile>
 <app-book-session *ngIf="bookingSession" (close)="closeStudentModal()"></app-book-session>
 <div class="page-container" *ngIf="fullName">
     <div class="user-container">
@@ -23,7 +23,7 @@
         <fa-icon *ngIf="isStudent" class="star" [icon]="faStar" (click)="toggleFavorite()"
             [class.star-on]="isFavorited" [class.star-off]="!isFavorited"></fa-icon>
     </div>
-    <app-time-table *ngIf="!isStudent && isEditingSchedule" [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <app-time-table *ngIf="!isStudent && isEditingSchedule" [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule" (modified)="updateSchedule($event)"></app-time-table>
     <app-time-table *ngIf="isStudent || !isEditingSchedule" [tableType]=0 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
     <button *ngIf="!isStudent && !isEditingSchedule" class="btn btn-primary table-btn" (click)="editSchedule()">Edit Schedule</button>
     <button *ngIf="!isStudent && isEditingSchedule" class="btn btn-primary table-btn" (click)="saveSchedule()">Save Schedule</button>
