@@ -9,6 +9,7 @@ from . import serializers as ota_serializers
 from login.models import User
 from tutor.models import Tutor, TutorSubjects
 from rest_framework import status
+from tutor.serializers import TutorSerializer, TutorSearchSerializer
 
 class StudentViewSet(viewsets.GenericViewSet):
     queryset = Student.objects.all()
@@ -49,10 +50,6 @@ class StudentViewSet(viewsets.GenericViewSet):
             prefix = request.data['course_prefix'].lower()
             # get tutor_id of matching prefix
             tutor_ids = TutorSubjects.objects.filter(subject__icontains=prefix).values_list('tutor_id', flat=True).distinct()
-            # get tutor_names from previous ids
-            tutor_names = User.objects.filter(pk__in=tutor_ids).values_list('full_name', flat=True)
-            result = dict(zip(tutor_names, tutor_ids))
-            return Response({"Result": result}, status=status.HTTP_201_CREATED)
         # Search by course prefix and number
         elif "course_prefix" in request.data.keys() and "course_number" in request.data.keys():
             prefix = request.data['course_prefix'].lower()
@@ -60,24 +57,24 @@ class StudentViewSet(viewsets.GenericViewSet):
             search_string = f"{prefix} {number}"
             # get tutor_id of matching prefix
             tutor_ids = TutorSubjects.objects.filter(subject__iexact=search_string).values_list('tutor_id', flat=True).distinct()
-            # get tutor_names from previous ids
-            tutor_names = User.objects.filter(pk__in=tutor_ids).values_list('full_name', flat=True)
-            result = dict(zip(tutor_names, tutor_ids))
-            return Response({"Result": result}, status=status.HTTP_201_CREATED)
         # search by tutor_name (partial or full)
         elif "tutor_name" in request.data.keys():
             name = request.data['tutor_name']
             # get tutor id and full_name from tutor_name
-            id_and_name = User.objects.filter(full_name__icontains=name,user_type="tutor").values_list("id", "full_name").distinct()
-            result = self.list_to_dict(id_and_name)
-            return Response({"Result": result}, status=status.HTTP_201_CREATED)
+            tutor_ids = User.objects.filter(full_name__icontains=name,user_type="tutor").values_list("id").distinct()
         elif len(request.data) == 0:
             # list all tutors in the system
-            all_tutors = User.objects.filter(user_type="tutor").values_list('id', 'full_name')
-            result = self.list_to_dict(all_tutors)
-            return Response({"Result": result}, status=status.HTTP_201_CREATED)
+            tutor_ids = User.objects.filter(user_type="tutor").values_list('id')
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # get tutor objects from previous ids and return only relevant fields (using serializer) and return as list of dictionaries
+        tutor_objects = Tutor.objects.filter(pk__in=tutor_ids)
+        result = []
+        for tutor in tutor_objects:
+            serial = TutorSearchSerializer(tutor)
+            result.append(serial.data)       
+        return Response({"Result": result}, status=status.HTTP_201_CREATED)
 
     @action(methods=['POST'], detail=True)
     def add_favorite_tutor(self, request):
