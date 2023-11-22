@@ -101,7 +101,7 @@ class StudentViewSet(viewsets.GenericViewSet):
         for tutor in tutor_objects:
             serial = TutorSearchSerializer(tutor)
             result.append(serial.data)    
-        return Response({"Result": result}, status=status.HTTP_201_CREATED)
+        return Response(result, status=status.HTTP_201_CREATED)
 
     @action(methods=['POST'], detail=True)
     def add_favorite_tutor(self, request):
