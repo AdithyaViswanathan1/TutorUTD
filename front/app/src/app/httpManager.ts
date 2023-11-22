@@ -12,6 +12,8 @@ import { Student } from './models/Student';
 import { LoginResponse } from './models/LoginResponse';
 import { RegisterResponse } from './models/RegisterResponse';
 import { ProfileEdit } from './models/ProfileEdit';
+import { SearchInput } from './models/SearchInput';
+import { SearchResult } from './models/SearchResult';
 
 
 @Injectable({
@@ -82,11 +84,9 @@ export class httpManager {
         return of(true);
     }
 
-    search(searchString : string) : Observable<Tutor[]>
+    search(input : SearchInput) : Observable<SearchResult[]>
     {
-        //return this.http.get(this.backendUrl + '/' + searchString);
-        let res = [this.dummyTutor];
-        return of(res);
+        return this.http.post<SearchResult[]>(this.backendUrl + "student/tutor_search/", {course_prefix: input.course_prefix, course_number: input.course_number, tutor_name: input.tutor_name});
     }
 
 
