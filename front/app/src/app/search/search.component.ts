@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit{
   classPrefix: string = '';
   classNumber: string = '';
   tutorName: string = '';
-
+  loading: boolean = false;
   noResults: boolean = false;
 
   private _subs : Subscription = new Subscription();
@@ -25,17 +25,23 @@ export class SearchComponent implements OnInit{
     private route : ActivatedRoute,
     private router : Router,
     private searchService : SearchService) {
-      this.route.params.subscribe(params => {
-        this.searchString = params['searchString'];
-      });
+      
    }
   
   ngOnInit(): void {
+    this.loading = true;
+
+    this.route.params.subscribe(params => {
+      this.searchString = params['searchString'];
+    });
+
     if(this.searchString == undefined)
     {
+      this.loading = false;
       return;
     }
     this._subs.add(this.searchService.search(this.searchString).subscribe(res => {
+      this.loading = false;
       this.results = res;
       console.log(this.results);
       if(this.results.length == 0 && this.searchString == undefined)

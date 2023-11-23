@@ -16,7 +16,7 @@ export class SignUpComponent implements OnInit {
   badPassword: boolean = false;
   noMatch: boolean = false;
   emailExists: boolean = false;
-
+  loading: boolean = false;
 
   fName: string = '';
   lName: string = '';
@@ -51,7 +51,6 @@ export class SignUpComponent implements OnInit {
 
   signUp() {
     console.log('sign up');
-
     //check for missing fields
     if(this.fName == '' || this.lName == '' || this.email == '' || this.password == '' || this.cPassword == '') {
       this.missingFields = true;
@@ -80,6 +79,8 @@ export class SignUpComponent implements OnInit {
       this.noMatch = false;
     }
 
+    this.loading = true;
+
     //call auth service for user
     if(this.isStudent)
     {
@@ -91,6 +92,7 @@ export class SignUpComponent implements OnInit {
 
       this.authenticationService.studentSignup(request).subscribe(z =>
         {
+          this.loading = false;
           this.cookieService.set('duoQrUrl', z.enroll_url);
           this.router.navigate(['/duo', 'student']);
         });
@@ -105,6 +107,7 @@ export class SignUpComponent implements OnInit {
 
       this.authenticationService.tutorSignUp(request).subscribe(z =>
         {
+          this.loading = false;
           this.cookieService.set('duoQrUrl', z.enroll_url);
           this.router.navigate(['/duo', 'tutor']);
         });

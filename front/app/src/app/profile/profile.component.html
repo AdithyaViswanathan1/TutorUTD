@@ -1,7 +1,8 @@
 <app-navbar></app-navbar>
+<app-loader *ngIf="loading"></app-loader>
 <app-edit-profile *ngIf="isEditing" [input]="editInput" (close)="closeTutorModal()" (save)="saveTutorModal($event)"></app-edit-profile>
 <app-book-session *ngIf="bookingSession" (close)="closeStudentModal()"></app-book-session>
-<div class="page-container" *ngIf="fullName">
+<div class="page-container" *ngIf="fullName && !loading">
     <div class="user-container">
         <img src="assets/images/default.jpg" alt="profile image">
         <div class="name-and-bio-container">
@@ -28,6 +29,6 @@
     <button *ngIf="!isStudent && !isEditingSchedule" class="btn btn-primary table-btn" (click)="editSchedule()">Edit Schedule</button>
     <button *ngIf="!isStudent && isEditingSchedule" class="btn btn-primary table-btn" (click)="saveSchedule()">Save Schedule</button>
 </div>
-<div style="display: flex; justify-content: center;" *ngIf="!fullName">
+<div style="display: flex; justify-content: center;" *ngIf="!fullName && !loading">
     <div class="header-text my-3" style="color: red;">Tutor not found!</div>
 </div>

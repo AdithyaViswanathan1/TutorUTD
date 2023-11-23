@@ -14,6 +14,7 @@ export class FavoritesComponent implements OnInit {
   
   favorites: Tutor[] = [];
   studentId: number = 0;
+  loading: boolean = false;
 
   private _subs : Subscription = new Subscription();
 
@@ -27,8 +28,9 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentId = parseInt(this.cookieService.get('userId'));
-
+    this.loading = true;
     this._subs.add(this.profileService.getFavorites(this.studentId).subscribe(favorites => {
+      this.loading = false;
       this.favorites = favorites;
     }));
   }

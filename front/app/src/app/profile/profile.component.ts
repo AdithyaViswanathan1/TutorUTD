@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
   isFavorited: boolean = false;
   totalHours: number = 0;
   editInput: ProfileEdit = {fullName: '', biography: '', courses: []};
+  loading: boolean = false;
 
   faStar = faStar;
 
@@ -46,9 +47,11 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.isStudent = this.cookieService.get('userType') == 'student';
 
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
+      this.loading = false;
       this.fullName = tutor.full_name;
       this.editInput.fullName = tutor.full_name;
       this.biography = tutor.biography;

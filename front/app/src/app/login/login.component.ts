@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   emailNotFound: boolean = false;
   wrongPassword: boolean = false;
   missingFields: boolean = false;
+  loading: boolean = false;
 
   email: string = '';
   password: string = '';
@@ -55,7 +56,7 @@ export class LoginComponent implements OnInit {
       this.missingFields = false;
     }
 
-
+    this.loading = true;
     if(this.isStudent)
     {
       let request : StudentLoginRequest = {
@@ -64,6 +65,8 @@ export class LoginComponent implements OnInit {
       };
 
       this.authenticationService.studentLogin(request).subscribe(response => {
+        this.loading = false;
+        
         if(response.enroll_url)
         {
           this.cookieService.set('duoQrUrl', response.enroll_url);
@@ -85,6 +88,8 @@ export class LoginComponent implements OnInit {
       };
 
       this.authenticationService.tutorLogin(request).subscribe(response => {
+        this.loading = false;
+
         if(response.enroll_url)
         {
           this.cookieService.set('duoQrUrl', response.enroll_url);

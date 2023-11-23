@@ -29,6 +29,8 @@ export class AppointmentsComponent implements OnInit{
     time: ''
   };
 
+  loading: boolean = false;
+
   private _subs : Subscription = new Subscription();
 
   constructor(
@@ -41,10 +43,12 @@ export class AppointmentsComponent implements OnInit{
     }
 
   ngOnInit(): void {
+    this.loading = true;
     if(this.userType == 'tutor')
     {
       this.userTypeInt = 2;
       this._subs.add(this.profileService.getTutor(this.userId).subscribe(tutor => {
+        this.loading = false;
         if(tutor.appointments){
           this.appointments = tutor.appointments;
         }
@@ -57,6 +61,7 @@ export class AppointmentsComponent implements OnInit{
     {
       this.userTypeInt = 1;
       this._subs.add(this.profileService.getStudent(this.userId).subscribe(student => {
+        this.loading = false;
         if(student.appointments){
           this.appointments = student.appointments;
         }

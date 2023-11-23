@@ -23,6 +23,7 @@ import { EditProfileComponent } from './modals/edit-profile/edit-profile.compone
 import { CookieService } from 'ngx-cookie-service';
 import { DuoComponent } from './duo/duo.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { LoaderComponent } from './modals/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { FavoritesComponent } from './favorites/favorites.component';
     DeselectWarningComponent,
     EditProfileComponent,
     DuoComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
