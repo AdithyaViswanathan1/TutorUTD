@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit{
   classPrefix: string = '';
   classNumber: string = '';
   tutorName: string = '';
-  searchInput: SearchInput = {course_prefix: '', course_number: '', tutor_name: ''};
+  searchInput: SearchInput = {};
   loading: boolean = false;
   noResults: boolean = false;
 
@@ -44,9 +44,26 @@ export class SearchComponent implements OnInit{
       return;
     }
 
-    this.searchInput.course_prefix = this.searchString.split('+')[0];
-    this.searchInput.course_number = this.searchString.split('+')[1];
-    this.searchInput.tutor_name = this.searchString.split('+')[2];
+    this.classPrefix = this.searchString.split('+')[0];
+    this.classNumber = this.searchString.split('+')[1];
+    this.tutorName = this.searchString.split('+')[2];
+
+    if(this.classPrefix != '')
+    {
+      this.classPrefix = this.classPrefix.toUpperCase();
+      this.searchInput.course_prefix = this.classPrefix;
+    }
+    if(this.classNumber != '')
+    {
+      this.classNumber = this.classNumber;
+      this.searchInput.course_number = this.classNumber;
+    }
+    if(this.tutorName != '')
+    {
+      this.tutorName = this.tutorName;
+      this.searchInput.tutor_name = this.tutorName;
+    }
+    
 
     this._subs.add(this.searchService.search(this.searchInput).subscribe(res => {
       this.loading = false;
@@ -62,7 +79,9 @@ export class SearchComponent implements OnInit{
   search() : void
   {
     this.searchString = this.classPrefix + "+" + this.classNumber + "+" + this.tutorName;
-    this.router.navigate(['/search', this.searchString]);
+    this.router.navigate(['/search', this.searchString]).then(() => {
+      window.location.reload();
+    });
   }
 
   toTutorProfile(id : number)

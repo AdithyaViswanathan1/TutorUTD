@@ -101,7 +101,7 @@ export class httpManager {
         ],
         total_hours: 20,
         available: true,
-        profile_picture: new File(['assets/images/default.jpg'], 'profilePicture.jpg'),
+        profile_picture: 'assets/images/default.jpg',
         appointments: [
           {
             appointmentId: 0,
