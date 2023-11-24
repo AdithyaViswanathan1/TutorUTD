@@ -20,14 +20,24 @@ To run project locally go to the run and debug tab on the visual studio code sid
 ...
 
 
-##Backend
+## Backend
+
 Run backend with 'python manage.py runserver'
 
+
 Ensure the following libraries are installed using pip:
+
 Django
+
 Pymysql
+
 djangorestframework
+
 django-storages
+
 boto3
-pip install django-cors-headers
-pip install duo_client
+
+django-cors-headers
+
+duo_client
+...
