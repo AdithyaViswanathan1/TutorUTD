@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
   isStudent: boolean = true;
   tutorId: number = 0;
   fullName: string = '';
-  profilePicture: File = new File([], ''); //make a default image
+  profilePicture: string = '';
   courses: string[] = [];
   appointments: Appointment[] = [];
   tutorSchedule: string[] = [];
@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
       }
       else
       {
-        this.profilePicture = new File(['assets/images/default.jpg'], 'profilePicture.jpg');
+        this.profilePicture = 'assets/images/default.jpg';
       }
       this.courses = tutor.subjects;
       this.editInput.courses = tutor.subjects;

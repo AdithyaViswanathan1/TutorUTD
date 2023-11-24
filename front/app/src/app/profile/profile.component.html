@@ -4,7 +4,8 @@
 <app-book-session *ngIf="bookingSession" (close)="closeStudentModal()"></app-book-session>
 <div class="page-container" *ngIf="fullName && !loading">
     <div class="user-container">
-        <img src="assets/images/default.jpg" alt="profile image">
+        <img *ngIf="profilePicture" src="{{profilePicture}}" alt="profile image">
+        <img *ngIf="!profilePicture" src="assets/images/default.jpg" alt="profile image">
         <div class="name-and-bio-container">
             <div class="tutor-name"><b>{{fullName}}</b></div>
             <div class="tutor-bio">{{biography}}</div>

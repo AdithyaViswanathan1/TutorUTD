@@ -70,7 +70,7 @@ class StudentViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         return Response('This is a placeholder.')
         
-    @action(methods=['GET', 'PUT'], detail=False)
+    @action(methods=['GET', 'POST'], detail=False)
     def tutor_search(self, request):
         # Search by course prefix only
         if "course_prefix" in request.data.keys() and "course_number" not in request.data.keys():
@@ -100,8 +100,8 @@ class StudentViewSet(viewsets.GenericViewSet):
         result = []
         for tutor in tutor_objects:
             serial = TutorSearchSerializer(tutor)
-            result.append(serial.data)       
-        return Response({"Result": result}, status=status.HTTP_201_CREATED)
+            result.append(serial.data)    
+        return Response(result, status=status.HTTP_201_CREATED)
 
     @action(methods=['POST'], detail=True)
     def add_favorite_tutor(self, request):

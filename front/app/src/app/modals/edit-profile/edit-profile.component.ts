@@ -48,7 +48,7 @@ export class EditProfileComponent {
   }
 
   addCourseToList(){
-    this.courses.push(this.newCourse);
+    this.courses.push(this.newCourse.toUpperCase());
     this.newCourse = "";
   }
 

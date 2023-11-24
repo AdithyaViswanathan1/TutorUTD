@@ -6,7 +6,7 @@ export interface Tutor
     full_name: string;
     total_hours: number;
     available: boolean;
-    profile_picture?: File;
+    profile_picture?: string;
     subjects: string[];
     appointments?: Appointment[];
     times?: string[];
