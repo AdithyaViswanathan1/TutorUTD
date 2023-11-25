@@ -115,6 +115,7 @@ export class TimeTableComponent implements OnInit {
         {
           this.selectedAppointments.push(dateTime);
         }
+        this.modified.emit(this.selectedAppointments);
       }  
     }   
   }

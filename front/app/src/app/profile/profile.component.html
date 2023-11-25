@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <app-loader *ngIf="loading"></app-loader>
 <app-edit-profile *ngIf="isEditing" [input]="editInput" (close)="closeTutorModal()" (save)="saveTutorModal($event)"></app-edit-profile>
-<app-book-session *ngIf="bookingSession" (close)="closeStudentModal()"></app-book-session>
+<app-book-session *ngIf="bookingSession" (close)="closeStudentModal()" (save)="bookAppointment($event)"></app-book-session>
 <div class="page-container" *ngIf="fullName && !loading">
     <div class="user-container">
         <img *ngIf="profilePicture" src="{{profilePicture}}" alt="profile image">

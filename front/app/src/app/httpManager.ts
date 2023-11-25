@@ -14,6 +14,8 @@ import { RegisterResponse } from './models/RegisterResponse';
 import { ProfileEdit } from './models/ProfileEdit';
 import { SearchInput } from './models/SearchInput';
 import { SearchResult } from './models/SearchResult';
+import { AppointmentRequest } from './models/AppointmentRequest';
+import { Appointment } from './models/Appointment';
 
 
 @Injectable({
@@ -57,6 +59,17 @@ export class httpManager {
     editProfile(id: number, data: ProfileEdit) : Observable<boolean>
     {
       return this.http.put<boolean>(this.backendUrl + "tutor/edit_profile/", {id: id, full_name: data.fullName, biography: data.biography, subject_list: data.courses, hours: data.hours});
+    }
+
+    makeAppointment(req : AppointmentRequest) : Observable<boolean>
+    {
+      return this.http.post<boolean>(this.backendUrl + "student/make_appointment/", req);
+    }
+
+    getAppointments(id: number) : Observable<Appointment[]>
+    {
+      //return this.http.post<Appointment[]>(this.backendUrl + "student/get_appointments/", {id: id});
+      return of(this.dummyTutor.appointments);
     }
 
     getStudent(id: number) : Observable<Student>

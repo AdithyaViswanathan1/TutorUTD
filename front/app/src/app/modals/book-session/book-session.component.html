@@ -1,10 +1,10 @@
 <div class="modal">
     <div class="modal-content-book">
         <div class="header-text my-3 align-self-center">Book Tutor Session</div>
-        <app-time-table [tableType]=2 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+        <app-time-table [tableType]=2 [appointments]="tutorAppointments" [selectedTimes]="tutorSchedule" (modified)="updateSelected($event)"></app-time-table>
         <div class="enter-class">
-            Class Prefix: <input type="text" class="input-box">
-            Class Number: <input type="text" class="input-box">
+            Class Prefix: <input type="text" class="input-box" [(ngModel)]="prefix">
+            Class Number: <input type="text" class="input-box" [(ngModel)]="classNumber">
         </div>
         <div class="button-container mt-4">
                 <div class="return-button" (click)="cancelBooking()" style="cursor: pointer">Cancel</div>
