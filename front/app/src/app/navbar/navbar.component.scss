@@ -5,11 +5,12 @@
 
 .navbar {
     flex-wrap: nowrap;
-    background: #FF8C00;
-    height: 80px;
-    border-bottom: 2px solid black;
+    background: var(--utdGreen);
+    height: 9vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-family: 'Lato', sans-serif;
     font-weight: bold;
+    z-index: 2;
 }
 
 label.logo {

@@ -1,11 +1,13 @@
 <app-navbar></app-navbar>
 <div class="page-container">
-    <div class="d-flex align-items-center flex-column mt-5">
-        <div class="header-text bold">Welcome to Online Tutor App!</div>
-        <div class="subheader-text semibold">Please sign in or log on to continue.</div>
+    <div class="welcome-container">
+        <div class="left-text">
+            <img src="assets/images/utdclearlogo.png" alt="landing logo">
+            <div class="welcome-text bold mt-2">Welcome to TutorUTD</div>
+            <div class="description-text semibold">A website that allows students to seek instruction with any course of their choosing at their most convenient time.</div>
+        </div>
     </div>
-    
-    <div class="button-container mt-5">
+    <div class="button-container">
         <div class="options-container">
             <div class = "login-button" (click)="toLoginPage(true)">
                 <fa-icon [icon]="faRightToBracket" style="color: #ffffff;"></fa-icon>
