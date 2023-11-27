@@ -3,15 +3,18 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    flex-direction: column;
+    height: 91vh
 }
 
 .button-container 
 {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 100%;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    overflow: hidden;
 }
 
 .options-container 
