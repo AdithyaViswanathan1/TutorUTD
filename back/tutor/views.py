@@ -170,7 +170,10 @@ class TutorViewSet(viewsets.GenericViewSet):
     def get_appointments(self, request):
         id = request.data['id']
         apps = Appointments.objects.filter(tutor_id=id).values()
-        return Response(apps, status=status.HTTP_200_OK)
+        if len(apps) == 0:
+            return Response(apps, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(apps, status=status.HTTP_200_OK)
     
     @action(methods=['PUT',], detail=False)
     def cancel_appointment(self, request):
@@ -180,7 +183,6 @@ class TutorViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
     @action(methods=['PUT',], detail=False)
     def edit_profile(self, request):
