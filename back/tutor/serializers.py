@@ -11,7 +11,6 @@ class TutorSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
     times = serializers.SerializerMethodField('available_times')
     subjects = serializers.SerializerMethodField('get_subjects')
-    appointments = serializers.SerializerMethodField('get_appointments')
 
     def get_full_name(self, obj): 
         # print ('selffff   ', serializers)
@@ -25,10 +24,6 @@ class TutorSerializer(serializers.ModelSerializer):
     def get_subjects(self, obj):
         subs = TutorSubjects.objects.filter(tutor_id=obj.tutor_id).values_list('subject', flat=True)
         return subs
-
-    def get_appointments(self, obj):
-        apps = Appointments.objects.filter(tutor_id=obj.tutor_id).values()
-        return apps
     
     class Meta:
         model = Tutor

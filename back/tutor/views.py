@@ -167,6 +167,12 @@ class TutorViewSet(viewsets.GenericViewSet):
         return Response(serializer.data)
     
     @action(methods=['PUT',], detail=False)
+    def get_appointments(self, request):
+        id = request.data['id']
+        apps = Appointments.objects.filter(tutor_id=id).values()
+        return Response(apps, status=status.HTTP_200_OK)
+    
+    @action(methods=['PUT',], detail=False)
     def cancel_appointment(self, request):
         appid = request.data['appointment_id']
         try:
