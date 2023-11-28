@@ -57,10 +57,23 @@ class StudentViewSet(viewsets.GenericViewSet):
         except drf_serializers.ValidationError as e:
             return Response(status=status.HTTP_400_BAD_REQUEST, data='Failed to make appointment: ' + str(e))
 
-    @action(methods=['POST'], detail=True)
+    @action(methods=['PUT',], detail=False)
+    def get_appointments(self, request):
+        id = request.data['id']
+        apps = Appointments.objects.filter(student_id=id).values()
+        if len(apps) == 0:
+            return Response(apps, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(apps, status=status.HTTP_200_OK)
+    
+    @action(methods=['PUT',], detail=False)
     def cancel_appointment(self, request):
-        serializer = self.get_serializer(data=request.data)
-        return Response('This is a placeholder.')
+        appid = request.data['appointment_id']
+        try:
+            Appointments.objects.filter(id=appid).delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     # Need to accept information from the client to filter through which
     # tutors to get. Hence, this must be a POST to accept data,

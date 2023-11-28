@@ -2,6 +2,7 @@ from rest_framework import serializers
 from tutor.models import Tutor, TutorAvail, TutorSubjects
 from login.models import User
 from login.serializers import UserSerializer
+from appointments.models import Appointments
 
 class EmptySerializer(serializers.Serializer):
     pass
@@ -27,7 +28,7 @@ class TutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutor
         #fields = '__all__'
-        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available')
+        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available', 'appointments')
 
     # def validate(self,data):
     #     if data['name'] == data['description']:
