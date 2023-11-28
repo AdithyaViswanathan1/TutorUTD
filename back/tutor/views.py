@@ -8,6 +8,7 @@ from tutor.serializers import TutorSerializer
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from login.models import User
+from appointments.models import Appointments
 
 # def say_hello(request):
 #     return HttpResponse('Hello world!!! This is the login endpoint.')
@@ -164,6 +165,16 @@ class TutorViewSet(viewsets.GenericViewSet):
         tutor = self.get_tutor_by_id(userid)
         serializer = TutorSerializer(tutor)
         return Response(serializer.data)
+    
+    @action(methods=['PUT',], detail=False)
+    def cancel_appointment(self, request):
+        appid = request.data['appointment_id']
+        try:
+            Appointments.objects.filter(id=appid).delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
     @action(methods=['PUT',], detail=False)
     def edit_profile(self, request):

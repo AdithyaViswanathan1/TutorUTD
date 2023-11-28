@@ -2,6 +2,7 @@ from rest_framework import serializers
 from tutor.models import Tutor, TutorAvail, TutorSubjects
 from login.models import User
 from login.serializers import UserSerializer
+from appointments.models import Appointments
 
 class EmptySerializer(serializers.Serializer):
     pass
@@ -10,6 +11,7 @@ class TutorSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
     times = serializers.SerializerMethodField('available_times')
     subjects = serializers.SerializerMethodField('get_subjects')
+    appointments = serializers.SerializerMethodField('get_appointments')
 
     def get_full_name(self, obj): 
         # print ('selffff   ', serializers)
@@ -23,11 +25,15 @@ class TutorSerializer(serializers.ModelSerializer):
     def get_subjects(self, obj):
         subs = TutorSubjects.objects.filter(tutor_id=obj.tutor_id).values_list('subject', flat=True)
         return subs
+
+    def get_appointments(self, obj):
+        apps = Appointments.objects.filter(tutor_id=obj.tutor_id).values()
+        return apps
     
     class Meta:
         model = Tutor
         #fields = '__all__'
-        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available')
+        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available', 'appointments')
 
     # def validate(self,data):
     #     if data['name'] == data['description']:
