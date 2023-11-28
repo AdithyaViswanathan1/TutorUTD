@@ -9,6 +9,7 @@ class Appointments(models.Model):
     time = models.DateTimeField(null=False, default=datetime.min)
     location = models.CharField(max_length=100, default='online')
     course = models.CharField(max_length=20, null=True, default='None')
+    completed = models.BooleanField(blank=True, default=False)
 
     class Meta:
         managed = True

@@ -60,7 +60,7 @@ class StudentViewSet(viewsets.GenericViewSet):
     @action(methods=['PUT',], detail=False)
     def get_appointments(self, request):
         id = request.data['id']
-        apps = Appointments.objects.filter(student_id=id).values()
+        apps = Appointments.objects.filter(student_id=id,completed=False).values()
         if len(apps) == 0:
             return Response(apps, status=status.HTTP_204_NO_CONTENT)
         else:
@@ -71,6 +71,29 @@ class StudentViewSet(viewsets.GenericViewSet):
         appid = request.data['appointment_id']
         try:
             Appointments.objects.filter(id=appid).delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(methods=['PUT',], detail=False)
+    def mark_app_as_complete(self, request):
+        appid = request.data['appointment_id']
+        try:
+            # mark appointment as complete
+            app = Appointments.objects.get(id=appid)
+            if app.completed == True:
+                raise Exception
+            app.completed = True
+            student_id = app.student_id
+            tutor_id = app.tutor_id
+            app.save()
+            # add time to student and tutor's hours field
+            s = Student.objects.get(student_id=student_id)
+            s.total_hours = s.total_hours + 0.5
+            s.save()
+            t = Tutor.objects.get(tutor_id=tutor_id)
+            t.total_hours = t.total_hours + 0.5
+            t.save()
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
