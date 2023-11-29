@@ -15,6 +15,7 @@ from rest_framework import status
 from tutor.serializers import TutorSerializer, TutorSearchSerializer
 from tutor.models import Tutor
 from student.models import Favorite_Tutors
+from datetime import datetime
 
 import json
 
@@ -51,6 +52,9 @@ class StudentViewSet(viewsets.GenericViewSet):
             student = Student.objects.get(student=student_id)
             tutor = Tutor.objects.get(tutor=tutor_id)
             for date in dates:
+                # dates passed in are strings, not datetime objects
+                format = "%a %b %d %Y.%H:%M %p"
+                date = datetime.strptime(date, format)
                 Appointments.objects.create(student=student, 
                                            tutor=tutor,
                                            time=date,
