@@ -1,11 +1,11 @@
-
 <div class="navbar">
     <div class="logo-container-navbar">
-        <img src="assets/images/navbarlogo.png" alt="navbar logo">
-        <label class="logo">Online Tutor App</label>
+        <img src="assets/images/utdclearlogo.png" alt="navbar logo">
+        <label class="logo">TutorUTD</label>
     </div>
     <div class="links-container" *ngIf="cookieService.get('userType') === 'student'">
         <div class="link" (click)="toSearch()">Search</div>
+        <div class="link" (click)="toFavorites()">Favorites</div>
         <div class="link" (click)="toAppointments()">Appointments</div>
         <fa-icon class="user-icon" [icon]="faUser" (click)="togglePopup()"></fa-icon>
         <div class="pop-up" *ngIf="showPopup" (click)="logout()">

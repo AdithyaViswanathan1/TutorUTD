@@ -3,6 +3,9 @@ import { ProfileService } from '../profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Appointment } from '../models/Appointment';
+import { CookieService } from 'ngx-cookie-service';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { ProfileEdit } from '../models/ProfileEdit';
 
 @Component({
   selector: 'app-profile',
@@ -14,45 +17,67 @@ export class ProfileComponent implements OnInit {
   isStudent: boolean = true;
   tutorId: number = 0;
   fullName: string = '';
-  profilePicture: File = new File([], ''); //make a default image
+  profilePicture: string = '';
   courses: string[] = [];
   appointments: Appointment[] = [];
   tutorSchedule: string[] = [];
   classPrefix: string = '';
   classNumber: string = '';
   isEditing: boolean = false;
+  isEditingSchedule: boolean = false;
   bookingSession: boolean = false;
   biography: string = '';
+  isFavorited: boolean = false;
+  totalHours: number = 0;
+  editInput: ProfileEdit = {fullName: '', biography: '', courses: []};
+  loading: boolean = false;
+
+  faStar = faStar;
 
   private _subs : Subscription = new Subscription();
 
   constructor(
     private profileService: ProfileService,
     private route : ActivatedRoute,
-    private router : Router) {
+    private router : Router,
+    private cookieService: CookieService) {
       this.route.params.subscribe(params => {
       this.tutorId = params['tutorId'];
     });
-    this.route.params.subscribe(params => {
-      this.isStudent = params['userType'] == 'student';
-    })
   }
 
   ngOnInit(): void {
+    this.loading = true;
+    this.isStudent = this.cookieService.get('userType') == 'student';
+
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
-      this.fullName = tutor.fullName;
+      this.loading = false;
+      this.fullName = tutor.full_name;
+      this.editInput.fullName = tutor.full_name;
       this.biography = tutor.biography;
-      if(tutor.profilePicture){
-        this.profilePicture = tutor.profilePicture;
+      this.editInput.biography = tutor.biography;
+      this.totalHours = tutor.total_hours;
+      if(tutor.profile_picture){
+        this.profilePicture = tutor.profile_picture;
       }
-      this.courses = tutor.courses;
+      else
+      {
+        this.profilePicture = 'assets/images/default.jpg';
+      }
+      this.courses = tutor.subjects;
+      this.editInput.courses = tutor.subjects;
       if(tutor.appointments){
         this.appointments = tutor.appointments;
       }
-      if(tutor.tutorSchedule){
-        this.tutorSchedule = tutor.tutorSchedule;
+      if(tutor.times){
+        this.tutorSchedule = tutor.times;
       }
     }));
+
+    this._subs.add(this.profileService.isFavorited(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
+        this.isFavorited = res;
+      }
+    ));
   }
 
   ngOnDestroy(): void {
@@ -81,15 +106,42 @@ export class ProfileComponent implements OnInit {
     this.isEditing = false;
   }
 
+  saveTutorModal(data: ProfileEdit){
+    this.isEditing = false;
+    
+    this.profileService.editProfile(this.tutorId, data).subscribe(res => {
+      this.editInput = data;
+      this.fullName = data.fullName ? data.fullName : this.fullName;
+      this.biography = data.biography ? data.biography : this.biography;
+      this.courses = data.courses ? data.courses : this.courses;
+    });
+  }
+
   closeStudentModal(){
     this.bookingSession = false;
   }
 
-  editName(name: string){
-    this.fullName = name;
+  editSchedule(){
+    this.isEditingSchedule = true;
   }
 
-  editBio(bio: string){
-    this.biography = bio;
+  saveSchedule(){
+    this.isEditingSchedule = false;
+    let data : ProfileEdit = {hours: this.tutorSchedule};
+    this.profileService.editProfile(this.tutorId, data).subscribe(res => {});
+  }
+
+  updateSchedule(data : string[]){
+    this.tutorSchedule = data;
+  }
+
+  toggleFavorite(){
+    this.profileService.toggleFavorite(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
+        if(res)
+        {
+          this.isFavorited = !this.isFavorited;
+        }
+      }
+    );
   }
 }

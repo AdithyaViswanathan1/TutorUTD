@@ -5,6 +5,9 @@ from student.models import Student, Favorite_Tutors
 from tutor.models import Tutor
 from appointments.models import Appointments
 from datetime import datetime
+from .models import Student
+from tutor.models import Tutor, TutorSubjects
+from appointments.models import Appointments
 
 
 def _validate_tutor(tutor_id):
@@ -54,7 +57,15 @@ class MakeAppointment(serializers.Serializer):
                 msg += str(date) + ', '
             msg = msg[0:len(msg)-2]
             raise serializers.ValidationError(detail=msg)
-    
+        
+    def _validate_tutor(self, tutor_id):
+        if tutor_id < 0:
+            raise serializers.ValidationError(detail='Invalid tutor ID: '+ str(tutor_id))
+        try:
+            Tutor.objects.get(tutor=tutor_id)
+        except Tutor.DoesNotExist:
+            raise serializers.ValidationError('Tutor could not be found')
+        
     def validate(self, data):
         try:
             _validate_tutor(data['tutor_id'])
@@ -133,9 +144,21 @@ class CancelAppointment(serializers.Serializer):
 
 class GetTutors(serializers.Serializer):
     course = serializers.CharField(required=True)
+        
+    # class Meta:
+    #     fields = ('course')
+    #course_number = serializers.CharField(required=True)
     
     class Meta:
-        fields = ('course')
+        model = TutorSubjects
+        fields = "__all__"
+
+class GetAppointments(serializers.Serializer):
+    student_id = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = TutorSubjects
+        fields = "__all__"
 
 class GetAppointments(serializers.Serializer):
     student_id = serializers.IntegerField(required=True)

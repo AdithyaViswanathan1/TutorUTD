@@ -2,14 +2,14 @@ import { Appointment } from "./Appointment";
 
 export interface Tutor
 {
-    tutorId: number;
-    fullName: string;
-    aboutMe?: string;
-    totalHours: number;
+    tutor_id: number;
+    full_name: string;
+    total_hours: number;
     available: boolean;
-    profilePicture?: File;
-    courses: string[];
+    profile_picture?: string;
+    subjects: string[];
     appointments?: Appointment[];
-    tutorSchedule?: string[];
+    times?: string[];
+    background_checked?: boolean;
     biography: string;
 }

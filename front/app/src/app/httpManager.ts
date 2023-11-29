@@ -11,6 +11,9 @@ import { Tutor } from './models/Tutor';
 import { Student } from './models/Student';
 import { LoginResponse } from './models/LoginResponse';
 import { RegisterResponse } from './models/RegisterResponse';
+import { ProfileEdit } from './models/ProfileEdit';
+import { SearchInput } from './models/SearchInput';
+import { SearchResult } from './models/SearchResult';
 
 
 @Injectable({
@@ -43,13 +46,17 @@ export class httpManager {
 
     studentLogin(user: StudentLoginRequest) : Observable<LoginResponse>
     {
-        return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
+      return this.http.post<LoginResponse>(this.backendUrl + "login/student_login/", user);
     }
 
     getTutor(id: number) : Observable<Tutor>
     {
-        //return this.http.get(this.backendUrl + '/' + id);
-        return of(this.dummyTutor);
+      return this.http.post<Tutor>(this.backendUrl + "tutor/get_profile/", {id: id});
+    }
+
+    editProfile(id: number, data: ProfileEdit) : Observable<boolean>
+    {
+      return this.http.put<boolean>(this.backendUrl + "tutor/edit_profile/", {id: id, full_name: data.fullName, biography: data.biography, subject_list: data.courses, hours: data.hours});
     }
 
     getStudent(id: number) : Observable<Student>
@@ -58,26 +65,43 @@ export class httpManager {
         return of(this.dummyStudent);
     }
 
-    search(searchString : string) : Observable<Tutor[]>
+    getFavorites(id: number) : Observable<Tutor[]>
     {
-        //return this.http.get(this.backendUrl + '/' + searchString);
+        //return this.http.get(this.backendUrl + '/' + id);
         let res = [this.dummyTutor];
         return of(res);
     }
 
+    isFavorited(studentId: number, tutorId: number) : Observable<boolean>
+    {
+        //return this.http.get(this.backendUrl + '/' + id);
+        return of(false);
+    }
+
+    toggleFavorite(studentId: number, tutorId: number) : Observable<boolean>
+    {
+        //return this.http.get(this.backendUrl + '/' + id);
+        return of(true);
+    }
+
+    search(input : SearchInput) : Observable<SearchResult[]>
+    {
+        return this.http.post<SearchResult[]>(this.backendUrl + "student/tutor_search/", {course_prefix: input.course_prefix, course_number: input.course_number, tutor_name: input.tutor_name});
+    }
+
 
     dummyTutor : Tutor = {
-        tutorId: 0,
-        fullName: 'John Smith',
-        courses: [
+        tutor_id: 0,
+        full_name: 'John Smith',
+        subjects: [
           'MATH 3163',
           'CS 4485',
           'CS 3377',
           'CS 4398'
         ],
-        totalHours: 20,
+        total_hours: 20,
         available: true,
-        profilePicture: new File(['assets/images/default.jpg'], 'profilePicture.jpg'),
+        profile_picture: 'assets/images/default.jpg',
         appointments: [
           {
             appointmentId: 0,
@@ -106,7 +130,7 @@ export class httpManager {
             subject: 'MATH 3163'
           }
         ],
-        tutorSchedule: [
+        times: [
           "Fri.10:00 AM",
           "Fri.11:00 AM",
           "Fri.01:00 PM",

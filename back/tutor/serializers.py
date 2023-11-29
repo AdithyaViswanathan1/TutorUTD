@@ -2,6 +2,7 @@ from rest_framework import serializers
 from tutor.models import Tutor, TutorAvail, TutorSubjects
 from login.models import User
 from login.serializers import UserSerializer
+from appointments.models import Appointments
 
 class EmptySerializer(serializers.Serializer):
     pass
@@ -27,7 +28,7 @@ class TutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutor
         #fields = '__all__'
-        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available')
+        fields = ('tutor_id','full_name', 'times', 'subjects', 'total_hours','biography', 'profile_picture','background_checked','available', 'appointments')
 
     # def validate(self,data):
     #     if data['name'] == data['description']:
@@ -62,3 +63,21 @@ class GetProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutor
         fields = ('tutor_id','total_hours','full_name')
+
+class TutorSearchSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField('get_full_name')
+    subjects = serializers.SerializerMethodField('get_subjects')
+
+    def get_full_name(self, obj): 
+        # print ('selffff   ', serializers)
+        prof_obj = User.objects.get(id=obj.tutor_id)
+        return prof_obj.full_name
+    
+    def get_subjects(self, obj):
+        subs = TutorSubjects.objects.filter(tutor_id=obj.tutor_id).values_list('subject', flat=True)
+        return subs
+    
+    class Meta:
+        model = Tutor
+        #fields = '__all__'
+        fields = ('tutor_id', 'full_name', 'subjects', 'profile_picture')

@@ -3,6 +3,7 @@ import { Tutor } from './models/Tutor';
 import { Observable, of } from 'rxjs';
 import { httpManager } from './httpManager';
 import { Student } from './models/Student';
+import { ProfileEdit } from './models/ProfileEdit';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,25 @@ export class ProfileService {
   getStudent(id : number) : Observable<Student>
   {
     return this.manager.getStudent(id);
+  }
+
+  editProfile(id : number, data : ProfileEdit) : Observable<boolean>
+  {
+    return this.manager.editProfile(id, data);
+  }
+
+  getFavorites(id : number) : Observable<Tutor[]>
+  {
+    return this.manager.getFavorites(id);
+  }
+
+  isFavorited(studentId : number, tutorId : number) : Observable<boolean>
+  {
+    return this.manager.isFavorited(studentId, tutorId);
+  }
+
+  toggleFavorite(studentId : number, tutorId : number) : Observable<boolean>
+  {
+    return this.manager.toggleFavorite(studentId, tutorId);
   }
 }

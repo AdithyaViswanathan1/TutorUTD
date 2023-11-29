@@ -4,7 +4,7 @@ from login.models import User
 # Create your models here.
 class Tutor(models.Model):
     tutor = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True, related_name="user")  # Field name made lowercase.
-    total_hours = models.IntegerField(verbose_name="Total Hours Completed", blank=True,default=0)
+    total_hours = models.FloatField(verbose_name="Total Hours Completed", blank=True,default=0.0)
     #subject_list = models.CharField(verbose_name="Subject List", max_length=1000, blank=True, null=True)
     subject_list = None
     biography = models.CharField(verbose_name="Biography", max_length=1000, blank=True, null=True)

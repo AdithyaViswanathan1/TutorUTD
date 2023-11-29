@@ -1,9 +1,11 @@
 <app-navbar></app-navbar>
-<app-edit-profile *ngIf="isEditing" [courses]="courses" (close)="closeTutorModal()" (name)="editName($event)" (bio)="editBio($event)"></app-edit-profile>
+<app-loader *ngIf="loading"></app-loader>
+<app-edit-profile *ngIf="isEditing" [input]="editInput" (close)="closeTutorModal()" (save)="saveTutorModal($event)"></app-edit-profile>
 <app-book-session *ngIf="bookingSession" (close)="closeStudentModal()"></app-book-session>
-<div class="page-container">
+<div class="page-container" *ngIf="fullName && !loading">
     <div class="user-container">
-        <img src="assets/images/default.jpg" alt="profile image">
+        <img *ngIf="profilePicture" src="{{profilePicture}}" alt="profile image">
+        <img *ngIf="!profilePicture" src="assets/images/default.jpg" alt="profile image">
         <div class="name-and-bio-container">
             <div class="tutor-name"><b>{{fullName}}</b></div>
             <div class="tutor-bio">{{biography}}</div>
@@ -17,7 +19,17 @@
             </ul>
         </div>
     </div>
-    <button *ngIf="!isStudent" style="width: 200px; margin-bottom: 10px" (click)="showTutorModal()">Edit Profile</button>
-    <button *ngIf="isStudent" style="width: 200px; margin-bottom: 10px" (click)="showStudentModal()">Book Session</button>
-    <app-time-table [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <div class="d-flex flex-row mb-3" style="width: 95%; align-items: center; gap: 1rem;">
+        <button *ngIf="!isStudent" class="book-btn" (click)="showTutorModal()">Edit Profile</button>
+        <button *ngIf="isStudent" class="book-btn" (click)="showStudentModal()">Book Session</button>
+        <fa-icon *ngIf="isStudent" class="star" [icon]="faStar" (click)="toggleFavorite()"
+            [class.star-on]="isFavorited" [class.star-off]="!isFavorited"></fa-icon>
+    </div>
+    <app-time-table *ngIf="!isStudent && isEditingSchedule" [tableType]=1 [appointments]="appointments" [selectedTimes]="tutorSchedule" (modified)="updateSchedule($event)"></app-time-table>
+    <app-time-table *ngIf="isStudent || !isEditingSchedule" [tableType]=0 [appointments]="appointments" [selectedTimes]="tutorSchedule"></app-time-table>
+    <button *ngIf="!isStudent && !isEditingSchedule" class="btn btn-primary table-btn" (click)="editSchedule()">Edit Schedule</button>
+    <button *ngIf="!isStudent && isEditingSchedule" class="btn btn-primary table-btn" (click)="saveSchedule()">Save Schedule</button>
+</div>
+<div style="display: flex; justify-content: center;" *ngIf="!fullName && !loading">
+    <div class="header-text my-3" style="color: red;">Tutor not found!</div>
 </div>

@@ -9,6 +9,10 @@ from rest_framework.decorators import action
 from .models import Student
 from . import serializers as ota_serializers
 from appointments.models import Appointments
+from login.models import User
+from tutor.models import Tutor, TutorSubjects
+from rest_framework import status
+from tutor.serializers import TutorSerializer, TutorSearchSerializer
 from tutor.models import Tutor
 from student.models import Favorite_Tutors
 
@@ -26,6 +30,15 @@ class StudentViewSet(viewsets.GenericViewSet):
         'get_favorite_tutors': ota_serializers.GetFavoriteTutors,
         'get_appointments': ota_serializers.GetAppointments
     }
+
+    #Helper functions
+    def list_to_dict(self, id_and_name):
+        result = {}
+        for tutor in id_and_name:
+            id = tutor[0]
+            name = tutor[1]
+            result[name] = id
+        return result
     
     @action(methods=['POST'], detail=False)
     def make_appointment(self, request):
@@ -48,31 +61,81 @@ class StudentViewSet(viewsets.GenericViewSet):
         except drf_serializers.ValidationError as e:
             return Response(status=status.HTTP_400_BAD_REQUEST, data='Failed to make appointment: ' + str(e))
 
-    @action(methods=['DELETE'], detail=False)
+    @action(methods=['PUT',], detail=False)
+    def get_appointments(self, request):
+        id = request.data['id']
+        apps = Appointments.objects.filter(student_id=id,completed=False).values()
+        if len(apps) == 0:
+            return Response(apps, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(apps, status=status.HTTP_200_OK)
+    
+    @action(methods=['PUT',], detail=False)
     def cancel_appointment(self, request):
-        serializer = self.get_serializer(data=request.data)
+        appid = request.data['appointment_id']
         try:
-            serializer.is_valid(raise_exception=True)
-            appointment_id = request.data.get('appointment_id')
-            student_id = request.data.get('student_id')
-            student = Student.objects.get(student=student_id)
-            Appointments.objects.get(id=appointment_id, student_id=student).delete()
-            return Response(status=status.HTTP_200_OK, data='Successfully cancelled appointment.')
-        except Appointments.DoesNotExist as dne:
-            return Response(status=status.HTTP_404_NOT_FOUND, data='Could not cancel appointment because it does not exist.')
-        except Student.DoesNotExist as dne:
-            return Response(status=status.HTTP_404_NOT_FOUND, data='Student could not be found!')
-            
-
-    # Need to accept information from the client to filter through which
-    # tutors to get. Hence, this must be a POST to accept data,
-    # but this will not make any changes in the database.
+            Appointments.objects.filter(id=appid).delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(methods=['PUT',], detail=False)
+    def mark_app_as_complete(self, request):
+        appid = request.data['appointment_id']
+        try:
+            # mark appointment as complete
+            app = Appointments.objects.get(id=appid)
+            if app.completed == True:
+                raise Exception
+            app.completed = True
+            student_id = app.student_id
+            tutor_id = app.tutor_id
+            app.save()
+            # add time to student and tutor's hours field
+            s = Student.objects.get(student_id=student_id)
+            s.total_hours = s.total_hours + 0.5
+            s.save()
+            t = Tutor.objects.get(tutor_id=tutor_id)
+            t.total_hours = t.total_hours + 0.5
+            t.save()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
     @action(methods=['GET', 'POST'], detail=False)
-    def get_tutors(self, request):
-        serializer = self.get_serializer(data=request.data)
-        return Response('This is a placeholder.')
+    def tutor_search(self, request):
+        # Search by course prefix only
+        if "course_prefix" in request.data.keys() and "course_number" not in request.data.keys():
+            prefix = request.data['course_prefix'].lower()
+            # get tutor_id of matching prefix
+            tutor_ids = TutorSubjects.objects.filter(subject__icontains=prefix).values_list('tutor_id', flat=True).distinct()
+        # Search by course prefix and number
+        elif "course_prefix" in request.data.keys() and "course_number" in request.data.keys():
+            prefix = request.data['course_prefix'].lower()
+            number = str(request.data['course_number'])
+            search_string = f"{prefix} {number}"
+            # get tutor_id of matching prefix
+            tutor_ids = TutorSubjects.objects.filter(subject__iexact=search_string).values_list('tutor_id', flat=True).distinct()
+        # search by tutor_name (partial or full)
+        elif "tutor_name" in request.data.keys():
+            name = request.data['tutor_name']
+            # get tutor id and full_name from tutor_name
+            tutor_ids = User.objects.filter(full_name__icontains=name,user_type="tutor").values_list("id").distinct()
+        elif len(request.data) == 0:
+            # list all tutors in the system
+            tutor_ids = User.objects.filter(user_type="tutor").values_list('id')
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    @action(methods=['POST'], detail=False)
+        # get tutor objects from previous ids and return only relevant fields (using serializer) and return as list of dictionaries
+        tutor_objects = Tutor.objects.filter(pk__in=tutor_ids)
+        result = []
+        for tutor in tutor_objects:
+            serial = TutorSearchSerializer(tutor)
+            result.append(serial.data)    
+        return Response(result, status=status.HTTP_201_CREATED)
+
+    @action(methods=['POST'], detail=True)
     def add_favorite_tutor(self, request):
         serializer = self.get_serializer(data=request.data)
         try:

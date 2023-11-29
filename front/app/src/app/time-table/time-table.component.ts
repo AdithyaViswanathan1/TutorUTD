@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Appointment } from '../models/Appointment';
 
@@ -12,6 +12,8 @@ export class TimeTableComponent implements OnInit {
   @Input() tableType: number = 0; //0 = view only, 1 = tutor editing, 2 = appointment booking
   @Input() selectedTimes: string[] = [];
   @Input() appointments: Appointment[] = [];
+
+  @Output() modified = new EventEmitter<string[]>();
 
   appointmentTimes: string[] = [];
   daysInWeek: Date[] = [];
@@ -97,6 +99,7 @@ export class TimeTableComponent implements OnInit {
       {
         this.selectedTimes.push(dateTime);
       }
+      this.modified.emit(this.selectedTimes);
     }
     else if(this.tableType === 2) //if student booking an appointment
     {
@@ -133,6 +136,6 @@ export class TimeTableComponent implements OnInit {
   
   isInPast(day: Date) { //if time is in the past
     const today = new Date();
-    return day < today;
+    return day.getDate() < today.getDate() && day.getMonth() <= today.getMonth() && day.getFullYear() <= today.getFullYear();
   }
 }

@@ -161,7 +161,7 @@ TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -177,7 +177,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #new!! maybe delete later
 AUTH_USER_MODEL = 'login.User'  #user database comes from what model.py
-#CORS_ORIGIN_ALLOW_ALL = False   #True --> all origins accepted; False --> on a list
+CORS_ALLOW_ALL_ORIGINS = True   #True --> all origins accepted; False --> on a list
 #CORS_ORIGIN_WHITELIST = ('http://localhost:8000',)  #list of origins authorized to make cross-site HTTPS requests
 
 STATIC_URL = '/static/'

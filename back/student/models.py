@@ -6,7 +6,7 @@ from tutor.models import Tutor
 
 class Student(models.Model):
     student = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True)  # Field name made lowercase.
-    total_hours = models.IntegerField(default=0)
+    total_hours = models.FloatField(default=0.0)
 
     class Meta:
         managed = True

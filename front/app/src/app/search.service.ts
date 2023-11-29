@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { httpManager } from './httpManager';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { SearchInput } from './models/SearchInput';
+import { SearchResult } from './models/SearchResult';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,8 @@ export class SearchService {
   constructor(private httpManager: httpManager) {
    }
 
-  search(searchString : string)
+  search(input : SearchInput) : Observable<SearchResult[]>
   {
-    return this.httpManager.search(searchString);
+    return this.httpManager.search(input);
   }
 }
