@@ -135,8 +135,22 @@ class StudentViewSet(viewsets.GenericViewSet):
     @action(methods=['POST',], detail=False)
     def cancel_appointment(self, request):
         appid = request.data['appointment_id']
+        appointment = Appointments.objects.filter(id=appid)
+        
+        #Send Student Email
+        send_mail("TutorUTD: Appointment Cancellation",
+            "An appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + Tutor.object.get(pk=appointment.tutor).full_name,
+            "FROM@EMAIL",
+            [Student.objects.get(pk=appointment.student).email])
+            
+        #Send Tutor email
+        send_mail("Appointment Cancellation",
+            "An appointment made through TutorUTD has been cancelled: \n At " + appoint.time + " with student " + Student.object.get(pk=appointment.student).full_name,
+            "FROM@EMAIL",
+            [Tutor.objects.get(pk=appointment.student).email])
+        
         try:
-            Appointments.objects.filter(id=appid).delete()
+            appointment.delete()
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
