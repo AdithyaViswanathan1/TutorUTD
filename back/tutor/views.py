@@ -76,10 +76,24 @@ class TutorViewSet(viewsets.GenericViewSet):
     def get_appointments(self, request):
         id = request.data['id']
         apps = Appointments.objects.filter(tutor_id=id,completed=False).values()
+        
         if len(apps) == 0:
             return Response(apps, status=status.HTTP_204_NO_CONTENT)
         else:
+            for obj in apps:
+                format = "%a %b %d %Y.%H:%M %p"
+                obj['time'] = obj['time'].strftime(format)
+
+                student_id = obj['student_id']
+                tutor_id = obj['tutor_id']
+
+                student_name = User.objects.get(id=student_id).full_name
+                tutor_name = User.objects.get(id=tutor_id).full_name
+                obj['student_name'] = student_name
+                obj['tutor_name'] = tutor_name
+                
             return Response(apps, status=status.HTTP_200_OK)
+        
     
     @action(methods=['POST',], detail=False)
     def cancel_appointment(self, request):

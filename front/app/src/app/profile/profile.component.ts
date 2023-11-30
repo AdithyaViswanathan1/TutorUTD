@@ -149,7 +149,6 @@ export class ProfileComponent implements OnInit {
     if(data.subject == ' ')
       req.course = undefined;
     
-    console.log(req);
     this.profileService.makeAppointment(req).subscribe(() => {
       this.bookingSession = false;
     });

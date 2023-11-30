@@ -68,7 +68,6 @@ export class SearchComponent implements OnInit{
     this._subs.add(this.searchService.search(this.searchInput).subscribe(res => {
       this.loading = false;
       this.results = res;
-      console.log(res);
       if(this.results.length == 0 && this.searchString == undefined)
       {
         this.noResults = true;

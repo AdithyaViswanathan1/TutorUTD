@@ -50,7 +50,6 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    console.log('sign up');
     //check for missing fields
     if(this.fName == '' || this.lName == '' || this.email == '' || this.password == '' || this.cPassword == '') {
       this.missingFields = true;

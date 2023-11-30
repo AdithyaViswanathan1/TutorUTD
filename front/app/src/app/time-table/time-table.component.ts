@@ -25,6 +25,7 @@ export class TimeTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.appointments);
     this.initWeek();
     this.initTimes();
   }

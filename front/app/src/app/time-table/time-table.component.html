@@ -21,8 +21,7 @@
                 <td *ngFor="let day of daysInWeek" style="padding: 0">
                     <div class="time-slot" 
                         [class.selected]="isSelected(day, time)" 
-                        [class.booked-tutor]="hasAppointment(day, time) && tableType == 1 && isSelected(day, time)"
-                        [class.booked-student]="hasAppointment(day, time) && (tableType == 2 || tableType == 0)"
+                        [class.booked]="hasAppointment(day, time)"
                         [class.student-selected]="isStudentSelected(day, time) && tableType == 2"
                         [class.disabled]="tableType == 0 || isInPast(day)"
                         (click)="toggleSelection(day, time)">

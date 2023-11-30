@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    console.log("login");
     //check for missing fields
     if(this.email == '' || this.password == '') {
       this.missingFields = true;

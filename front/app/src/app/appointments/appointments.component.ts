@@ -78,7 +78,6 @@ export class AppointmentsComponent implements OnInit{
   }
 
   showModal(id : number){
-    console.log("showing modal for id: " + id)
     this.showCancelConfirmation = true;
     this.cancelId = id;
     this.cancelApt = this.appointments.find(a => a.id == id)!;
@@ -89,7 +88,6 @@ export class AppointmentsComponent implements OnInit{
   }
 
   cancelAppointment(id : number){
-    console.log("cancelling id: " + id);
     this.showCancelConfirmation = false;
     this.profileService.cancelAppointment(id).subscribe(res => {
       this.appointments = this.appointments.filter(a => a.id != id);
@@ -97,7 +95,6 @@ export class AppointmentsComponent implements OnInit{
   }
 
   completeAppointment(id : number){
-    console.log("completing id: " + id);
     this.profileService.completeAppointment(id).subscribe(res => {
       this.appointments = this.appointments.filter(a => a.id != id);
     });
