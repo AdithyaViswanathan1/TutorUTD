@@ -11,13 +11,4 @@ export class AppointmentService {
 
   constructor(private httpManager: httpManager) { }
 
-  makeAppointment(appointmentRequest: AppointmentRequest) : Observable<boolean>
-  {
-    return this.httpManager.makeAppointment(appointmentRequest);
-  }
-
-  getAppointments(id: number) : Observable<Appointment[]>
-  {
-    return this.httpManager.getAppointments(id);
-  }
 }

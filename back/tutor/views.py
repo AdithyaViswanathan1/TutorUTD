@@ -72,7 +72,7 @@ class TutorViewSet(viewsets.GenericViewSet):
         serializer = TutorSerializer(tutor)
         return Response(serializer.data)
     
-    @action(methods=['PUT',], detail=False)
+    @action(methods=['POST',], detail=False)
     def get_appointments(self, request):
         id = request.data['id']
         apps = Appointments.objects.filter(tutor_id=id,completed=False).values()
@@ -81,7 +81,7 @@ class TutorViewSet(viewsets.GenericViewSet):
         else:
             return Response(apps, status=status.HTTP_200_OK)
     
-    @action(methods=['PUT',], detail=False)
+    @action(methods=['POST',], detail=False)
     def cancel_appointment(self, request):
         appid = request.data['appointment_id']
         try:
@@ -90,7 +90,7 @@ class TutorViewSet(viewsets.GenericViewSet):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    @action(methods=['PUT',], detail=False)
+    @action(methods=['POST',], detail=False)
     def mark_app_as_complete(self, request):
         appid = request.data['appointment_id']
         try:

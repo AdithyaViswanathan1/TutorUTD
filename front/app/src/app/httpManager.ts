@@ -66,10 +66,26 @@ export class httpManager {
       return this.http.post<boolean>(this.backendUrl + "student/make_appointment/", req);
     }
 
-    getAppointments(id: number) : Observable<Appointment[]>
+    getAppointments(id: number, isStudent: boolean) : Observable<Appointment[]>
     {
-      //return this.http.post<Appointment[]>(this.backendUrl + "student/get_appointments/", {id: id});
-      return of(this.dummyTutor.appointments);
+      if(isStudent)
+      {
+        return this.http.post<Appointment[]>(this.backendUrl + "student/get_appointments/", {id: id});
+      }
+      else
+      {
+        return this.http.post<Appointment[]>(this.backendUrl + "tutor/get_appointments/", {id: id});
+      }
+    }
+
+    completeAppointment(id: number) : Observable<any>
+    {
+      return this.http.post(this.backendUrl + "tutor/mark_app_as_complete/", {appointment_id: id});
+    }
+
+    cancelAppointment(id: number) : Observable<any>
+    {
+      return this.http.post(this.backendUrl + "tutor/cancel_appointment/", {appointment_id: id});
     }
 
     getStudent(id: number) : Observable<Student>
@@ -115,34 +131,7 @@ export class httpManager {
         total_hours: 20,
         available: true,
         profile_picture: 'assets/images/default.jpg',
-        appointments: [
-          {
-            appointmentId: 0,
-            studentId: 1,
-            tutorId: 0,
-            tutorName: 'John Smith',
-            studentName: 'Jane Doe',
-            time: "Sun Nov 19 2023.10:00 AM",
-            subject: 'CS 3377'
-          },
-          {
-            appointmentId: 1,
-            studentId: 1,
-            tutorId: 0,
-            tutorName: 'John Smith',
-            studentName: 'Jane Doe',
-            time: "Wed Nov 15 2023.12:00 PM"
-          },
-          {
-            appointmentId: 2,
-            studentId: 1,
-            tutorId: 0,
-            tutorName: 'John Smith',
-            studentName: 'Jane Doe',
-            time: "Thu Nov 16 2023.11:00 AM",
-            subject: 'MATH 3163'
-          }
-        ],
+        background_checked: true,
         times: [
           "Fri.10:00 AM",
           "Fri.11:00 AM",
@@ -180,33 +169,5 @@ export class httpManager {
       studentId : 0,
       fullName : 'Jane Doe',
       totalHours : 152,
-      appointments : [
-        {
-          appointmentId: 0,
-          studentId: 1,
-          tutorId: 0,
-          tutorName: 'John Smith',
-          studentName: 'Jane Doe',
-          time: "Sun Nov 19 2023.10:00 AM",
-          subject: 'CS 3377'
-        },
-        {
-          appointmentId: 1,
-          studentId: 1,
-          tutorId: 0,
-          tutorName: 'John Smith',
-          studentName: 'Jane Doe',
-          time: "Wed Nov 15 2023.12:00 PM"
-        },
-        {
-          appointmentId: 2,
-          studentId: 1,
-          tutorId: 0,
-          tutorName: 'John Smith',
-          studentName: 'Jane Doe',
-          time: "Thu Nov 16 2023.11:00 AM",
-          subject: 'MATH 3163'
-        }
-      ]
     }
 }

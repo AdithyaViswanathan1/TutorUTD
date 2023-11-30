@@ -33,12 +33,13 @@ export class BookSessionComponent implements OnInit {
 
   ngOnInit(): void {
     this._subs.add(this.profileService.getTutor(this.tutorId).subscribe(tutor => {
-      if(tutor.appointments){
-        this.tutorAppointments = tutor.appointments;
-      }
       if(tutor.times){
         this.tutorSchedule = tutor.times;
       }
+    }));
+
+    this._subs.add(this.profileService.getAppointments(this.tutorId, false).subscribe(apts => {
+      this.tutorAppointments = apts;
     }));
   }
 
