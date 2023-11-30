@@ -69,9 +69,14 @@ class StudentViewSet(viewsets.GenericViewSet):
     def get_appointments(self, request):
         id = request.data['id']
         apps = Appointments.objects.filter(student_id=id,completed=False).values()
+        
         if len(apps) == 0:
             return Response(apps, status=status.HTTP_204_NO_CONTENT)
         else:
+            for obj in apps:
+                format = "%a %b %d %Y.%H:%M %p"
+                obj['time'] = obj['time'].strftime(format)
+                
             return Response(apps, status=status.HTTP_200_OK)
     
     @action(methods=['PUT',], detail=False)
