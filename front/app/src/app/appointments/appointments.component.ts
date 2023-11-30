@@ -98,7 +98,9 @@ export class AppointmentsComponent implements OnInit{
 
   completeAppointment(id : number){
     console.log("completing id: " + id);
-    
+    this.profileService.completeAppointment(id).subscribe(res => {
+      this.appointments = this.appointments.filter(a => a.id != id);
+    });
   }
 
 }
