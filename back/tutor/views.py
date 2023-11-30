@@ -11,18 +11,24 @@ from appointments.models import Appointments
 from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 from . import serializers
+from login import serializers as ls
+from student import serializers as ota_serializers
 from rest_framework.decorators import action
 from django.db.models import F
 from student.models import Student
+from django.core.files.storage import default_storage
+from io import BytesIO
+from django.core.exceptions import ImproperlyConfigured
+
 
 class TutorViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
-    serializer_class = serializers.EmptySerializer
-    # purpose: to get the right fields
     serializer_classes = {
         'get_profile': serializers.GetProfileSerializer, 
-        'edit_profile': serializers.TutorSerializer
+        'edit_profile': serializers.EditProfileSerializer,
     }
+    serializer_class = serializers.EmptySerializer
+    # purpose: to get the right fields
     queryset = ''
 
     #HELPER METHODS
@@ -130,38 +136,48 @@ class TutorViewSet(viewsets.GenericViewSet):
 
     @action(methods=['PUT',], detail=False)
     def edit_profile(self, request):
-        try:
-            print(type(request))
-            userid = request.data['id']
-            tutor = self.get_tutor_by_id(userid)
-            tutor_id = tutor.tutor_id
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if request.method == 'PUT':
+            try:
+                print("entered first step")
+                userid = int(request.data['tutor_id'])
+                print(userid, type(userid))
+                tutor = self.get_tutor_by_id(userid)
+                tutor_id = tutor.tutor_id
+                print("checking for full_name, hours, subject_list")
 
-            #if name field is in request.data, then update name separately
-            if "full_name" in request.data.keys():
-                #print("FULL NAME", request.data['full_name'])
-                User.objects.filter(id=tutor_id).update(full_name=request.data['full_name'])
-            
-            if "hours" in request.data.keys() and request.data['hours'] != None:
-                new_times = request.data['hours']
-                self.update_times(tutor, new_times)
+                #if name field is in request.data, then update name separately
+                if "full_name" in request.data.keys():
+                    #print("FULL NAME", request.data['full_name'])
+                    User.objects.filter(id=tutor_id).update(full_name=request.data['full_name'])
+                
+                if "hours" in request.data.keys() and request.data['hours'] != None:
+                    new_times = request.data['hours']
+                    self.update_times(tutor, new_times)
 
-            if "subject_list" in request.data.keys() and request.data['subject_list'] != None:
-                new_subjects = request.data['subject_list']
-                self.update_subjects(tutor, new_subjects)
-            
-            # if "profile_picture" in request.data.keys() and request.data['profile_picture'] != None:
-            #     request.data['profile_picture'] = open(request.data['profile'], 'rb')
+                if "subject_list" in request.data.keys() and request.data['subject_list'] != None:
+                    new_subjects = request.data['subject_list']
+                    self.update_subjects(tutor, new_subjects)
 
-            # take all fields in request.data except token,full_name and update fields in tutor table with given user_id
-            data = self.without_keys(request.data, ["token","full_name","hours", "subject_list"])
-            print("Request without token, full_name, hours, subject_list",data)
+                # take all fields in request.data except token,full_name and update fields in tutor table with given user_id
+                data = self.without_keys(request.data, ["token","full_name","hours", "subject_list"])
+                print("Request without token, full_name, hours, subject_list",data)
 
-            serializer = TutorSerializer(tutor, data=data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({"Success": "Profile Updated"}, status=status.HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-            # return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)
+                serializer = TutorSerializer(tutor, data=data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({"Success": "Profile Updated"}, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(serializer.errors)
+            except:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+                # return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_serializer_class(self):
+        if not isinstance(self.serializer_classes, dict):
+            raise ImproperlyConfigured("serializer_classes should be a dict mapping.")
+
+        if self.action in self.serializer_classes.keys():
+            return self.serializer_classes[self.action]
+        return super().get_serializer_class()
