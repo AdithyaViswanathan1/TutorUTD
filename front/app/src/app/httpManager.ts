@@ -95,27 +95,26 @@ export class httpManager {
 
     getStudent(id: number) : Observable<Student>
     {
-        //return this.http.get(this.backendUrl + '/' + id);
+        //unused
         return of(this.dummyStudent);
     }
 
     getFavorites(id: number) : Observable<Tutor[]>
     {
-        //return this.http.get(this.backendUrl + '/' + id);
-        let res = [this.dummyTutor];
-        return of(res);
+        return this.http.post<Tutor[]>(this.backendUrl + "student/get_favorite_tutors/", {student_id: id});
     }
 
-    isFavorited(studentId: number, tutorId: number) : Observable<boolean>
+    toggleFavorite(studentId: number, tutorId: number, isFavorited: boolean) : Observable<boolean>
     {
-        //return this.http.get(this.backendUrl + '/' + id);
-        return of(false);
-    }
-
-    toggleFavorite(studentId: number, tutorId: number) : Observable<boolean>
-    {
-        //return this.http.get(this.backendUrl + '/' + id);
-        return of(true);
+        console.log(studentId, tutorId, isFavorited);
+        if(isFavorited)
+        {
+          return this.http.post<boolean>(this.backendUrl + "student/remove_favorite_tutor/", {student_id: studentId, tutor_id: tutorId});
+        }
+        else
+        {
+          return this.http.post<boolean>(this.backendUrl + "student/add_favorite_tutor/", {student_id: studentId, tutor_id: tutorId});
+        }
     }
 
     getStudentHours(id: number) : Observable<number>

@@ -167,7 +167,7 @@ class StudentViewSet(viewsets.GenericViewSet):
         except drf_serializers.ValidationError as v:
             return Response(status=status.HTTP_400_BAD_REQUEST, data='Failed to add favorite tutor: ' + str(v))
     
-    @action(methods=['DELETE'], detail=False)
+    @action(methods=['POST'], detail=False)
     def remove_favorite_tutor(self, request):
         serializer = self.get_serializer(data=request.data)
         try:
