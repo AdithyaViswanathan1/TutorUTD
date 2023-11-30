@@ -166,7 +166,13 @@ class GetAppointments(serializers.Serializer):
         model = TutorSubjects
         fields = "__all__"
 
-class GetAppointments(serializers.Serializer):
+# class GetAppointments(serializers.Serializer):
+#     student_id = serializers.IntegerField(required=True)
+
+#     class Meta:
+#         fields = ('student_id')
+
+class GetTotalHours(serializers.Serializer):
     student_id = serializers.IntegerField(required=True)
 
     class Meta:

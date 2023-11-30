@@ -29,7 +29,8 @@ class StudentViewSet(viewsets.GenericViewSet):
         'add_favorite_tutor': ota_serializers.AddFavoriteTutor,
         'remove_favorite_tutor': ota_serializers.RemoveFavoriteTutor,
         'get_favorite_tutors': ota_serializers.GetFavoriteTutors,
-        'get_appointments': ota_serializers.GetAppointments
+        'get_appointments': ota_serializers.GetAppointments,
+        'get_total_hours': ota_serializers.GetTotalHours,
     }
 
     #Helper functions
@@ -200,6 +201,18 @@ class StudentViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND, data='No favorite tutors found.')
         except Student.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data='Student could not be found!!')
+        
+    @action(methods=['GET', 'POST'], detail=False)
+    def get_total_hours(self, request):
+        serializer = self.get_serializer(data=request.data)
+        student_id = request.data.get('student_id')
+        try: 
+            hours = Student.objects.get(student=student_id).total_hours
+            return Response(status=status.HTTP_200_OK, data=hours)
+        except(Student.DoesNotExist):
+            return Response(status=status.HTTP_404_NOT_FOUND, data='Student not found.')
+
+
     
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):
