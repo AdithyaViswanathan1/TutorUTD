@@ -28,9 +28,9 @@ export class AuthenticationService {
 
   logout()
   {
-    this.cookieService.delete('userId');
-    this.cookieService.delete('userType');
-    this.router.navigate(['']);
+    this.cookieService.delete('userId','/');
+    this.cookieService.delete('userType', '/');
+    this.router.navigate(['/']);
   }
 
   studentSignup(user: StudentSignupRequest): Observable<RegisterResponse>
