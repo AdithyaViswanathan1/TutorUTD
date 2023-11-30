@@ -152,7 +152,7 @@ class StudentViewSet(viewsets.GenericViewSet):
             result.append(serial.data)    
         return Response(result, status=status.HTTP_201_CREATED)
 
-    @action(methods=['POST'], detail=True)
+    @action(methods=['POST'], detail=False)
     def add_favorite_tutor(self, request):
         serializer = self.get_serializer(data=request.data)
         try:
