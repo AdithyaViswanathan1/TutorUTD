@@ -17,6 +17,7 @@ export class AppointmentsComponent implements OnInit{
   tutorSchedule: string[] = [];
   userType: string = '';
   userTypeInt: number = 0;
+  totalHours: number = 0;
 
   showCancelConfirmation: boolean = false;
   cancelId: number = -1;
@@ -50,6 +51,7 @@ export class AppointmentsComponent implements OnInit{
       this.userTypeInt = 2;
       this._subs.add(this.profileService.getTutor(this.userId).subscribe(tutor => {
         this.loading = false;
+        this.totalHours = tutor.total_hours;
         if(tutor.times){
           this.tutorSchedule = tutor.times;
         }
@@ -65,6 +67,9 @@ export class AppointmentsComponent implements OnInit{
       this._subs.add(this.profileService.getAppointments(this.userId, true).subscribe(apts => {
         this.appointments = apts;
         this.loading = false;
+      }));
+      this._subs.add(this.profileService.getStudentHours(this.userId).subscribe(hours => {
+        this.totalHours = hours;
       }));
     }
   }

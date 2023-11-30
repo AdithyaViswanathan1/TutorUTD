@@ -4,7 +4,8 @@
     [appointment]="cancelApt" [userType]="userType"
     (close)="closeModal()" (cancel)="cancelAppointment($event)"></app-cancel-confirmation>
 <div class="page-container my-3">
-    <div class="header-text mb-3">Appointments</div>
+    <div class="header-text">Appointments</div>
+    <div class="subheader-text mb-4">Total hours completed: {{totalHours}} hours</div>
     <div class="apt-container">
         <div *ngFor="let apt of appointments">
             <div class="apt-card mb-2">

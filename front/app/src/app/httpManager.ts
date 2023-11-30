@@ -113,6 +113,11 @@ export class httpManager {
         return of(true);
     }
 
+    getStudentHours(id: number) : Observable<number>
+    {
+      return this.http.post<number>(this.backendUrl + "student/get_total_hours/", {student_id: id});
+    }
+
     search(input : SearchInput) : Observable<SearchResult[]>
     {
         return this.http.post<SearchResult[]>(this.backendUrl + "student/tutor_search/", {course_prefix: input.course_prefix, course_number: input.course_number, tutor_name: input.tutor_name});

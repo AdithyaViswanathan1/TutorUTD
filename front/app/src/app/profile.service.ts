@@ -67,5 +67,10 @@ export class ProfileService {
   {
     return this.manager.cancelAppointment(id);
   }
+
+  getStudentHours(id : number) : Observable<number>
+  {
+    return this.manager.getStudentHours(id);
+  }
   
 }
