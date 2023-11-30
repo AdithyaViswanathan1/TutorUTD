@@ -4,8 +4,13 @@ from login.models import User
 from login.serializers import UserSerializer
 from appointments.models import Appointments
 
-class EmptySerializer(serializers.Serializer):
-    pass
+
+class EditProfileSerializer(serializers.ModelSerializer):
+    tutor_id = serializers.IntegerField(required=True)
+    class Meta:
+        model = Tutor
+        #fields = '__all__'
+        fields = ('tutor_id', 'profile_picture')
 
 class TutorSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
@@ -62,7 +67,7 @@ class TutorSubjectsSerializer(serializers.ModelSerializer):
 class GetProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutor
-        fields = ('tutor_id','total_hours','full_name')
+        fields = ('tutor_id',)
 
 class TutorSearchSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
@@ -81,3 +86,6 @@ class TutorSearchSerializer(serializers.ModelSerializer):
         model = Tutor
         #fields = '__all__'
         fields = ('tutor_id', 'full_name', 'subjects', 'profile_picture')
+
+class EmptySerializer(serializers.Serializer):
+    pass
