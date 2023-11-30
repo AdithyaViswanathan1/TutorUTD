@@ -8,12 +8,13 @@ import { Appointment } from 'src/app/models/Appointment';
 })
 export class CancelConfirmationComponent {
   @Input() appointment: Appointment = {
-    appointmentId: -1,
-    tutorId: -1,
-    studentId: -1,
-    tutorName: '',
-    studentName: '',
-    time: ''
+    id: -1,
+    tutor_id: -1,
+    student_id: -1,
+    tutor_name: '',
+    student_name: '',
+    time: '',
+    completed: false
   };
   @Input() userType: string = '';
   @Output() cancel = new EventEmitter<number>();
@@ -28,7 +29,7 @@ export class CancelConfirmationComponent {
 
   confirm()
   {
-    this.cancel.emit(this.appointment.appointmentId);
+    this.cancel.emit(this.appointment.id);
   }
 
 }

@@ -8,7 +8,6 @@ export interface Tutor
     available: boolean;
     profile_picture?: string;
     subjects: string[];
-    appointments: Appointment[];
     times?: string[];
     background_checked?: boolean;
     biography: string;

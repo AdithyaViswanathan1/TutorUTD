@@ -21,12 +21,13 @@ export class AppointmentsComponent implements OnInit{
   showCancelConfirmation: boolean = false;
   cancelId: number = -1;
   cancelApt: Appointment = {
-    appointmentId: -1,
-    tutorId: -1,
-    studentId: -1,
-    tutorName: '',
-    studentName: '',
-    time: ''
+    id: -1,
+    tutor_id: -1,
+    student_id: -1,
+    tutor_name: '',
+    student_name: '',
+    time: '',
+    completed: false
   };
 
   loading: boolean = false;
@@ -49,22 +50,21 @@ export class AppointmentsComponent implements OnInit{
       this.userTypeInt = 2;
       this._subs.add(this.profileService.getTutor(this.userId).subscribe(tutor => {
         this.loading = false;
-        if(tutor.appointments){
-          this.appointments = tutor.appointments;
-        }
         if(tutor.times){
           this.tutorSchedule = tutor.times;
         }
       }));
+      this._subs.add(this.profileService.getAppointments(this.userId, false).subscribe(apts => {
+        this.appointments = apts;
+      }));
+      
     }
     else if(this.userType == 'student')
     {
       this.userTypeInt = 1;
-      this._subs.add(this.profileService.getStudent(this.userId).subscribe(student => {
+      this._subs.add(this.profileService.getAppointments(this.userId, true).subscribe(apts => {
+        this.appointments = apts;
         this.loading = false;
-        if(student.appointments){
-          this.appointments = student.appointments;
-        }
       }));
     }
   }
@@ -81,7 +81,7 @@ export class AppointmentsComponent implements OnInit{
     console.log("showing modal for id: " + id)
     this.showCancelConfirmation = true;
     this.cancelId = id;
-    this.cancelApt = this.appointments.find(a => a.appointmentId == id)!;
+    this.cancelApt = this.appointments.find(a => a.id == id)!;
   }
 
   closeModal(){
@@ -91,6 +91,14 @@ export class AppointmentsComponent implements OnInit{
   cancelAppointment(id : number){
     console.log("cancelling id: " + id);
     this.showCancelConfirmation = false;
+    this.profileService.cancelAppointment(id).subscribe(res => {
+      this.appointments = this.appointments.filter(a => a.id != id);
+    });
+  }
+
+  completeAppointment(id : number){
+    console.log("completing id: " + id);
+    
   }
 
 }

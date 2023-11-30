@@ -8,7 +8,6 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ProfileEdit } from '../models/ProfileEdit';
 import { BookingData } from '../models/BookingData';
 import { AppointmentRequest } from '../models/AppointmentRequest';
-import { AppointmentService } from '../appointment.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,7 +40,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private appointmentService: AppointmentService,
     private route : ActivatedRoute,
     private router : Router,
     private cookieService: CookieService) {
@@ -70,12 +68,13 @@ export class ProfileComponent implements OnInit {
       }
       this.courses = tutor.subjects;
       this.editInput.courses = tutor.subjects;
-      if(tutor.appointments){
-        this.appointments = tutor.appointments;
-      }
       if(tutor.times){
         this.tutorSchedule = tutor.times;
       }
+    }));
+
+    this._subs.add(this.profileService.getAppointments(this.tutorId, false).subscribe(apts => {
+      this.appointments = apts;
     }));
 
     this._subs.add(this.profileService.isFavorited(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
@@ -151,7 +150,7 @@ export class ProfileComponent implements OnInit {
       req.course = undefined;
     
     console.log(req);
-    this.appointmentService.makeAppointment(req).subscribe(() => {
+    this.profileService.makeAppointment(req).subscribe(() => {
       this.bookingSession = false;
     });
   }

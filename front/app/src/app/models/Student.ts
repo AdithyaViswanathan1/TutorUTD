@@ -5,5 +5,4 @@ export interface Student
     studentId: number;
     fullName: string;
     totalHours: number;
-    appointments?: Appointment[];
 }
