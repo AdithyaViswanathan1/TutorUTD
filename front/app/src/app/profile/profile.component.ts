@@ -6,6 +6,9 @@ import { Appointment } from '../models/Appointment';
 import { CookieService } from 'ngx-cookie-service';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ProfileEdit } from '../models/ProfileEdit';
+import { BookingData } from '../models/BookingData';
+import { AppointmentRequest } from '../models/AppointmentRequest';
+import { AppointmentService } from '../appointment.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +41,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
+    private appointmentService: AppointmentService,
     private route : ActivatedRoute,
     private router : Router,
     private cookieService: CookieService) {
@@ -133,6 +137,23 @@ export class ProfileComponent implements OnInit {
 
   updateSchedule(data : string[]){
     this.tutorSchedule = data;
+  }
+
+  bookAppointment(data: BookingData){
+    let req : AppointmentRequest = {
+      student_id: parseInt(this.cookieService.get('userId')),
+      tutor_id: this.tutorId,
+      course: data.subject,
+      dates: data.times,
+      location: data.location
+    };
+    if(data.subject == ' ')
+      req.course = undefined;
+    
+    console.log(req);
+    this.appointmentService.makeAppointment(req).subscribe(() => {
+      this.bookingSession = false;
+    });
   }
 
   toggleFavorite(){
