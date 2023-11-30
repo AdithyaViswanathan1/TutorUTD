@@ -147,8 +147,13 @@ export class ProfileComponent implements OnInit {
       dates: data.times,
       location: data.location
     };
+    if(data.subject == ' ')
+      req.course = undefined;
+    
     console.log(req);
-    this.appointmentService.makeAppointment(req).subscribe();
+    this.appointmentService.makeAppointment(req).subscribe(() => {
+      this.bookingSession = false;
+    });
   }
 
   toggleFavorite(){

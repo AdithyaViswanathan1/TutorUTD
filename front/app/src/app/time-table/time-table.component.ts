@@ -137,6 +137,6 @@ export class TimeTableComponent implements OnInit {
   
   isInPast(day: Date) { //if time is in the past
     const today = new Date();
-    return day.getDate() < today.getDate() && day.getMonth() <= today.getMonth() && day.getFullYear() <= today.getFullYear();
+    return day < today;
   }
 }

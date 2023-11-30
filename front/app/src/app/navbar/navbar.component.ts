@@ -18,7 +18,6 @@ export class NavbarComponent{
         private authenticationService: AuthenticationService,
         public cookieService: CookieService,
         private router: Router) {
-            
         }
 
     toSearch()

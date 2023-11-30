@@ -1,7 +1,7 @@
 <div class="navbar">
     <div class="logo-container-navbar">
         <img src="assets/images/utdclearlogo.png" alt="navbar logo">
-        <label class="logo">TutorUTD</label>
+        <label class="logo">Tutor<span style="color: var(--utdOrange);">UTD</span></label>
     </div>
     <div class="links-container" *ngIf="cookieService.get('userType') === 'student'">
         <div class="link" (click)="toSearch()">Search</div>
