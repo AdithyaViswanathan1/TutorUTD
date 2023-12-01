@@ -25,7 +25,8 @@ class TutorViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny,]
     serializer_classes = {
         'get_profile': serializers.GetProfileSerializer, 
-        'edit_profile': serializers.EditProfileSerializer,
+        'edit_profile': serializers.EmptySerializer,
+        'edit_profile_picture': serializers.EditProfileSerializer
     }
     serializer_class = serializers.EmptySerializer
     # purpose: to get the right fields
@@ -159,6 +160,25 @@ class TutorViewSet(viewsets.GenericViewSet):
             except:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
                 # return Response({"Error": "Profile Update Failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['PUT',], detail=False)
+    def edit_profile_picture(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if request.method == 'PUT':
+            try:
+                print("entered first step")
+                userid = int(request.data['tutor_id'])
+                print(userid, type(userid))
+                tutor = self.get_tutor_by_id(userid)
+                serializer = TutorSerializer(tutor, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({"Success": "Profile Picture Updated"}, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(serializer.errors)
+            except:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):
