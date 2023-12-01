@@ -53,6 +53,11 @@ class TutorSerializer(serializers.ModelSerializer):
     #     else:
     #         return value
 
+class TutorSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tutor
+        fields = "__all__"
+
 class TutorAvailSerializer(serializers.ModelSerializer):
     class Meta:
         model = TutorAvail
