@@ -127,8 +127,15 @@ export class TimeTableComponent implements OnInit {
   }
 
   hasAppointment(day: Date, time: string) { //if slot has an existing appointment
-    const dateTime = `${day.toDateString()}.${time}`;
-    return this.appointments.some(appointment => appointment.time === dateTime);
+    if(this.appointments)
+    {
+      const dateTime = `${day.toDateString()}.${time}`;
+      return this.appointments.some(appointment => appointment.time === dateTime);
+    }
+    else
+    {
+      return false;
+    }
   }
 
   isStudentSelected(day: Date, time: string) { //if current student has selected this appointment to book
