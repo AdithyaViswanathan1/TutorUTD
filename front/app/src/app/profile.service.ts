@@ -72,5 +72,10 @@ export class ProfileService {
   {
     return this.manager.getStudentHours(id);
   }
+
+  uploadProfilePicture(file : FormData) : Observable<boolean>
+  {
+    return this.manager.uploadProfilePicture(file);
+  }
   
 }
