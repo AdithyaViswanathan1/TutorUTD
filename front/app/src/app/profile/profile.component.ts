@@ -163,4 +163,11 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
+  uploadProfilePicture(event: any){
+    const file = event.target.files[0];
+    this.profileService.uploadProfilePicture(this.tutorId, file).subscribe(res => {
+      window.location.reload();
+    });
+  }
 }

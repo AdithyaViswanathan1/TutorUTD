@@ -4,8 +4,11 @@
 <app-book-session *ngIf="bookingSession" (close)="closeStudentModal()" (save)="bookAppointment($event)"></app-book-session>
 <div class="page-container" *ngIf="fullName && !loading">
     <div class="user-container">
-        <img *ngIf="profilePicture" src="{{profilePicture}}" alt="profile image">
-        <img *ngIf="!profilePicture" src="assets/images/default.jpg" alt="profile image">
+        <label>
+            <input *ngIf="!isStudent" style="display: none;" type="file" name="profilePicture" accept="image/*" (change)="uploadProfilePicture($event)" #imgInput>
+            <img *ngIf="profilePicture" src="{{profilePicture}}" alt="profile image" [class.clickable]="!isStudent">
+            <img *ngIf="!profilePicture" src="assets/images/default.jpg" alt="profile image" [class.clickable]="!isStudent">
+        </label>
         <div class="name-and-bio-container">
             <div class="tutor-name"><b>{{fullName}}</b></div>
             <div class="subheader-text mb-3">Total tutoring hours: {{totalHours}} hours</div>

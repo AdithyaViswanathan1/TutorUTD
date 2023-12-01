@@ -3,4 +3,5 @@ export interface ProfileEdit {
     biography?: string;
     courses?: string[];
     hours?: string[];
+    profile_picture?: FormData;
 }
