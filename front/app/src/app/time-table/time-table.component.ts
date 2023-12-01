@@ -25,7 +25,6 @@ export class TimeTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.appointments);
     this.initWeek();
     this.initTimes();
   }
@@ -145,6 +144,8 @@ export class TimeTableComponent implements OnInit {
   
   isInPast(day: Date) { //if time is in the past
     const today = new Date();
+    if(this.tableType === 1) //tutor edit is weekly, allowed to edit current day if not booked
+      return false;
     return day < today;
   }
 }

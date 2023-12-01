@@ -61,9 +61,9 @@ export class httpManager {
       return this.http.put<boolean>(this.backendUrl + "tutor/edit_profile/", {tutor_id: id, full_name: data.fullName, biography: data.biography, subject_list: data.courses, hours: data.hours, profile_picture: data.profile_picture});
     }
 
-    uploadProfilePicture(id: number, file: File) : Observable<boolean>
+    uploadProfilePicture(file: FormData) : Observable<boolean>
     {
-      return this.http.post<boolean>(this.backendUrl + "tutor/edit_profile/", {tutor_id: id, profile_picture: file});
+      return this.http.put<boolean>(this.backendUrl + "tutor/edit_profile_picture/", file);
     }
 
     makeAppointment(req : AppointmentRequest) : Observable<boolean>

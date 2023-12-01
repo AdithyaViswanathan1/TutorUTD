@@ -166,7 +166,11 @@ export class ProfileComponent implements OnInit {
 
   uploadProfilePicture(event: any){
     const file = event.target.files[0];
-    this.profileService.uploadProfilePicture(this.tutorId, file).subscribe(res => {
+    const formData = new FormData();
+    formData.append('tutor_id', this.tutorId.toString());
+    formData.append('profile_picture', file);
+
+    this.profileService.uploadProfilePicture(formData).subscribe(res => {
       window.location.reload();
     });
   }
