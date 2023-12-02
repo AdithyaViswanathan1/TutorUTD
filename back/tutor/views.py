@@ -79,10 +79,11 @@ class TutorViewSet(viewsets.GenericViewSet):
         serializer = TutorSerializer(tutor)
         return Response(serializer.data)
     
+    import time
     @action(methods=['POST',], detail=False)
     def get_appointments(self, request):
         id = request.data['id']
-        apps = Appointments.objects.filter(tutor_id=id,completed=False).values()
+        apps = Appointments.objects.filter(tutor_id=id,completed=False).order_by('time').values()
         
         if len(apps) == 0:
             return Response(apps, status=status.HTTP_204_NO_CONTENT)
@@ -98,7 +99,6 @@ class TutorViewSet(viewsets.GenericViewSet):
                 tutor_name = User.objects.get(id=tutor_id).full_name
                 obj['student_name'] = student_name
                 obj['tutor_name'] = tutor_name
-                
             return Response(apps, status=status.HTTP_200_OK)
         
     

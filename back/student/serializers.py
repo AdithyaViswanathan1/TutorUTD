@@ -160,7 +160,7 @@ class GetTutors(serializers.Serializer):
         fields = "__all__"
 
 class GetAppointments(serializers.Serializer):
-    student_id = serializers.IntegerField(required=True)
+    id = serializers.IntegerField(required=True)
 
     class Meta:
         model = TutorSubjects
