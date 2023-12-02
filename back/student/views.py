@@ -12,7 +12,7 @@ from appointments.models import Appointments
 from login.models import User
 from tutor.models import Tutor, TutorSubjects
 from rest_framework import status
-from tutor.serializers import TutorSerializer, TutorSearchSerializer
+from tutor.serializers import TutorSerializer, TutorSearchSerializer, TutorSimpleSerializer
 from tutor.models import Tutor
 from student.models import Favorite_Tutors
 from datetime import datetime
@@ -167,7 +167,7 @@ class StudentViewSet(viewsets.GenericViewSet):
         except drf_serializers.ValidationError as v:
             return Response(status=status.HTTP_400_BAD_REQUEST, data='Failed to add favorite tutor: ' + str(v))
     
-    @action(methods=['DELETE'], detail=False)
+    @action(methods=['POST'], detail=False)
     def remove_favorite_tutor(self, request):
         serializer = self.get_serializer(data=request.data)
         try:
@@ -181,22 +181,19 @@ class StudentViewSet(viewsets.GenericViewSet):
         except Favorite_Tutors.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data='Could not find favorite tutor.')
         
-    @action(methods=['GET', 'POST'], detail=False)
+    @action(methods=['POST'], detail=False)
     def get_favorite_tutors(self, request):
         serializer = self.get_serializer(data=request.data)
-        student_id = request.data.get('student_id')
-
+        student_id = request.data['student_id']
         try:
-            student = Student.objects.get(student=student_id)
+            student = Student.objects.get(student_id=student_id)
             favorite_tutors = Favorite_Tutors.objects.filter(student=student).values('tutor_id')
             tutor_data = []
-
             for tutor in favorite_tutors:
-                q_set = Tutor.objects.get(tutor=tutor.get('tutor_id'))
-                dict_q_set = model_to_dict(q_set)
-                tutor_data.append(dict_q_set)
-    
-            return Response(status=status.HTTP_200_OK, data=tutor_data)
+                q_set = Tutor.objects.get(tutor_id=tutor.get('tutor_id'))
+                tutor_serial = TutorSearchSerializer(q_set)
+                tutor_data.append(tutor_serial.data)
+            return Response(data=tutor_data, status=status.HTTP_200_OK)
         except Favorite_Tutors.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data='No favorite tutors found.')
         except Student.DoesNotExist:

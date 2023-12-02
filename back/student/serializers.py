@@ -123,7 +123,7 @@ class RemoveFavoriteTutor(serializers.Serializer):
         return data
 
 class GetFavoriteTutors(serializers.Serializer):
-    student = serializers.IntegerField(required=True)
+    student_id = serializers.IntegerField(required=True)
 
     class Meta:
         fields = ('student_id')        

@@ -38,14 +38,9 @@ export class ProfileService {
     return this.manager.getFavorites(id);
   }
 
-  isFavorited(studentId : number, tutorId : number) : Observable<boolean>
+  toggleFavorite(studentId : number, tutorId : number, isFavorited : boolean) : Observable<boolean>
   {
-    return this.manager.isFavorited(studentId, tutorId);
-  }
-
-  toggleFavorite(studentId : number, tutorId : number) : Observable<boolean>
-  {
-    return this.manager.toggleFavorite(studentId, tutorId);
+    return this.manager.toggleFavorite(studentId, tutorId, isFavorited);
   }
 
   makeAppointment(appointmentRequest: AppointmentRequest) : Observable<boolean>

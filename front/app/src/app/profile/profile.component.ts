@@ -77,8 +77,8 @@ export class ProfileComponent implements OnInit {
       this.appointments = apts;
     }));
 
-    this._subs.add(this.profileService.isFavorited(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
-        this.isFavorited = res;
+    this._subs.add(this.profileService.getFavorites(parseInt(this.cookieService.get('userId'))).subscribe(res => {
+        this.isFavorited = res.some(tutor => tutor.tutor_id == this.tutorId);
       }
     ));
   }
@@ -155,13 +155,8 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleFavorite(){
-    this.profileService.toggleFavorite(parseInt(this.cookieService.get('userId')), this.tutorId).subscribe(res => {
-        if(res)
-        {
-          this.isFavorited = !this.isFavorited;
-        }
-      }
-    );
+    this.profileService.toggleFavorite(parseInt(this.cookieService.get('userId')), this.tutorId, this.isFavorited).subscribe();
+    this.isFavorited = !this.isFavorited;
   }
 
   uploadProfilePicture(event: any){
