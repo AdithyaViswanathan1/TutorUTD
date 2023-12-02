@@ -112,22 +112,4 @@ export class SignUpComponent implements OnInit {
         });
     }
   }
-
-  devCheatNav()
-  {
-    if(this.isStudent)
-    {
-      this.cookieService.set('userId', '1');
-      this.cookieService.set('userType', 'student');
-      this.cookieService.set('authToken', '7027feb40e88ec1b8b5f53575fe69c2442ac8464');
-      this.router.navigate(['/appointments']);
-    }
-    else
-    {
-      this.cookieService.set('userId', '0');
-      this.cookieService.set('userType', 'tutor');
-      this.cookieService.set('authToken', '7027feb40e88ec1b8b5f53575fe69c2442ac8464');
-      this.router.navigate(['/profile/0']);
-    }
-  }
 }
