@@ -193,7 +193,6 @@ class StudentViewSet(viewsets.GenericViewSet):
                 q_set = Tutor.objects.get(tutor_id=tutor.get('tutor_id'))
                 tutor_serial = TutorSimpleSerializer(q_set)
                 tutor_data.append(tutor_serial.data)
-                
             return Response(data=tutor_data, status=status.HTTP_200_OK)
         except Favorite_Tutors.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data='No favorite tutors found.')
