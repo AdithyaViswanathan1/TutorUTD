@@ -181,7 +181,7 @@ class StudentViewSet(viewsets.GenericViewSet):
         except Favorite_Tutors.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data='Could not find favorite tutor.')
         
-    @action(methods=['PUT'], detail=False)
+    @action(methods=['POST'], detail=False)
     def get_favorite_tutors(self, request):
         serializer = self.get_serializer(data=request.data)
         student_id = request.data['student_id']
