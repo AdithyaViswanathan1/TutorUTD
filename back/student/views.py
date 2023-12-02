@@ -191,7 +191,7 @@ class StudentViewSet(viewsets.GenericViewSet):
             tutor_data = []
             for tutor in favorite_tutors:
                 q_set = Tutor.objects.get(tutor_id=tutor.get('tutor_id'))
-                tutor_serial = TutorSimpleSerializer(q_set)
+                tutor_serial = TutorSearchSerializer(q_set)
                 tutor_data.append(tutor_serial.data)
             return Response(data=tutor_data, status=status.HTTP_200_OK)
         except Favorite_Tutors.DoesNotExist:
