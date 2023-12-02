@@ -69,7 +69,7 @@ class StudentViewSet(viewsets.GenericViewSet):
     @action(methods=['POST',], detail=False)
     def get_appointments(self, request):
         id = request.data['id']
-        apps = Appointments.objects.filter(student_id=id,completed=False).values()
+        apps = Appointments.objects.filter(student_id=id,completed=False).order_by('time').values()
         
         if len(apps) == 0:
             return Response(apps, status=status.HTTP_204_NO_CONTENT)
