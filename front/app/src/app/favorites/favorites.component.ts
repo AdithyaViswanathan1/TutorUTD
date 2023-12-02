@@ -20,7 +20,6 @@ export class FavoritesComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private route : ActivatedRoute,
     private router : Router,
     private cookieService: CookieService
   ) {}
@@ -31,6 +30,7 @@ export class FavoritesComponent implements OnInit {
     this.loading = true;
     this._subs.add(this.profileService.getFavorites(this.studentId).subscribe(favorites => {
       this.loading = false;
+      console.log(favorites);
       this.favorites = favorites;
     }));
   }
