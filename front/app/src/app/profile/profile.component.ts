@@ -77,10 +77,13 @@ export class ProfileComponent implements OnInit {
       this.appointments = apts;
     }));
 
-    this._subs.add(this.profileService.getFavorites(parseInt(this.cookieService.get('userId'))).subscribe(res => {
-        this.isFavorited = res.some(tutor => tutor.tutor_id == this.tutorId);
-      }
-    ));
+    if(this.isStudent)
+    {
+      this._subs.add(this.profileService.getFavorites(parseInt(this.cookieService.get('userId'))).subscribe(res => {
+          this.isFavorited = res.some(tutor => tutor.tutor_id == this.tutorId);
+        }
+      ));
+    }
   }
 
   ngOnDestroy(): void {

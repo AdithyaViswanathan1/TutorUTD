@@ -63,21 +63,34 @@ export class LoginComponent implements OnInit {
         password: this.password
       };
 
-      this.authenticationService.studentLogin(request).subscribe(response => {
-        this.loading = false;
-        
-        if(response.enroll_url)
-        {
-          this.cookieService.set('duoQrUrl', response.enroll_url);
-          this.router.navigate(['duo', 'student']);
+      this.authenticationService.studentLogin(request).subscribe(
+        (response) => {
+          this.loading = false;
+          
+          if(response.enroll_url)
+          {
+            this.cookieService.set('duoQrUrl', response.enroll_url, {path: '/'});
+            this.router.navigate(['duo', 'student']);
+          }
+          if(response.user_id)
+          {
+            this.cookieService.set('userId', response.user_id.toString(), {path: '/'});
+            this.cookieService.set('userType', 'student', {path: '/'});
+            this.router.navigate(['/appointments']);
+          }
+        },
+        (error) => {
+          this.loading = false;
+          if(error.status == 404)
+          {
+            this.emailNotFound = true;
+          }
+          else if(error.status == 401)
+          {
+            this.wrongPassword = true;
+          }
         }
-        if(response.user_id)
-        {
-          this.cookieService.set('userId', response.user_id.toString());
-          this.cookieService.set('userType', 'student');
-          this.router.navigate(['/appointments']);
-        }
-      });
+      );
     }
     else
     {
@@ -86,21 +99,33 @@ export class LoginComponent implements OnInit {
         password: this.password
       };
 
-      this.authenticationService.tutorLogin(request).subscribe(response => {
+      this.authenticationService.tutorLogin(request).subscribe((response) => {
         this.loading = false;
 
         if(response.enroll_url)
         {
-          this.cookieService.set('duoQrUrl', response.enroll_url);
+          this.cookieService.set('duoQrUrl', response.enroll_url, {path: '/'});
           this.router.navigate(['duo', 'tutor']);
         }
         if(response.user_id)
         {
-          this.cookieService.set('userId', response.user_id.toString());
-          this.cookieService.set('userType', 'tutor');
+          this.cookieService.set('userId', response.user_id.toString(), {path: '/'});
+          this.cookieService.set('userType', 'tutor', {path: '/'});
           this.router.navigate(['/profile', response.user_id]);
         }
-      });
+      },
+      (error) => {
+        this.loading = false;
+        if(error.status == 404)
+        {
+          this.emailNotFound = true;
+        }
+        else if(error.status == 401)
+        {
+          this.wrongPassword = true;
+        }
+      }
+      );
     }
   }
 

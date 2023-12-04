@@ -92,7 +92,7 @@ export class SignUpComponent implements OnInit {
       this.authenticationService.studentSignup(request).subscribe(z =>
         {
           this.loading = false;
-          this.cookieService.set('duoQrUrl', z.enroll_url);
+          this.cookieService.set('duoQrUrl', z.enroll_url, {path: '/'});
           this.router.navigate(['/duo', 'student']);
         });
     }
@@ -107,7 +107,7 @@ export class SignUpComponent implements OnInit {
       this.authenticationService.tutorSignUp(request).subscribe(z =>
         {
           this.loading = false;
-          this.cookieService.set('duoQrUrl', z.enroll_url);
+          this.cookieService.set('duoQrUrl', z.enroll_url, {path: '/'});
           this.router.navigate(['/duo', 'tutor']);
         });
     }
