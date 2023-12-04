@@ -30,7 +30,7 @@ export class AuthenticationService {
   {
     this.cookieService.delete('userId','/');
     this.cookieService.delete('userType', '/');
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
   }
 
   studentSignup(user: StudentSignupRequest): Observable<RegisterResponse>

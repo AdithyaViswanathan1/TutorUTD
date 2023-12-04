@@ -20,6 +20,11 @@ export class NavbarComponent{
         private router: Router) {
         }
 
+    toHome()
+    {
+        this.router.navigate(['']);
+    }
+
     toSearch()
     {
         this.router.navigate(['/search']);
