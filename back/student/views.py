@@ -10,12 +10,13 @@ from .models import Student
 from . import serializers as ota_serializers
 from appointments.models import Appointments
 from login.models import User
-from tutor.models import Tutor, TutorSubjects
+from tutor.models import Tutor, TutorSubjects, TutorAvail
 from rest_framework import status
 from tutor.serializers import TutorSerializer, TutorSearchSerializer, TutorSimpleSerializer
 from tutor.models import Tutor
 from student.models import Favorite_Tutors
 from datetime import datetime
+from django.db.models import Q
 
 import json
 
@@ -146,11 +147,15 @@ class StudentViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         # get tutor objects from previous ids and return only relevant fields (using serializer) and return as list of dictionaries
-        tutor_objects = Tutor.objects.filter(pk__in=tutor_ids)
+        tutor_objects = Tutor.objects.filter(pk__in=tutor_ids).exclude(biography__isnull=True, profile_picture__isnull=True)
         result = []
+        tutors_with_subjects = TutorSubjects.objects.all().values_list("tutor_id",flat=True).distinct()
+        tutors_with_available_times = TutorAvail.objects.all().values_list("tutor_id",flat=True).distinct()
         for tutor in tutor_objects:
-            serial = TutorSearchSerializer(tutor)
-            result.append(serial.data)    
+            if tutor.tutor_id in tutors_with_subjects and tutor.tutor_id in tutors_with_available_times:
+                print("TUTOR found in subjects and available times", tutor.tutor_id)
+                serial = TutorSearchSerializer(tutor)
+                result.append(serial.data)
         return Response(result, status=status.HTTP_201_CREATED)
 
     @action(methods=['POST'], detail=False)
