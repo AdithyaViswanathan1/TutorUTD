@@ -68,13 +68,13 @@ export class LoginComponent implements OnInit {
         
         if(response.enroll_url)
         {
-          this.cookieService.set('duoQrUrl', response.enroll_url);
+          this.cookieService.set('duoQrUrl', response.enroll_url, {path: '/'});
           this.router.navigate(['duo', 'student']);
         }
         if(response.user_id)
         {
-          this.cookieService.set('userId', response.user_id.toString());
-          this.cookieService.set('userType', 'student');
+          this.cookieService.set('userId', response.user_id.toString(), {path: '/'});
+          this.cookieService.set('userType', 'student', {path: '/'});
           this.router.navigate(['/appointments']);
         }
       });
@@ -91,13 +91,13 @@ export class LoginComponent implements OnInit {
 
         if(response.enroll_url)
         {
-          this.cookieService.set('duoQrUrl', response.enroll_url);
+          this.cookieService.set('duoQrUrl', response.enroll_url, {path: '/'});
           this.router.navigate(['duo', 'tutor']);
         }
         if(response.user_id)
         {
-          this.cookieService.set('userId', response.user_id.toString());
-          this.cookieService.set('userType', 'tutor');
+          this.cookieService.set('userId', response.user_id.toString(), {path: '/'});
+          this.cookieService.set('userType', 'tutor', {path: '/'});
           this.router.navigate(['/profile', response.user_id]);
         }
       });
