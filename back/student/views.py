@@ -147,7 +147,7 @@ class StudentViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         # get tutor objects from previous ids and return only relevant fields (using serializer) and return as list of dictionaries
-        tutor_objects = Tutor.objects.filter(pk__in=tutor_ids).exclude(biography__isnull=True, profile_picture__isnull=True)
+        tutor_objects = Tutor.objects.filter(pk__in=tutor_ids,background_checked=1).exclude(biography__isnull=True, profile_picture__isnull=True)
         result = []
         tutors_with_subjects = TutorSubjects.objects.all().values_list("tutor_id",flat=True).distinct()
         tutors_with_available_times = TutorAvail.objects.all().values_list("tutor_id",flat=True).distinct()
