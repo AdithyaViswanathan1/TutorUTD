@@ -26,6 +26,7 @@ To run project locally go to the run and debug tab on the visual studio code sid
 ## Backend
 
 Required: Local installation of Python
+
 Run backend with 'python manage.py runserver'. Alternative: 'python3 manage.py runserver'
 
 
