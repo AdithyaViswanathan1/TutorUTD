@@ -9,7 +9,9 @@ Have project repo cloned to your computer
 
 Install NodeJS https://nodejs.org/en/download
 and verify installation with "node --v" and "npm --v"
+Alternative: "node -v" and "npm -v"
 
+Note: Due to differing permissions, the following commands could require "sudo" as a prefix. Example: "sudo npm i"
 Run "npm install -g @angular/cli" to install angular command line interface
 
 may need "ng update typescript@4.9.3" if you get an error about cannot read property createAsExpression
@@ -22,7 +24,8 @@ To run project locally go to the run and debug tab on the visual studio code sid
 
 ## Backend
 
-Run backend with 'python manage.py runserver'
+Required: Local installation of Python
+Run backend with 'python manage.py runserver'. Alternative: 'python3 manage.py runserver'
 
 
 Ensure the following libraries are installed using pip:
