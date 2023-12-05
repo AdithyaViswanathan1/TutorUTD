@@ -15,6 +15,8 @@ from duo_client import Auth
 from django.conf import settings
 from django.shortcuts import redirect
 
+from django.core.mail import send_mail
+
 def Duo_Enroll(user):
     #Verify Duo 2FA with DUO API
     duo = Auth(
@@ -121,6 +123,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             serializer.get_obj_type("student")
             if serializer.is_valid():
                 user = serializer.save()
+                send_mail("Registration confirmation", "You have successfully registered for TutorUTD as a student!", settings.EMAIL_HOST_USER, [user.email])
                 return Duo_Enroll(user)
                 #return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -132,6 +135,9 @@ class AuthViewSet(viewsets.GenericViewSet):
             serializer.get_obj_type("tutor")
             if serializer.is_valid():
                 user = serializer.save()
+                send_mail("Tutor UTD: Registration confirmation",
+                    "You have successfully registered for TutorUTD as a tutor!\nReminder: Your account will need to clear a backround check before students will be allowed to book appointments with you.",
+                    settings.EMAIL_HOST_USER, [user.email])
                 return Duo_Enroll(user)
                 #return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_400_BAD_REQUEST)

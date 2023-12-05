@@ -13,7 +13,7 @@ def dailyEmailReminder():
         message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n" 
         for e in studentappointments:
             if e.student!=currentStudentId:
-                send_mail("Appointment Reminder",
+                send_mail("Tutor UTD: Appointment Reminder",
                     message,
                     settings.EMAIL_HOST_USER,
                     [Student.objects.get(pk=currentStudentId).email], 
@@ -29,7 +29,7 @@ def dailyEmailReminder():
         message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n" 
         for e in tutorappointments:
             if e.tutor!=currentTutorId:
-                send_mail("Appointment Reminder",
+                send_mail("TutorUTD: Appointment Reminder",
                     message,
                     settings.EMAIL_HOST_USER,
                     [Tutor.objects.get(pk=currentTutorId).email], 
