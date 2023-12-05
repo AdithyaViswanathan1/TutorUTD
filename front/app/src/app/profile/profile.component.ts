@@ -154,6 +154,7 @@ export class ProfileComponent implements OnInit {
     
     this.profileService.makeAppointment(req).subscribe(() => {
       this.bookingSession = false;
+      window.location.reload();
     });
   }
 
