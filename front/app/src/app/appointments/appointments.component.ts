@@ -102,6 +102,7 @@ export class AppointmentsComponent implements OnInit{
   completeAppointment(id : number){
     this.profileService.completeAppointment(id).subscribe(res => {
       this.appointments = this.appointments.filter(a => a.id != id);
+      this.totalHours += .5;
     });
   }
 

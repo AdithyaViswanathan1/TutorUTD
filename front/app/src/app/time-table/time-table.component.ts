@@ -43,25 +43,28 @@ export class TimeTableComponent implements OnInit {
       for(let minute = 0; minute < 60; minute += 30)
       {
         let min = minute.toString();
+        let time = "";
         if(minute === 0)
         {
           min = "00";
         }
         if(hour < 12) 
         {
-          const time = `${hour}:${min} AM`;
-          this.appointmentTimes.push(time);
+          time = `${hour}:${min} AM`;
         }
         else if(hour > 12)
         {
-          const time = `${hour - 12}:${min} PM`;
-          this.appointmentTimes.push(time);
+          time = `${hour - 12}:${min} PM`;
         }
         else
         {
-          const time = `12:${min} PM`;
-          this.appointmentTimes.push(time);
+          time = `12:${min} PM`;
         }
+        if(time.length === 7) //append 0 to single digit hours
+        {
+          time = "0" + time;
+        }
+        this.appointmentTimes.push(time);
       } 
     }
   }

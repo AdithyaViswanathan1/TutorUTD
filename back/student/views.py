@@ -94,10 +94,12 @@ class StudentViewSet(viewsets.GenericViewSet):
             tutor = Tutor.objects.get(tutor=tutor_id)
             for date in dates:
                 # dates passed in are strings, not datetime objects
+                print(date)
                 format = "%a %b %d %Y.%H:%M %p"
                 # convert 12 hr to 24 hr time and store in the database
                 date = self.twelve_to_twenty_four(date)
                 date = datetime.strptime(date, format)
+                print(date)
                 Appointments.objects.create(student=student, 
                                            tutor=tutor,
                                            time=date,
@@ -127,8 +129,7 @@ class StudentViewSet(viewsets.GenericViewSet):
                 student_name = User.objects.get(id=student_id).full_name
                 tutor_name = User.objects.get(id=tutor_id).full_name
                 obj['student_name'] = student_name
-                obj['tutor_name'] = tutor_name
-                
+                obj['tutor_name'] = tutor_name 
             return Response(apps, status=status.HTTP_200_OK)
     
     @action(methods=['POST',], detail=False)
