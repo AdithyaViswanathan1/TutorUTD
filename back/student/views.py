@@ -34,6 +34,45 @@ class StudentViewSet(viewsets.GenericViewSet):
         'get_total_hours': ota_serializers.GetTotalHours,
     }
 
+    def twelve_to_twenty_four(self, requested_date: str) -> str:
+        # format = "%a %b %d %Y.%H:%M %p"
+        match(requested_date[-2:]):
+            case "PM":
+                time = requested_date.split(".")
+                time_arr = time[1].split(":")
+                hour = int(time_arr[0])
+                if (hour == 12): 
+                    return requested_date
+                hour += 12
+                time_arr[0] = str(hour)
+                new_time = time_arr[0] + ":" + time_arr[1]
+                time[1] = new_time
+                requested_date = time[0] + "." + time[1]
+                return requested_date
+            case "AM":
+                return requested_date
+        
+    def twenty_four_to_twelve(self, requested_date: str) -> str:
+        # format = "%a %b %d %Y.%H:%M %p"
+        match(requested_date[-2:]):
+            case "PM":
+                time = requested_date.split(".")
+                time_arr = time[1].split(":")
+                hour = int(time_arr[0])
+                if (hour == 12): 
+                    return requested_date
+                hour -= 12
+                if (hour < 10):
+                    time_arr[0] = "0" + str(hour)
+                else:
+                    time_arr[0] = str(hour)
+                new_time = time_arr[0] + ":" + time_arr[1]
+                time[1] = new_time
+                requested_date = time[0] + "." + time[1]
+                return requested_date
+            case "AM":
+                return requested_date
+
     #Helper functions
     def list_to_dict(self, id_and_name):
         result = {}
@@ -56,6 +95,8 @@ class StudentViewSet(viewsets.GenericViewSet):
             for date in dates:
                 # dates passed in are strings, not datetime objects
                 format = "%a %b %d %Y.%H:%M %p"
+                # convert 12 hr to 24 hr time and store in the database
+                date = self.twelve_to_twenty_four(date)
                 date = datetime.strptime(date, format)
                 Appointments.objects.create(student=student, 
                                            tutor=tutor,
@@ -78,6 +119,7 @@ class StudentViewSet(viewsets.GenericViewSet):
             for obj in apps:
                 format = "%a %b %d %Y.%H:%M %p"
                 obj['time'] = obj['time'].strftime(format)
+                obj['time'] = self.twenty_four_to_twelve(obj['time'])
 
                 student_id = obj['student_id']
                 tutor_id = obj['tutor_id']
