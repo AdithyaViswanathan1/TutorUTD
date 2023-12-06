@@ -3,8 +3,11 @@
         <div class="header-text my-3 align-self-center">Book Tutor Session</div>
         <app-time-table [tableType]=2 [appointments]="tutorAppointments" [selectedTimes]="tutorSchedule" (modified)="updateSelected($event)"></app-time-table>
         <div class="enter-class">
-            Class Prefix: <input type="text" class="input-box" [(ngModel)]="prefix">
-            Class Number: <input type="text" class="input-box" [(ngModel)]="classNumber">
+            Course: <select [(ngModel)]="selectedCourse" class="course-select">
+                <option value="" disabled selected>Select a course</option>
+                <option value=" ">N/A</option>
+                <option *ngFor="let course of courses" [value]="course">{{course}}</option>
+            </select> 
         </div>
         <div class="button-container mt-4">
                 <div class="return-button" (click)="cancelBooking()" style="cursor: pointer">Cancel</div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/Appointment';
@@ -13,10 +13,12 @@ import { ProfileService } from 'src/app/profile.service';
 export class BookSessionComponent implements OnInit {
   @Output() save = new EventEmitter<BookingData>();
   @Output() close = new EventEmitter();
+  @Input() courses: string[] = [];
   tutorAppointments: Appointment[] = [];
   tutorSchedule: string[] = [];
 
   selectedTimes: string[] = [];
+  selectedCourse: string = '';
   prefix: string = '';
   classNumber: string = '';
 
@@ -53,7 +55,7 @@ export class BookSessionComponent implements OnInit {
 
   saveBooking(){
     let res : BookingData = {
-      subject: this.prefix.toUpperCase() + ' ' + this.classNumber,
+      subject: this.selectedCourse.toUpperCase(),
       times: this.selectedTimes,
       location: 'Online'
     }; 
