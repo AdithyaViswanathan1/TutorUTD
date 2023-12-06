@@ -1,5 +1,5 @@
 # TutorUTD
-This is a web based tutoring application in order to help connect students and tutors in a simple and efficient way. To do this we have used a stack of modern technologies and coding languages including Angular, Django, MySQL and AWS hosting. By accomplishing this, students are able to find and book tutors with expertise on the exact courses they need help in and succeed academically. 
+This is a web based tutoring application in order to help connect students and tutors in a simple and efficient way. To do this we have used a stack of modern technologies and coding languages including Angular, Django, MySQL and Amazon Web Services. By accomplishing this, students are able to find and book tutors with expertise on the exact courses they need help in and succeed academically. 
 
 Project for CS 4485 Team 63. Faculty Advisor Dr. Pushpa Kumar. 
 
