@@ -55,7 +55,7 @@ export class BookSessionComponent implements OnInit {
 
   saveBooking(){
     let res : BookingData = {
-      subject: this.selectedCourse.toUpperCase(),
+      subject: this.selectedCourse,
       times: this.selectedTimes,
       location: 'Online'
     }; 

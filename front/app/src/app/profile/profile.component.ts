@@ -149,7 +149,7 @@ export class ProfileComponent implements OnInit {
       dates: data.times,
       location: data.location
     };
-    if(data.subject == ' ')
+    if(data.subject == ' ' || data.subject == '' || data.subject == undefined)
       req.course = undefined;
     
     this.profileService.makeAppointment(req).subscribe(() => {
