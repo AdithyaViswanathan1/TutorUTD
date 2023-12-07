@@ -110,7 +110,7 @@ class StudentViewSet(viewsets.GenericViewSet):
                                            course=course)
             
             send_mass_mail(( ("Tutor UTD: Appointment booked", "Your appointment at " + dates[0] + " with tutor " + User.objects.get(id=tutor_id).full_name + " has been made.", settings.EMAIL_HOST_USER, [User.objects.get(id=student_id).email]), 
-            ("Tutor UTD: Appointment booked", User.objects.get(id=student_id).full_name + " has booked an appointment with you over " + course + " at " + dates[0], settings.EMAIL_HOST_USER, [User.objects.get(id=tutor_id).email]) ), fail_silently=False)
+            ("Tutor UTD: Appointment booked", User.objects.get(id=student_id).full_name + " has booked an appointment with you at " + dates[0], settings.EMAIL_HOST_USER, [User.objects.get(id=tutor_id).email]) ), fail_silently=False)
             
             return Response(status=status.HTTP_201_CREATED, data='Created successfully.')
         
