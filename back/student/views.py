@@ -108,8 +108,10 @@ class StudentViewSet(viewsets.GenericViewSet):
                                            time=date,
                                            location=request.data.get('location'),
                                            course=course)
-                send_mass_mail(( ("Tutor UTD: Appointment booked", "Your " + course + " appointment at " + dates[0] + " with tutor " + tutor.full_name + " has been made.", settings.EMAIL_HOST_USER, [student.email]), 
-                ("Tutor UTD: Appointment booked", student.full_name + " has booked an appointment with you over " + course + " at " + dates[0], settings.EMAIL_HOST_USER, [tutor.email]) ), fail_silently=False)
+            
+            send_mass_mail(( ("Tutor UTD: Appointment booked", "Your appointment at " + dates[0] + " with tutor " + User.objects.get(id=tutor_id).full_name + " has been made.", settings.EMAIL_HOST_USER, [User.objects.get(id=student_id).email]), 
+            ("Tutor UTD: Appointment booked", User.objects.get(id=student_id).full_name + " has booked an appointment with you over " + course + " at " + dates[0], settings.EMAIL_HOST_USER, [User.objects.get(id=tutor_id).email]) ), fail_silently=False)
+            
             return Response(status=status.HTTP_201_CREATED, data='Created successfully.')
         
         except drf_serializers.ValidationError as e:
@@ -145,13 +147,13 @@ class StudentViewSet(viewsets.GenericViewSet):
             
             #Grab information about appointment to send email with before deletion
             studentMessage = ("TutorUTD: Appointment Cancellation",
-            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + Tutor.object.get(pk=appointment.tutor).full_name,
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + User.objects.get(pk=appointment.tutor).full_name,
             settings.EMAIL_HOST_USER,
-            [Student.objects.get(pk=appointment.student).email],)
+            [User.objects.get(pk=appointment.student).email],)
             tutorMessage = ("TutorUTD: Appointment Cancellation",
-            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with student " + Student.object.get(pk=appointment.student).full_name,
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with student " + User.objects.get(pk=appointment.student).full_name,
             settings.EMAIL_HOST_USER,
-            [Tutor.objects.get(pk=appointment.tutor).email],)
+            [User.objects.get(pk=appointment.tutor).email],)
             
             appointment.delete()
             send_mass_mail((studentMessage, tutorMessage), fail_silently=False) #sends both emails out

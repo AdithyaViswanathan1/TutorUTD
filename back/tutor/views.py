@@ -126,7 +126,6 @@ class TutorViewSet(viewsets.GenericViewSet):
                 obj['tutor_name'] = tutor_name
             return Response(apps, status=status.HTTP_200_OK)
         
-    
     @action(methods=['POST',], detail=False)
     def cancel_appointment(self, request):
         appid = request.data['appointment_id']
@@ -135,13 +134,13 @@ class TutorViewSet(viewsets.GenericViewSet):
             
             #Grab information about appointment to send email with before deletion
             studentMessage = ("TutorUTD: Appointment Cancellation",
-            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + Tutor.object.get(pk=appointment.tutor).full_name,
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + User.objects.get(pk=appointment.tutor).full_name,
             settings.EMAIL_HOST_USER,
-            [Student.objects.get(pk=appointment.student).email],)
+            [User.objects.get(pk=appointment.student).email],)
             tutorMessage = ("TutorUTD: Appointment Cancellation",
-            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with student " + Student.object.get(pk=appointment.student).full_name,
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with student " + User.objects.get(pk=appointment.student).full_name,
             settings.EMAIL_HOST_USER,
-            [Tutor.objects.get(pk=appointment.tutor).email],)
+            [User.objects.get(pk=appointment.tutor).email],)
             
             appointment.delete()
             send_mass_mail((studentMessage, tutorMessage), fail_silently=False) #sends both emails out
