@@ -3,46 +3,41 @@ from django.conf import settings
 from tutor.models import Tutor
 from student.models import Student
 from appointments.models import Appointments
+from login.models import User
 import datetime
 
 def dailyEmailReminder(): #Sends emails to students and tutors that have appointments on today's date
     connection = mail.get_connection() #Establishes connection to mail server
     connection.open()
     
-    #Grab Querysets of appointments that match today's date
-    studentappointments = Appointments.objects.filter(time=datetime.date.today()).order_by("student")
-    tutorappointments = Appointments.objects.filter(time=datetime.date.today()).order_by("tutor")
+    #Grab Querysets of appointments that match today's date and have unique ids
+    studentappointments = Appointments.objects.filter(time=datetime.date.today()).distinct("student_id")
+    tutorappointments = Appointments.objects.filter(time=datetime.date.today()).distinct("tutor_id")
     
     #Send email to all students with appointment matching today's date
     if studentappointments.exists():
-        currentStudentId = studentappointments.first().student
-        message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n" 
-        for e in studentappointments:
-            if e.student!=currentStudentId:
-                mail.EmailMessage("Tutor UTD: Appointment Reminder",
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    [User.objects.get(pk=currentStudentId).email], 
-                    connection).send()
-                currentStudentId = e.student
-                message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n" 
-                
-            message + " Appointment at time " + e.time + " with tutor " + User.objects.get(e.tutor).full_name + "\n"
+        for e in studentappointments: #For every student that has an appointment today
+            message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n"
+            eStudentAppointments = Appointments.objects.filter(student_id=e.student_id).filter(time=datetime.date.today()) #grab student e's appointments for today
+            for i in eStudentAppointments: #for each appointment today
+                message + " Appointment at time " + i.time + " with tutor " + User.objects.get(pk=i.tutor_id).full_name + "\n" #add app. details to message
+            mail.EmailMessage("Tutor UTD: Appointment Reminder",
+                message,
+                settings.EMAIL_HOST_USER,
+                [User.objects.get(pk=e.student_id).email], 
+                connection).send()
     
     #Send email to all tutors with appointment matching today's date
     if tutorappointments.exists():
-        currentTutorId = tutorappointments.first().tutor
-        message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n" 
         for e in tutorappointments:
-            if e.tutor!=currentTutorId:
-                mail.EmailMessage("TutorUTD: Appointment Reminder",
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    [User.objects.get(pk=currentTutorId).email], 
-                    connection).send()
-                currentTutorId = e.tutor
-                message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n" 
-                
-            message + " Appointment at time " + e.time + " with student " + User.objects.get(e.tutor).full_name + "\n"
+            message = "This is a reminder from TutorUTD that you have the following tutoring appointments today: \n \n"
+            eTutorAppointments = Appointments.objects.filter(tutor_id=e.tutor_id).filter(time=datetime.date.today())
+            for i in eTutorAppointments:
+                message + " Appointment at time " + i.time + " with student " + User.objects.get(pk=i.student_id).full_name + "\n"
+            mail.EmailMessage("Tutor UTD: Appointment Reminder",
+                message,
+                settings.EMAIL_HOST_USER,
+                [User.objects.get(pk=e.tutor_id).email], 
+                connection).send()
     
     connection.close()
