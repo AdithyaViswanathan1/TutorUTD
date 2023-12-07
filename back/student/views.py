@@ -17,7 +17,7 @@ from tutor.models import Tutor
 from student.models import Favorite_Tutors
 from datetime import datetime
 from django.db.models import Q
-from django.core import mail
+from django.core.mail import send_mass_mail
 from django.conf import settings
 
 import json
@@ -154,11 +154,11 @@ class StudentViewSet(viewsets.GenericViewSet):
             [Tutor.objects.get(pk=appointment.tutor).email],)
             
             appointment.delete()
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        else: 
             send_mass_mail((studentMessage, tutorMessage), fail_silently=False) #sends both emails out
             return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
     
     @action(methods=['POST',], detail=False)
     def mark_app_as_complete(self, request):
