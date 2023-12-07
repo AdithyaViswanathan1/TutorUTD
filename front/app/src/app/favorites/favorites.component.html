@@ -3,6 +3,7 @@
 <div class="page-container">
     <div class="header-text my-3">Favorites</div>
     <div class="results-container mt-3">
+        <div *ngIf="noFavorites && !loading" class="header-text my-5" style="color: red; margin: auto;">No Favorites Found!</div>
         <div *ngFor="let tutor of favorites; last as last">
             <div class="result-card my-3">
                 <img *ngIf="!tutor.profile_picture" src="assets/images/default.jpg" alt="profile pic" class="profile-pic">

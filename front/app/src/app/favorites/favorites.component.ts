@@ -15,6 +15,7 @@ export class FavoritesComponent implements OnInit {
   favorites: Tutor[] = [];
   studentId: number = 0;
   loading: boolean = false;
+  noFavorites: boolean = false;
 
   private _subs : Subscription = new Subscription();
 
@@ -30,8 +31,11 @@ export class FavoritesComponent implements OnInit {
     this.loading = true;
     this._subs.add(this.profileService.getFavorites(this.studentId).subscribe(favorites => {
       this.loading = false;
-      console.log(favorites);
       this.favorites = favorites;
+      if(this.favorites.length == 0)
+      {
+        this.noFavorites = true;
+      }
     }));
   }
 
