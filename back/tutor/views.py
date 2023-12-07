@@ -19,6 +19,8 @@ from student.models import Student
 from django.core.files.storage import default_storage
 from io import BytesIO
 from django.core.exceptions import ImproperlyConfigured
+from django.core import mail
+from django.conf import settings
 
 
 class TutorViewSet(viewsets.GenericViewSet):
@@ -129,10 +131,24 @@ class TutorViewSet(viewsets.GenericViewSet):
     def cancel_appointment(self, request):
         appid = request.data['appointment_id']
         try:
-            Appointments.objects.filter(id=appid).delete()
-            return Response(status=status.HTTP_200_OK)
+            appointment = Appointments.objects.filter(id=appid)
+            
+            #Grab information about appointment to send email with before deletion
+            studentMessage = ("TutorUTD: Appointment Cancellation",
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + Tutor.object.get(pk=appointment.tutor).full_name,
+            settings.EMAIL_HOST_USER,
+            [Student.objects.get(pk=appointment.student).email],)
+            tutorMessage = ("TutorUTD: Appointment Cancellation",
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with student " + Student.object.get(pk=appointment.student).full_name,
+            settings.EMAIL_HOST_USER,
+            [Tutor.objects.get(pk=appointment.tutor).email],)
+            
+            appointment.delete()
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        else: 
+            send_mass_mail((studentMessage, tutorMessage), fail_silently=False) #sends both emails out
+            return Response(status=status.HTTP_200_OK)
     
     @action(methods=['POST',], detail=False)
     def mark_app_as_complete(self, request):

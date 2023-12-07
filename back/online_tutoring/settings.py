@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'appointments',
     'corsheaders',  #accept request from other origins
     'rest_framework.authtoken',
+    'django_crontab', #used to implement the functions found in cron.py; cronjobs are specified in this file
 ]
 
 REST_FRAMEWORK = {
@@ -211,3 +212,15 @@ AWS_SECRET_ACCESS_KEY = get_secret("AWS_S3_SECRET_ACCESS_KEY2")
 AWS_STORAGE_BUCKET_NAME = get_secret("AWS_STORAGE_BUCKET_NAME")
 AWS_QUERYSTRING_AUTH = False
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' 
+
+CRONJOBS = [
+    ('0 0 * * * *', 'online_tutoring.cron.dailyEmailReminder') #Set for midnight
+]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'tutorutd.team63@gmail.com' 
+EMAIL_HOST_PASSWORD = 'pety djfi kzob oefi' #Generated app password

@@ -17,6 +17,8 @@ from tutor.models import Tutor
 from student.models import Favorite_Tutors
 from datetime import datetime
 from django.db.models import Q
+from django.core import mail
+from django.conf import settings
 
 import json
 
@@ -92,6 +94,7 @@ class StudentViewSet(viewsets.GenericViewSet):
             tutor_id = request.data.get('tutor_id')
             student = Student.objects.get(student=student_id)
             tutor = Tutor.objects.get(tutor=tutor_id)
+            course=request.data.get('course')
             for date in dates:
                 # dates passed in are strings, not datetime objects
                 print(date)
@@ -104,7 +107,9 @@ class StudentViewSet(viewsets.GenericViewSet):
                                            tutor=tutor,
                                            time=date,
                                            location=request.data.get('location'),
-                                           course=request.data.get('course'))
+                                           course=course)
+                send_mass_mail(( ("Tutor UTD: Appointment booked", "Your " + course + " appointment at " + dates[0] + " with tutor " + tutor.full_name + " has been made.", settings.EMAIL_HOST_USER, [student.email]), 
+                ("Tutor UTD: Appointment booked", student.full_name + " has booked an appointment with you over " + course + " at " + dates[0], settings.EMAIL_HOST_USER, [tutor.email]) ), fail_silently=False)
             return Response(status=status.HTTP_201_CREATED, data='Created successfully.')
         
         except drf_serializers.ValidationError as e:
@@ -136,10 +141,24 @@ class StudentViewSet(viewsets.GenericViewSet):
     def cancel_appointment(self, request):
         appid = request.data['appointment_id']
         try:
-            Appointments.objects.filter(id=appid).delete()
-            return Response(status=status.HTTP_200_OK)
+            appointment = Appointments.objects.filter(id=appid)
+            
+            #Grab information about appointment to send email with before deletion
+            studentMessage = ("TutorUTD: Appointment Cancellation",
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with tutor " + Tutor.object.get(pk=appointment.tutor).full_name,
+            settings.EMAIL_HOST_USER,
+            [Student.objects.get(pk=appointment.student).email],)
+            tutorMessage = ("TutorUTD: Appointment Cancellation",
+            "The following appointment made through TutorUTD has been cancelled: \n At " + appointment.time + " with student " + Student.object.get(pk=appointment.student).full_name,
+            settings.EMAIL_HOST_USER,
+            [Tutor.objects.get(pk=appointment.tutor).email],)
+            
+            appointment.delete()
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        else: 
+            send_mass_mail((studentMessage, tutorMessage), fail_silently=False) #sends both emails out
+            return Response(status=status.HTTP_200_OK)
     
     @action(methods=['POST',], detail=False)
     def mark_app_as_complete(self, request):
