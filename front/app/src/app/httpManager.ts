@@ -22,7 +22,7 @@ import { Appointment } from './models/Appointment';
     providedIn: 'root'
 })
 export class httpManager {
-    backendUrl : string = 'http://ec2-54-167-113-213.compute-1.amazonaws.com:8000/';
+    backendUrl : string = 'http://ec2-75-101-236-178.compute-1.amazonaws.com:8000/';
 
     http: HttpClient;
 
