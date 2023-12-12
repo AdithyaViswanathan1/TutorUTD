@@ -3,6 +3,8 @@ This is a web based tutoring application in order to help connect students and t
 
 Project for CS 4485 Team 63. Faculty Advisor Dr. Pushpa Kumar. 
 
+Hosted Link: http://frontend-ota.s3-website-us-east-1.amazonaws.com/
+
 Team: 
 - Jack Wittenbrook
 - Mason Kuehne
